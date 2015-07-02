@@ -1,4 +1,4 @@
-package br.com.fitrank.modelo;
+package br.com.fitrank.modelo.fb;
 
 import static com.restfb.util.DateUtils.toDateFromLongFormat;
 

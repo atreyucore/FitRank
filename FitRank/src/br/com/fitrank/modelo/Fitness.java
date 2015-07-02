@@ -1,6 +1,6 @@
 package br.com.fitrank.modelo;
 
-
+/////??!?!?!?! QUE OBJETO É ESSE;?!!?!?!?
 //@Entity(name="fitness_course")
 public class Fitness {
 //	@Id

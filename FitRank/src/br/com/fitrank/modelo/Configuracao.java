@@ -1,23 +1,22 @@
 package br.com.fitrank.modelo;
 
-import java.util.Date;
 
 /** Entity(name="configuracao")
  *
  */
 public class Configuracao {
 //	Column(name="id_configuracao", Primary Key)
-	private Integer idConfiguracao;
+	private int idConfiguracao;
 //	Column(name="modalidade")
 	private String modalidade;
 //	Column(name="dia_noite")
-	private Character diaNoite;
+	private char diaNoite;
 //	Column(name="intervalo_data")
-	private Date intervaloData;
+	private String intervaloData;
 //	Column(name="favorito")
-	private Boolean favorito;
+	private boolean favorito;
 //	Column(name="padrao_modalidade")
-	private Boolean padraoModalidade;
+	private boolean padraoModalidade;
 //	Column(name="id_pessoa", FK="FK1_PESSOA_CONF")
 	private String idPessoa;
 	
@@ -33,28 +32,28 @@ public class Configuracao {
 	public void setModalidade(String modalidade) {
 		this.modalidade = modalidade;
 	}
-	public Character getDiaNoite() {
+	public char getDiaNoite() {
 		return diaNoite;
 	}
-	public void setDiaNoite(Character diaNoite) {
+	public void setDiaNoite(char diaNoite) {
 		this.diaNoite = diaNoite;
 	}
-	public Date getIntervaloData() {
+	public String getIntervaloData() {
 		return intervaloData;
 	}
-	public void setIntervaloData(Date intervaloData) {
+	public void setIntervaloData(String intervaloData) {
 		this.intervaloData = intervaloData;
 	}
-	public Boolean getFavorito() {
+	public boolean isFavorito() {
 		return favorito;
 	}
-	public void setFavorito(Boolean favorito) {
+	public void setFavorito(boolean favorito) {
 		this.favorito = favorito;
 	}
-	public Boolean getPadraoModalidade() {
+	public boolean isPadraoModalidade() {
 		return padraoModalidade;
 	}
-	public void setPadraoModalidade(Boolean padraoModalidade) {
+	public void setPadraoModalidade(boolean padraoModalidade) {
 		this.padraoModalidade = padraoModalidade;
 	}
 	public String getIdPessoa() {
@@ -63,4 +62,5 @@ public class Configuracao {
 	public void setIdPessoa(String idPessoa) {
 		this.idPessoa = idPessoa;
 	}
+	
 }

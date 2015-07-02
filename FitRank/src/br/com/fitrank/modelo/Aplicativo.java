@@ -5,7 +5,7 @@ package br.com.fitrank.modelo;
  */
 public class Aplicativo {
 //	Column(name="id_aplicativo", Primary Key)
-	private Integer idAplicativo;
+	private int idAplicativo;
 //	Column(name="nome")
 	private String nome;
 	

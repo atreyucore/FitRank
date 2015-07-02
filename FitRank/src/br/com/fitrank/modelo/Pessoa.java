@@ -5,14 +5,14 @@ package br.com.fitrank.modelo;
  */
 public class Pessoa {
 //	Column(name="id_usuario", Primary Key)
-	private Integer idUsuario;
+	private String idUsuario;
 //	Column(name="nome")
 	private String nome;
 	
-	public Integer getIdUsuario() {
+	public String getIdUsuario() {
 		return idUsuario;
 	}
-	public void setIdAplicativo(Integer idUsuario) {
+	public void setIdUsuario(String idUsuario) {
 		this.idUsuario = idUsuario;
 	}
 	public String getNome() {
