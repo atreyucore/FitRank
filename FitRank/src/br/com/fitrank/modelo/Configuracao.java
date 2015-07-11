@@ -10,20 +10,20 @@ public class Configuracao {
 //	Column(name="modalidade")
 	private String modalidade;
 //	Column(name="dia_noite")
-	private char diaNoite;
+	private String diaNoite;
 //	Column(name="intervalo_data")
 	private String intervaloData;
 //	Column(name="favorito")
-	private boolean favorito;
+	private int favorito;
 //	Column(name="padrao_modalidade")
-	private boolean padraoModalidade;
+	private int padraoModalidade;
 //	Column(name="id_pessoa", FK="FK1_PESSOA_CONF")
 	private String idPessoa;
 	
-	public Integer getIdConfiguracao() {
+	public int getIdConfiguracao() {
 		return idConfiguracao;
 	}
-	public void setIdConfiguracao(Integer idConfiguracao) {
+	public void setIdConfiguracao(int idConfiguracao) {
 		this.idConfiguracao = idConfiguracao;
 	}
 	public String getModalidade() {
@@ -32,10 +32,10 @@ public class Configuracao {
 	public void setModalidade(String modalidade) {
 		this.modalidade = modalidade;
 	}
-	public char getDiaNoite() {
+	public String getDiaNoite() {
 		return diaNoite;
 	}
-	public void setDiaNoite(char diaNoite) {
+	public void setDiaNoite(String diaNoite) {
 		this.diaNoite = diaNoite;
 	}
 	public String getIntervaloData() {
@@ -44,16 +44,16 @@ public class Configuracao {
 	public void setIntervaloData(String intervaloData) {
 		this.intervaloData = intervaloData;
 	}
-	public boolean isFavorito() {
+	public int getFavorito() {
 		return favorito;
 	}
-	public void setFavorito(boolean favorito) {
+	public void setFavorito(int favorito) {
 		this.favorito = favorito;
 	}
-	public boolean isPadraoModalidade() {
+	public int getPadraoModalidade() {
 		return padraoModalidade;
 	}
-	public void setPadraoModalidade(boolean padraoModalidade) {
+	public void setPadraoModalidade(int padraoModalidade) {
 		this.padraoModalidade = padraoModalidade;
 	}
 	public String getIdPessoa() {
@@ -62,5 +62,5 @@ public class Configuracao {
 	public void setIdPessoa(String idPessoa) {
 		this.idPessoa = idPessoa;
 	}
-	
+		
 }
