@@ -26,7 +26,7 @@
 					        if (response.status === 'connected') {
 					        	
 					        	var token = response.authResponse.accessToken;
-			         		    window.location="http://localhost:8080/FitRank/RecuperaUsuarioFacebook?token="+token;
+			         		    window.location="http://localhost:8080/FitRank/InitUser?token="+token;
 			
 					        }else if(response.status === 'not_authorized'){
 			   		         
