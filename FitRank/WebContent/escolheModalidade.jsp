@@ -34,6 +34,6 @@
 <img src="imagem/bike11.png" onClick="goToEscolhaRanking('bikes')">
 <img src="imagem/sprint.png" onClick="goToEscolhaRanking('runs')">
 <img src="imagem/man-silhouette1.png" onClick="goToEscolhaRanking('walks')">
-<img src="imagem/star212.png" onClick="goToEscolhaRanking()">
+<img src="imagem/star212.png" onClick="">
 </body>
 </html>
