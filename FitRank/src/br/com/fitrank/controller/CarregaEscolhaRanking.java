@@ -1,6 +1,8 @@
 package br.com.fitrank.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,8 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import br.com.fitrank.modelo.Pessoa;
-import br.com.fitrank.service.PessoaServico;
+import br.com.fitrank.modelo.fb.PostFitnessFB;
 
 import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
@@ -30,17 +31,26 @@ public class CarregaEscolhaRanking extends HttpServlet {
 		throws ServletException, IOException {
 	   
 	   FacebookClient facebookClient = new DefaultFacebookClient(request.getParameter("token"));
-	   User facebookUser = facebookClient.fetchObject("me", User.class);
-
+	   Connection<PostFitnessFB> fitConnection = facebookClient.fetchConnection("me/fitness." + request.getParameter("modalidade"), PostFitnessFB.class, Parameter.with("limit", "1"));
 	   
+		List<PostFitnessFB> postsFit = new ArrayList<PostFitnessFB>();
+		
+		for(PostFitnessFB postFit : fitConnection.getData()) {
+			postsFit.add(postFit);
+		}
+		
+	   RequestDispatcher rd = null;
+	   
+	   if ( postsFit.size() == 0) {
+		   request.setAttribute("erro", "Você não tem nenhum registro nesta categoria.");
+		   rd = request.getRequestDispatcher("/escolheModalidade.jsp");
+	   } else {
+		   rd = request.getRequestDispatcher("/escolhaRanking.jsp"); 
+	   }
 //TODO	   Recuperar configurção de favorito aqui!
+	   
 	   request.setAttribute("token", request.getParameter("token"));
-	   
-//	   request.setAttribute("ids", ids);
-//	   request.setAttribute("profPicUrl", profPicUrls);
-	   
-	   
-	   RequestDispatcher rd = request.getRequestDispatcher("/escolhaRanking.jsp");  
+	   	     
 	   rd.forward(request,response);  
    }
    

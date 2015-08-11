@@ -14,19 +14,26 @@
     	-moz-border-radius: 50%;
  		padding: 10px;
 	}
+	
+	img:hover {
+		cursor: pointer;
+	}
 </style>
 <script>
-
-	function goToEscolhaRanking() {
-		window.location = 'CarregaEscolhaRanking?token=' + '<%=(String) request.getAttribute("token")%>';
+	
+	<%if ( (String) request.getAttribute("erro") != null) {%>
+		alert('<%=(String) request.getAttribute("erro")%>');
+	<%}%>
+	function goToEscolhaRanking(modalidade) {
+		window.location = 'CarregaEscolhaRanking?modalidade=' + modalidade + '&token=' + '<%=(String) request.getAttribute("token")%>';
 		
 	}
 </script>
 </head>
 <body>
-<img src="imagem/bike11.png" onClick="goToEscolhaRanking()">
-<img src="imagem/sprint.png" onClick="goToEscolhaRanking()">
-<img src="imagem/man-silhouette1.png" onClick="goToEscolhaRanking()">
+<img src="imagem/bike11.png" onClick="goToEscolhaRanking('bikes')">
+<img src="imagem/sprint.png" onClick="goToEscolhaRanking('runs')">
+<img src="imagem/man-silhouette1.png" onClick="goToEscolhaRanking('walks')">
 <img src="imagem/star212.png" onClick="goToEscolhaRanking()">
 </body>
 </html>
