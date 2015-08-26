@@ -1,0 +1,143 @@
+@CHARSET "ISO-8859-1";
+
+@font-face {
+	font-family: 'Capsuula';
+	src: url('../style/fonts/Capsuula.ttf') format("truetype");
+}
+
+html, body {
+	margin: 0;
+	background-color: rgb(131, 102, 158);
+	padding: 0;
+	height: 100%;
+}
+
+.wrapper {
+	min-height: 100%;
+	position: relative;
+}
+
+.preheader {
+	background-color: rgb(111, 61, 148);
+	height: 70px;
+}
+
+.footer {
+	background-color: rgb(111, 61, 148);
+	width: 100%;
+	height: 70px;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+}
+
+.header {
+	background-color: rgb(131, 102, 158);
+}
+
+.headerContent {
+	padding-top: 60px;
+	margin: 0 auto;
+	width: 60%;
+}
+
+.content {
+	padding-bottom: 70px;
+}
+
+.siteHeader {
+	
+}
+
+.supCopy {
+	font-family: Arial;
+	font-size: 40px;
+	color: rgb(255, 251, 255);
+	position: relative;
+	bottom: 27px;
+}
+
+.logo {
+	font-family: Capsuula;
+	font-size: 120px;
+	color: rgb(255, 251, 255);
+}
+
+.circles {
+	display: inline-flex;
+	width: 100%;
+}
+
+.circleWrapper {
+	width: 50%;
+	display: inline;
+	margin: 20px;
+}
+
+.circleWrapper.one {
+	width: 100%;
+}
+
+.circle {
+	border-radius: 50%;
+	width: 140px;
+	height: 140px;
+	padding: 20px;
+	margin: 0 auto;
+}
+
+.circle.walk {
+	background-color: rgb(195, 239, 180);
+}
+
+.circle.run {
+	background-color: rgb(196, 231, 191);
+}
+
+.circle.bike {
+	background-color: rgb(157, 234, 200);
+}
+
+.circle.velocimeter {
+	background-color: rgb(157, 234, 200);
+	height: 128px;
+	width: 128px;	
+}
+
+.circle.races {
+	background-color: rgb(157, 234, 200);
+	height: 128px;
+	width: 128px;	
+}
+
+.circle.sun {
+	background-color: rgb(196, 231, 191);
+	height: 64px;
+	width: 64px;
+}
+
+.circle.moon {
+	background-color: rgb(196, 231, 191);
+	height: 64px;
+	width: 64px;
+}
+
+.circle.calendario {
+	background-color: rgb(195, 239, 180);
+	height: 64px;
+	width: 64px;
+}
+
+.circle.bestRank {
+	background-color: rgb(187, 173, 28);
+	height: 128px;
+	width: 128px;	
+}
+
+div.circle:hover {
+	cursor: pointer;
+}
+
+div.fav {
+	display: inline;
+}

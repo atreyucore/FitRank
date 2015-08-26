@@ -48,6 +48,9 @@
 	</dependencies>
 	<build>
 		<finalName>FitRank</finalName>
+		<sourceDirectory>C:\Users\Leandro\workspace FitRank\FitRank\src\main\java</sourceDirectory>
+	    <outputDirectory>C:\Users\Leandro\workspace FitRank\FitRank\build\classes</outputDirectory>
+	    <testOutputDirectory>C:\Users\Leandro\workspace FitRank\FitRank\target\test-classes</testOutputDirectory>
 		<pluginManagement>
 			<plugins>
 				<plugin>

@@ -48,6 +48,9 @@
 	</dependencies>
 	<build>
 		<finalName>FitRank</finalName>
+		<sourceDirectory>src\main\java</sourceDirectory>
+	    <outputDirectory>build\classes</outputDirectory>
+	    <directory>build</directory>
 		<pluginManagement>
 			<plugins>
 				<plugin>
