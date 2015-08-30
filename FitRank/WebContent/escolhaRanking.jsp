@@ -6,29 +6,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Escolher a configuração do Ranking</title>
 <link rel="stylesheet" type="text/css" href="./style/css/FitRank.css">
-<style>
-/* div.periodos { */
-/* 	border: 1px solid; */
-/* 	border-color: blue; */
-/* 	width: 280px; */
-/* 	border-radius: 7px; */
-/* 	-webkit-border-radius: 7px; */
-/* 	-moz-border-radius: 7px; */
-/* } */
-
-/* img { */
-/* 	margin-bottom: 20px; */
-/* 	margin-right: 50px; */
-/* } */
-
-/* img.rank { */
-/* 	margin-left: 200px; */
-/* } */
-
-/* span.fav { */
-/* 	margin-left: 250px; */
-/* } */
-</style>
 </head>
 
 <body>
@@ -44,6 +21,7 @@
 						<div class="fav"> 
 							<img class="fav" src="imagem/tick11_big.png" style="border-radius: 50%;background-color: rgb(101,166,133);"/>
 							<img class="fav" src="imagem/star212_big.png" style="border-radius: 50%;background-color: rgb(241,239,169);" />
+							<img class="fav" src="imagem/social24.png" style="border-radius: 50%;background-color: rgb(191, 230, 231);" />
 							<img class="fav" src="imagem/medal52.png" style="border-radius: 50%;background-color: rgb(193, 74, 74);" 
 								onclick="window.location = 'ranking.jsp';"/>
 						</div>
