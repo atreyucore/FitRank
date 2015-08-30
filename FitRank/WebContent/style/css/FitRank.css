@@ -63,9 +63,14 @@ html, body {
 	color: rgb(255, 251, 255);
 }
 
+.capsula {
+	font-family: Capsuula;
+}
+
 .circles {
 	display: inline-flex;
 	width: 100%;
+	margin-bottom: 40px;
 }
 
 .circleWrapper {
@@ -76,6 +81,10 @@ html, body {
 
 .circleWrapper.one {
 	width: 100%;
+}
+
+.circleWrapper.rankChoose {
+	width: auto;
 }
 
 .circle {
@@ -98,40 +107,72 @@ html, body {
 	background-color: rgb(157, 234, 200);
 }
 
+
+.union {
+	background-color: rgb(191, 230, 231);
+	height: 64px;
+	width: 64px;
+}
+
+.favorite {
+	background-color: rgb(241,239,169);
+	height: 64px;
+	width: 64px;
+}
+
 .circle.velocimeter {
 	background-color: rgb(157, 234, 200);
 	height: 128px;
-	width: 128px;	
+	width: 128px;
 }
 
 .circle.races {
 	background-color: rgb(157, 234, 200);
 	height: 128px;
-	width: 128px;	
+	width: 128px;
 }
 
 .circle.sun {
 	background-color: rgb(196, 231, 191);
 	height: 64px;
 	width: 64px;
+	position: relative;
+	/* 	top: 25px; */
 }
 
 .circle.moon {
 	background-color: rgb(196, 231, 191);
 	height: 64px;
 	width: 64px;
+	position: relative;
+	top: 25px;
 }
 
 .circle.calendario {
 	background-color: rgb(195, 239, 180);
 	height: 64px;
 	width: 64px;
+	position: relative;
+	/* 	top: 25px;	 */
+	position: relative;
+	/*     top: 130px; */
 }
 
 .circle.bestRank {
 	background-color: rgb(187, 173, 28);
 	height: 128px;
-	width: 128px;	
+	width: 128px;
+	position: relative;
+	top: 200px;
+}
+
+/* .circle */
+.global {
+/* 	background-color: rgb(196, 231, 191); */
+	width: 64px;
+	height: 64px;
+/* 	display: inline-block; */
+	margin: 20px;
 }
 
 div.circle:hover {
@@ -140,4 +181,50 @@ div.circle:hover {
 
 div.fav {
 	display: inline;
+}
+
+
+img.fav:hover {
+	cursor: pointer;
+}
+
+.circle.ranking {
+	margin: 10px;
+}
+
+.circle.ranking.smallTile {
+	top: 25px;
+}
+
+.ranks {
+	background-color: rgb(194, 240, 178);
+}
+
+.tableRank {
+	margin: 0 auto;
+	font-family: Capsuula;
+	font-size: 60px;
+	border-spacing: 20px;
+}
+
+th {
+	margin: 0 20px;
+}
+
+td.measure {
+	text-align: center;
+}
+
+span.profileName {
+	margin-left: 30px;
+}
+
+.chosenPeriod {
+	font-size: 23px;
+	color: white;
+	font-weight: bold;
+}
+
+.rankingLine {
+	line-height: 200px;
 }

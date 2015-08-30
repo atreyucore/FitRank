@@ -46,7 +46,19 @@
 						</div>
 						<!-- 				<div class="circleWrapper star"><img src="imagem/star212.png" onClick=""></div> -->
 					</div>
-
+					<div class="circles">
+						<div class="circleWrapper">
+							<div class="circle union" >
+								<img src="imagem/interface52.png">
+							</div>
+						</div>
+						<div class="circleWrapper">
+							<div class="circle favorite" >
+								<img src="imagem/favourites7.png">
+							</div>
+						</div>
+						<!-- 				<div class="circleWrapper star"><img src="imagem/star212.png" onClick=""></div> -->
+					</div>
 				</div>
 			</div>
 		</div>
