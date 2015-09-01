@@ -25,15 +25,16 @@ public class PessoaDAO {
 		PreparedStatement preparedStatement = null;
 
 		String insertTableSQL = "INSERT INTO pessoa"
-				+ "(id_usuario, nome) VALUES"
-				+ "(?,?)";
+				+ "(id_usuario, data_cadastro, nome) VALUES"
+				+ "(?,?,?)";
 
 		try {
 			dbConnection = conexao;
 			preparedStatement = dbConnection.prepareStatement(insertTableSQL);
 
-			preparedStatement.setString(1, pessoa.getIdUsuario());
-			preparedStatement.setString(2, pessoa.getNome());
+			preparedStatement.setString(1, pessoa.getId_usuario());
+			preparedStatement.setString(2, pessoa.getData_cadastro());
+			preparedStatement.setString(3, pessoa.getNome());
 
 			// execute insert SQL stetement
 			preparedStatement.executeUpdate();
@@ -66,7 +67,7 @@ public class PessoaDAO {
 		try {
 			dbConnection = conexao;
 			preparedStatement = dbConnection.prepareStatement(deleteSQL);
-			preparedStatement.setString(1, pessoa.getIdUsuario());
+			preparedStatement.setString(1, pessoa.getId_usuario());
  
 			// execute delete SQL stetement
 			preparedStatement.executeUpdate();
@@ -102,10 +103,13 @@ public class PessoaDAO {
 			
 			ResultSet rs = statement.executeQuery(selectTableSQL);
 			
-			rs.next();
-			
-			pessoa.setIdUsuario(rs.getString("id_usuario"));
-			pessoa.setNome(rs.getString("nome"));
+			if ( rs.next() == true ) {
+				pessoa.setId_usuario(rs.getString("id_usuario"));
+				pessoa.setNome(rs.getString("nome"));
+			} else {
+				pessoa = null;
+			}
+				
 			
 		} catch (SQLException e) {
 			 
@@ -139,7 +143,7 @@ public class PessoaDAO {
 			preparedStatement = dbConnection.prepareStatement(updateTableSQL);
 
 			preparedStatement.setString(1, pessoa.getNome());
-			preparedStatement.setString(2, pessoa.getIdUsuario());
+			preparedStatement.setString(2, pessoa.getId_usuario());
 			
 
 			// execute insert SQL stetement

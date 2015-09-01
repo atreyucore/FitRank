@@ -1,6 +1,8 @@
 package br.com.fitrank.service;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import br.com.fitrank.modelo.Pessoa;
 import br.com.fitrank.persistencia.PessoaDAO;
@@ -18,11 +20,15 @@ public class PessoaServico {
 		this.pessoaDAO = new PessoaDAO();
 		
 		if(usuarioFacebook.getId()!=null && !usuarioFacebook.getId().equals(""))
-			pessoa.setIdUsuario(usuarioFacebook.getId());
+			pessoa.setId_usuario(usuarioFacebook.getId());
 		
 		if(usuarioFacebook.getFirstName()!=null)
 			pessoa.setNome(usuarioFacebook.getName());
+			
 		
+		SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyyy");
+		String formattedDate = formatter.format(new Date());
+		pessoa.setData_cadastro(formattedDate);
 		
 	    try {
 			return pessoaDAO.adicionaPessoa(pessoa);
@@ -40,7 +46,7 @@ public class PessoaServico {
 		this.pessoaDAO = new PessoaDAO();
 		
 		if(usuarioFacebook.getId()!=null && !usuarioFacebook.getId().equals(""))
-			pessoa.setIdUsuario(usuarioFacebook.getId());
+			pessoa.setId_usuario(usuarioFacebook.getId());
 		
 		if(usuarioFacebook.getFirstName()!=null)
 			pessoa.setNome(usuarioFacebook.getName());
@@ -62,7 +68,7 @@ public class PessoaServico {
 		this.pessoaDAO = new PessoaDAO();
 		
 		if(usuarioFacebook.getId()!=null && !usuarioFacebook.getId().equals(""))
-			pessoa.setIdUsuario(usuarioFacebook.getId());
+			pessoa.setId_usuario(usuarioFacebook.getId());
 		
 	    try {
 			return pessoaDAO.lePessoa(pessoa);
@@ -79,7 +85,7 @@ public class PessoaServico {
 		this.pessoaDAO = new PessoaDAO();
 		
 		if(usuarioFacebook.getId()!=null && !usuarioFacebook.getId().equals(""))
-			pessoa.setIdUsuario(usuarioFacebook.getId());
+			pessoa.setId_usuario(usuarioFacebook.getId());
 		
 	    try {
 			return pessoaDAO.removePessoaFromId(pessoa);

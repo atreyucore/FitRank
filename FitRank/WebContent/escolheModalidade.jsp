@@ -44,7 +44,6 @@
 								<img src="imagem/bike11.png">
 							</div>
 						</div>
-						<!-- 				<div class="circleWrapper star"><img src="imagem/star212.png" onClick=""></div> -->
 					</div>
 					<div class="circles">
 						<div class="circleWrapper">
@@ -57,7 +56,6 @@
 								<img src="imagem/favourites7.png">
 							</div>
 						</div>
-						<!-- 				<div class="circleWrapper star"><img src="imagem/star212.png" onClick=""></div> -->
 					</div>
 				</div>
 			</div>

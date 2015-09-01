@@ -32,8 +32,13 @@ public class InitUser extends HttpServlet {
 	   FacebookClient facebookClient = new DefaultFacebookClient(request.getParameter("token"));
 	   User facebookUser = facebookClient.fetchObject("me", User.class);
 
+	   Pessoa pessoa = new Pessoa();
+	   PessoaServico pessoaServico = new PessoaServico();
+	   if (pessoaServico.lePessoaServico(facebookUser) == null ) {
+		   pessoa = pessoaServico.adicionaPessoaServico(facebookUser);
+	   }
 	   
-//TODO	   Recuperar configurção de favorito aqui!
+//TODO	   Recuperar configuração de favorito aqui!
 	   request.setAttribute("token", request.getParameter("token"));
 	   
 //	   request.setAttribute("ids", ids);

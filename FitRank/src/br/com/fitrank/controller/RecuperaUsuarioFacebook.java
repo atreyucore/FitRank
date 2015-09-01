@@ -51,7 +51,7 @@ public class RecuperaUsuarioFacebook extends HttpServlet {
 	   pessoa = pessoaServico.adicionaPessoaServico(facebookUser);
        
 	   //teste crud pessoa
-//	   Pessoa pessoaSelecionada =  new Pessoa();
+	   Pessoa pessoaSelecionada =  new Pessoa();
 	   
 //	   pessoaSelecionada = pessoaServico.lePessoaServico(facebookUser);
 //	   pessoaSelecionada = pessoaServico.atualizaPessoaServico(facebookUser);
