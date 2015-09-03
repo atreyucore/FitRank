@@ -83,7 +83,7 @@ public class RecuperaFitness extends HttpServlet {
 	}
 
 	private void setRunAttributesJsoup(FacebookClient facebookClient, HttpServletRequest request) {
-		// TODO Auto-generated method stub
+		
     	PostFitnessFB run = facebookClient.fetchObject(request.getParameter("id"), PostFitnessFB.class);
 //    	PostFitness run = runsConnection.getData().get(0);
     	
@@ -156,7 +156,6 @@ public class RecuperaFitness extends HttpServlet {
 				
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     	

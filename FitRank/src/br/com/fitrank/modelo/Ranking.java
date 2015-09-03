@@ -34,11 +34,11 @@ public class Ranking {
 		this.id_configuracao = id_configuracao;
 	}
 
-	public String getData() {
+	public String getData_ranking() {
 		return data_ranking;
 	}
 
-	public void setData(String data) {
+	public void setData_ranking(String data) {
 		this.data_ranking = data;
 	}
 	

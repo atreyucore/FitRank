@@ -22,16 +22,15 @@ public class AmizadeDAO {
 		Connection dbConnection = null;
 		PreparedStatement preparedStatement = null;
 
-		String insertTableSQL = "INSERT INTO amizade"
-				+ "(id_pessoa, id_amigo) VALUES"
-				+ "(?,?)";
+		String insertTableSQL = "INSERT INTO amizade (id_pessoa, id_amigo, data_amizade) VALUES (?, ?, ?)";
 
 		try {
 			dbConnection = conexao;
 			preparedStatement = dbConnection.prepareStatement(insertTableSQL);
 
-			preparedStatement.setString(1, amizade.getIdPessoa());
-			preparedStatement.setString(2, amizade.getIdAmigo());
+			preparedStatement.setString(1, amizade.getId_pessoa());
+			preparedStatement.setString(2, amizade.getId_amigo());
+			preparedStatement.setString(2, amizade.getData_amizade());
 
 			// execute insert SQL stetement
 			preparedStatement.executeUpdate();
@@ -53,78 +52,78 @@ public class AmizadeDAO {
 		}
 		return amizade;
 	}
-	
-	public boolean removeAmizadeFromId(Amizade amizade) throws SQLException {
-
-		Connection dbConnection = null;
-		PreparedStatement preparedStatement = null;
- 
-		String deleteSQL = "DELETE from amizade WHERE id_pessoa = ? and id_amigo = ?";
- 
-		try {
-			dbConnection = conexao;
-			preparedStatement = dbConnection.prepareStatement(deleteSQL);
-			
-			preparedStatement.setString(1, amizade.getIdPessoa());
-			preparedStatement.setString(2, amizade.getIdAmigo());
- 
-			// execute delete SQL stetement
-			preparedStatement.executeUpdate();
-			return true;
-		} catch (SQLException e) {
- 
-			System.out.println(e.getMessage());
-			return false;
-		} finally {
- 
-			if (preparedStatement != null) {
-				preparedStatement.close();
-			}
- 
-			if (dbConnection != null) {
-				dbConnection.close();
-			}
- 
-		}
-	}
-
-	public Amizade leAmizade(Amizade amizade) throws SQLException {
-		
-		Connection dbConnection = null;
-		Statement statement = null;
-
-		String selectTableSQL = "SELECT id_pessoa, id_amigo from amizade limit 1";
-		
-		try {
-			
-			dbConnection = conexao;
-			statement = dbConnection.createStatement();
-			
-			ResultSet rs = statement.executeQuery(selectTableSQL);
-			
-			rs.next();
-			
-			amizade.setIdPessoa(rs.getString("id_pessoa"));
-			amizade.setIdAmigo(rs.getString("id_amigo"));
-			
-		} catch (SQLException e) {
-			 
-			System.out.println(e.getMessage());
- 
-		} finally {
- 
-			if (statement != null) {
-				statement.close();
-			}
- 
-			if (dbConnection != null) {
-				dbConnection.close();
-			}
-			
-		}
-		
-		return amizade;
-	}
+//	
+//	public boolean removeAmizadeFromId(Amizade amizade) throws SQLException {
+//
+//		Connection dbConnection = null;
+//		PreparedStatement preparedStatement = null;
+// 
+//		String deleteSQL = "DELETE from amizade WHERE id_pessoa = ? and id_amigo = ?";
+// 
+//		try {
+//			dbConnection = conexao;
+//			preparedStatement = dbConnection.prepareStatement(deleteSQL);
+//			
+//			preparedStatement.setString(1, amizade.getIdPessoa());
+//			preparedStatement.setString(2, amizade.getIdAmigo());
+// 
+//			// execute delete SQL stetement
+//			preparedStatement.executeUpdate();
+//			return true;
+//		} catch (SQLException e) {
+// 
+//			System.out.println(e.getMessage());
+//			return false;
+//		} finally {
+// 
+//			if (preparedStatement != null) {
+//				preparedStatement.close();
+//			}
+// 
+//			if (dbConnection != null) {
+//				dbConnection.close();
+//			}
+// 
+//		}
+//	}
+//
+//	public Amizade leAmizade(Amizade amizade) throws SQLException {
+//		
+//		Connection dbConnection = null;
+//		Statement statement = null;
+//
+//		String selectTableSQL = "SELECT id_pessoa, id_amigo from amizade limit 1";
+//		
+//		try {
+//			
+//			dbConnection = conexao;
+//			statement = dbConnection.createStatement();
+//			
+//			ResultSet rs = statement.executeQuery(selectTableSQL);
+//			
+//			rs.next();
+//			
+//			amizade.setIdPessoa(rs.getString("id_pessoa"));
+//			amizade.setIdAmigo(rs.getString("id_amigo"));
+//			
+//		} catch (SQLException e) {
+//			 
+//			System.out.println(e.getMessage());
+// 
+//		} finally {
+// 
+//			if (statement != null) {
+//				statement.close();
+//			}
+// 
+//			if (dbConnection != null) {
+//				dbConnection.close();
+//			}
+//			
+//		}
+//		
+//		return amizade;
+//	}
 	
 	
 //	TODO Adaptar para algum caso em específico

@@ -21,7 +21,7 @@ public class AplicativoServico {
 //	    try {
 //			return pessoaDAO.adicionaPessoa(pessoa);
 //		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
+//			
 //			e.printStackTrace();
 //			return null;
 //		}
@@ -43,7 +43,7 @@ public class AplicativoServico {
 //	    try {
 //			return pessoaDAO.atualizaPessoa(pessoa);
 //		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
+//			
 //			e.printStackTrace();
 //			return null;
 //		}
@@ -61,7 +61,7 @@ public class AplicativoServico {
 //	    try {
 //			return pessoaDAO.lePessoa(pessoa);
 //		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
+//			
 //			e.printStackTrace();
 //			return null;
 //		}
@@ -78,7 +78,7 @@ public class AplicativoServico {
 //	    try {
 //			return pessoaDAO.removePessoaFromId(pessoa);
 //		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
+//			
 //			e.printStackTrace();
 //			return false;
 //		}

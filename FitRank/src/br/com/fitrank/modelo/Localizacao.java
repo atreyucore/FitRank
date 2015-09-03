@@ -1,12 +1,12 @@
 package br.com.fitrank.modelo;
-
+//TODO Verificar classe no banco, classe de modelo e UML
 public class Localizacao {
 
 	private int 	id_localizacao;
-	private String  id_course;
 	private double  latitude;
 	private double 	longitude;
 	private double  altitude;
+	private String  id_course;
 	
 	public int getId_localizacao() {
 		return id_localizacao;

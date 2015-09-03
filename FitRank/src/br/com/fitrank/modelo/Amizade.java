@@ -5,21 +5,29 @@ package br.com.fitrank.modelo;
  */
 public class Amizade {
 //	Column(name="id_pessoa", FK="FK_ID_PESSOA_AMIZADE")
-	private String idPessoa;
+	private String id_pessoa;
 //	Column(name="id_amigo", FK="FK_ID_AMIGO_AMIZADE)
-	private String idAmigo;
+	private String id_amigo;
+//	Column(name="data_amizade")
+	private String data_amizade;
 	
-	public String getIdPessoa() {
-		return idPessoa;
+	public String getId_pessoa() {
+		return id_pessoa;
 	}
-	public void setIdPessoa(String idPessoa) {
-		this.idPessoa = idPessoa;
+	public void setId_pessoa(String id_pessoa) {
+		this.id_pessoa = id_pessoa;
 	}
-	public String getIdAmigo() {
-		return idAmigo;
+	public String getId_amigo() {
+		return id_amigo;
 	}
-	public void setIdAmigo(String idAmigo) {
-		this.idAmigo = idAmigo;
+	public void setId_amigo(String id_amigo) {
+		this.id_amigo = id_amigo;
+	}
+	public String getData_amizade() {
+		return data_amizade;
+	}
+	public void setData_amizade(String data_amizade) {
+		this.data_amizade = data_amizade;
 	}
 
 }

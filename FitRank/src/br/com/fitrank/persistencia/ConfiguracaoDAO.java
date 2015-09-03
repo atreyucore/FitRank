@@ -23,9 +23,9 @@ public class ConfiguracaoDAO {
 		Connection dbConnection = null;
 		PreparedStatement preparedStatement = null;
 
-		String insertTableSQL = "INSERT INTO configuracao"
-				+ "(id_configuracao, modalidade, dia_noite, intervalo_data, favorito, padrao_modalidade, id_configuracao) VALUES"
-				+ "(?,?,?,?,?,?,?)";
+		String insertTableSQL = "INSERT INTO configuracao (id_configuracao, modalidade,"
+				+ " dia_noite, intervalo_data, favorito, padrao_modalidade, id_pessoa) "
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
 		try {
 			dbConnection = conexao;

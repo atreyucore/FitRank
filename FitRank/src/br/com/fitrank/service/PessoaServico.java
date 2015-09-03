@@ -33,7 +33,7 @@ public class PessoaServico {
 	    try {
 			return pessoaDAO.adicionaPessoa(pessoa);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 			return null;
 		}
@@ -55,7 +55,6 @@ public class PessoaServico {
 	    try {
 			return pessoaDAO.atualizaPessoa(pessoa);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
@@ -73,7 +72,6 @@ public class PessoaServico {
 	    try {
 			return pessoaDAO.lePessoa(pessoa);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
@@ -90,7 +88,6 @@ public class PessoaServico {
 	    try {
 			return pessoaDAO.removePessoaFromId(pessoa);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}

@@ -5,15 +5,15 @@ package br.com.fitrank.modelo;
  */
 public class Aplicativo {
 //	Column(name="id_aplicativo", Primary Key)
-	private int idAplicativo;
+	private int id_aplicativo;
 //	Column(name="nome")
 	private String nome;
 	
 	public Integer getIdAplicativo() {
-		return idAplicativo;
+		return id_aplicativo;
 	}
-	public void setIdAplicativo(Integer idAplicativo) {
-		this.idAplicativo = idAplicativo;
+	public void setIdAplicativo(Integer id_aplicativo) {
+		this.id_aplicativo = id_aplicativo;
 	}
 	public String getNome() {
 		return nome;
