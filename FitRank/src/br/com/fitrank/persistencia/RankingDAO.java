@@ -16,23 +16,23 @@ public class RankingDAO {
 		this.conexao = new JDBCFactory().getConnection();
 	}
 	
-	public Ranking adicionaConfiguracao(Ranking ranking) throws SQLException {
+	public Ranking adicionaRanking(Ranking ranking) throws SQLException {
 
 		Connection dbConnection = null;
 		PreparedStatement preparedStatement = null;
 
-		String insertTableSQL = "INSERT INTO ranking (id_ranking, titulo, "
+		String insertTableSQL = "INSERT INTO ranking (titulo, "
 				+ "id_configuracao, data_ranking) "
-				+ "VALUES (?, ?, ?, ?)";
+				+ "VALUES (?, ?, ?)";
 				
 		try {
 			dbConnection = conexao;
 			preparedStatement = dbConnection.prepareStatement(insertTableSQL);
 
-			preparedStatement.setInt(1, ranking.getId_ranking());
-			preparedStatement.setString(2, ranking.getTitulo());
-			preparedStatement.setInt(3, ranking.getId_configuracao());
-			preparedStatement.setString(4, ranking.getData_ranking()); 
+			
+			preparedStatement.setString(1, ranking.getTitulo());
+			preparedStatement.setInt(2, ranking.getId_configuracao());
+			preparedStatement.setString(3, ranking.getData_ranking()); 
 			
 
 			// execute insert SQL stetement

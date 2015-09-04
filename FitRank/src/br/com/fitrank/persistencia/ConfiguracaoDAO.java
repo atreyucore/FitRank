@@ -23,21 +23,21 @@ public class ConfiguracaoDAO {
 		Connection dbConnection = null;
 		PreparedStatement preparedStatement = null;
 
-		String insertTableSQL = "INSERT INTO configuracao (id_configuracao, modalidade,"
+		String insertTableSQL = "INSERT INTO configuracao (modalidade,"
 				+ " dia_noite, intervalo_data, favorito, padrao_modalidade, id_pessoa) "
-				+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
+				+ "VALUES (?, ?, ?, ?, ?, ?)";
 
 		try {
 			dbConnection = conexao;
 			preparedStatement = dbConnection.prepareStatement(insertTableSQL);
 
-			preparedStatement.setInt(1, configuracao.getIdConfiguracao());
-			preparedStatement.setString(2, configuracao.getModalidade());
-			preparedStatement.setString(3, configuracao.getDiaNoite());
-			preparedStatement.setString(4, configuracao.getIntervaloData());
-			preparedStatement.setInt(5, configuracao.getFavorito());
-			preparedStatement.setInt(6, configuracao.getPadraoModalidade());
-			preparedStatement.setString(7, configuracao.getIdPessoa());
+		
+			preparedStatement.setString(1, configuracao.getModalidade());
+			preparedStatement.setString(2, configuracao.getDiaNoite());
+			preparedStatement.setString(3, configuracao.getIntervaloData());
+			preparedStatement.setInt(4, configuracao.getFavorito());
+			preparedStatement.setInt(5, configuracao.getPadraoModalidade());
+			preparedStatement.setString(6, configuracao.getIdPessoa());
 
 			// execute insert SQL stetement
 			preparedStatement.executeUpdate();
@@ -57,6 +57,55 @@ public class ConfiguracaoDAO {
 			}
 
 		}
+		return configuracao;
+	}
+	
+public Configuracao atualizaConfiguracao(Configuracao configuracao) throws SQLException {
+
+		
+		Connection dbConnection = null;
+		PreparedStatement preparedStatement = null;
+
+		String updateTableSQL  = "update configuracao set "
+				+ "modalidade = ?, "
+				+ "dia_noite = ?, "
+				+ "intervalo_data = ?, "
+				+ "favorito = ?, "
+				+ "padrao_modalidade = ?, "
+				+ "id_pessoa = ? where id_configuracao = ?";
+
+		try {
+			dbConnection = conexao;
+			preparedStatement = dbConnection.prepareStatement(updateTableSQL);
+
+			
+			preparedStatement.setString(1, configuracao.getModalidade());
+			preparedStatement.setString(2, configuracao.getDiaNoite());
+			preparedStatement.setString(3, configuracao.getIntervaloData());
+			preparedStatement.setInt(4, configuracao.getFavorito());
+			preparedStatement.setInt(5, configuracao.getPadraoModalidade());
+			preparedStatement.setString(6, configuracao.getIdPessoa());
+			preparedStatement.setInt(7, configuracao.getIdConfiguracao());
+			
+			// execute insert SQL stetement
+			preparedStatement.executeUpdate();
+
+		} catch (SQLException e) {
+
+			System.out.println(e.getMessage());
+
+		} finally {
+
+			if (preparedStatement != null) {
+				preparedStatement.close();
+			}
+
+			if (dbConnection != null) {
+				dbConnection.close();
+			}
+
+		}
+		
 		return configuracao;
 	}
 	
@@ -139,52 +188,5 @@ public class ConfiguracaoDAO {
 		return configuracao;
 	}
 	
-	public Configuracao atualizaConfiguracao(Configuracao configuracao) throws SQLException {
-
-		
-		Connection dbConnection = null;
-		PreparedStatement preparedStatement = null;
-
-		String updateTableSQL  = "update configuracao set "
-				+ "modalidade = ?, "
-				+ "dia_noite = ?, "
-				+ "intervalo_data = ?, "
-				+ "favorito = ?, "
-				+ "padrao_modalidade = ?, "
-				+ "id_pessoa = ? where id_configuracao = ?";
-
-		try {
-			dbConnection = conexao;
-			preparedStatement = dbConnection.prepareStatement(updateTableSQL);
-
-			
-			preparedStatement.setString(1, configuracao.getModalidade());
-			preparedStatement.setString(2, configuracao.getDiaNoite());
-			preparedStatement.setString(3, configuracao.getIntervaloData());
-			preparedStatement.setInt(4, configuracao.getFavorito());
-			preparedStatement.setInt(5, configuracao.getPadraoModalidade());
-			preparedStatement.setString(6, configuracao.getIdPessoa());
-			preparedStatement.setInt(7, configuracao.getIdConfiguracao());
-			
-			// execute insert SQL stetement
-			preparedStatement.executeUpdate();
-
-		} catch (SQLException e) {
-
-			System.out.println(e.getMessage());
-
-		} finally {
-
-			if (preparedStatement != null) {
-				preparedStatement.close();
-			}
-
-			if (dbConnection != null) {
-				dbConnection.close();
-			}
-
-		}
-		
-		return configuracao;
-	}
+	
 }

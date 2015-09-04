@@ -16,7 +16,7 @@ public class PostFitnessDAO {
 		this.conexao = new JDBCFactory().getConnection();
 	}
 	
-	public PostFitness adicionaConfiguracao(PostFitness postFitness) throws SQLException {
+	public PostFitness adicionaPostFitness(PostFitness postFitness) throws SQLException {
 
 		Connection dbConnection = null;
 		PreparedStatement preparedStatement = null;

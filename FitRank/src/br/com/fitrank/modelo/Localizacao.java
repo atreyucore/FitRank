@@ -2,18 +2,14 @@ package br.com.fitrank.modelo;
 //TODO Verificar classe no banco, classe de modelo e UML
 public class Localizacao {
 
-	private int 	id_localizacao;
+	
 	private double  latitude;
 	private double 	longitude;
 	private double  altitude;
 	private String  id_course;
+	private int 	id_localizacao;
 	
-	public int getId_localizacao() {
-		return id_localizacao;
-	}
-	public void setId_localizacao(int id_localizacao) {
-		this.id_localizacao = id_localizacao;
-	}
+
 	public String getId_course() {
 		return id_course;
 	}
@@ -38,6 +34,11 @@ public class Localizacao {
 	public void setAltitude(double altitude) {
 		this.altitude = altitude;
 	}
-	
+	public int getId_localizacao() {
+		return id_localizacao;
+	}
+	public void setId_localizacao(int id_localizacao) {
+		this.id_localizacao = id_localizacao;
+	}	
 	
 }

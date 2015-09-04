@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import br.com.fitrank.modelo.Localizacao;
 import br.com.fitrank.util.JDBCFactory;
 
-//TODO Verificar classe no banco, classe de modelo e UML
 public class LocalizacaoDAO {
 
 	private Connection conexao;
@@ -16,23 +15,22 @@ public class LocalizacaoDAO {
 		this.conexao = new JDBCFactory().getConnection();
 	}
 	
-	public Localizacao adicionaConfiguracao(Localizacao localizacao) throws SQLException {
+	public Localizacao adicionaLocalizacao(Localizacao localizacao) throws SQLException {
 
 		Connection dbConnection = null;
 		PreparedStatement preparedStatement = null;
 
-		String insertTableSQL = "";//"INSERT INTO localizacao (latitude, longitude, "
-//				+ "altitude, fk_course) "
-//				+ "VALUES (?, ?, ?, ?)";
+		String insertTableSQL = "INSERT INTO localizacao (latitude, longitude, altitude, id_course) "
+				+ "VALUES (?, ?, ?, ?)";
 				
 		try {
 			dbConnection = conexao;
 			preparedStatement = dbConnection.prepareStatement(insertTableSQL);
 
-//			preparedStatement.setString(1, localizacao.getLatitude());
-//			preparedStatement.setFloat(2, localizacao.getLongitude());
-//			preparedStatement.setFloat(3, localizacao.getAltitude());
-//			preparedStatement.setFloat(4, localizacao.getFk_course()); 
+			preparedStatement.setDouble(1, localizacao.getLatitude());
+			preparedStatement.setDouble(2, localizacao.getLongitude());
+			preparedStatement.setDouble(3, localizacao.getAltitude());
+			preparedStatement.setString(4, localizacao.getId_course()); 
 
 			// execute insert SQL stetement
 			preparedStatement.executeUpdate();

@@ -52,6 +52,44 @@ public class AmizadeDAO {
 		}
 		return amizade;
 	}
+	
+	public Amizade atualizaAmizade(Amizade amizade) throws SQLException {
+
+		
+		Connection dbConnection = null;
+		PreparedStatement preparedStatement = null;
+
+		String updateTableSQL  = "update amizade set id_amigo = ?, data_amizade = ? where id_pessoa = ?";
+
+		try {
+			dbConnection = conexao;
+			preparedStatement = dbConnection.prepareStatement(updateTableSQL);
+
+			preparedStatement.setString(1, amizade.getId_amigo());
+			preparedStatement.setString(2, amizade.getData_amizade());
+			preparedStatement.setString(3, amizade.getId_pessoa());
+
+			// execute insert SQL stetement
+			preparedStatement.executeUpdate();
+
+		} catch (SQLException e) {
+
+			System.out.println(e.getMessage());
+
+		} finally {
+
+			if (preparedStatement != null) {
+				preparedStatement.close();
+			}
+
+			if (dbConnection != null) {
+				dbConnection.close();
+			}
+
+		}
+		
+		return amizade;
+	}
 //	
 //	public boolean removeAmizadeFromId(Amizade amizade) throws SQLException {
 //
@@ -124,44 +162,5 @@ public class AmizadeDAO {
 //		
 //		return amizade;
 //	}
-	
-	
-//	TODO Adaptar para algum caso em específico
-//	public Amizade atualizaAmizade(Amizade amizade) throws SQLException {
-//
-//		
-//		Connection dbConnection = null;
-//		PreparedStatement preparedStatement = null;
-//
-//		String updateTableSQL  = "update amizade set nome = ? where id_usuario = ?";
-//
-//		try {
-//			dbConnection = conexao;
-//			preparedStatement = dbConnection.prepareStatement(updateTableSQL);
-//
-//			preparedStatement.setString(1, amizade.getNome());
-//			preparedStatement.setString(2, amizade.getIdUsuario());
-//			
-//
-//			// execute insert SQL stetement
-//			preparedStatement.executeUpdate();
-//
-//		} catch (SQLException e) {
-//
-//			System.out.println(e.getMessage());
-//
-//		} finally {
-//
-//			if (preparedStatement != null) {
-//				preparedStatement.close();
-//			}
-//
-//			if (dbConnection != null) {
-//				dbConnection.close();
-//			}
-//
-//		}
-//		
-//		return amizade;
-//	}
 }
+

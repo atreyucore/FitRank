@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import br.com.fitrank.modelo.Aplicativo;
 import br.com.fitrank.modelo.Course;
 import br.com.fitrank.util.JDBCFactory;
 
@@ -16,7 +17,7 @@ public class CourseDAO {
 		this.conexao = new JDBCFactory().getConnection();
 	}
 	
-	public Course adicionaConfiguracao(Course course) throws SQLException {
+	public Course adicionaCourse(Course course) throws SQLException {
 
 		Connection dbConnection = null;
 		PreparedStatement preparedStatement = null;
@@ -53,6 +54,47 @@ public class CourseDAO {
 			}
 
 		}
+		return course;
+	}
+	
+	public Course atualizaCourse(Course course)
+			throws SQLException {
+
+		Connection dbConnection = null;
+		PreparedStatement preparedStatement = null;
+
+		String updateTableSQL = "update aplicativo set distancia = ? "
+				+ "calorias = ?, ritmo = ?, id_post = ? where id_aplicativo = ?";
+
+		try {
+			dbConnection = conexao;
+			preparedStatement = dbConnection.prepareStatement(updateTableSQL);
+			
+			preparedStatement.setFloat(1, course.getDistancia());
+			preparedStatement.setFloat(2, course.getCalorias());
+			preparedStatement.setFloat(3, course.getRitmo()); 
+			preparedStatement.setString(4, course.getId_post());
+			preparedStatement.setString(5, course.getId_course());
+
+			// execute insert SQL stetement
+			preparedStatement.executeUpdate();
+
+		} catch (SQLException e) {
+
+			System.out.println(e.getMessage());
+
+		} finally {
+
+			if (preparedStatement != null) {
+				preparedStatement.close();
+			}
+
+			if (dbConnection != null) {
+				dbConnection.close();
+			}
+
+		}
+
 		return course;
 	}
 }

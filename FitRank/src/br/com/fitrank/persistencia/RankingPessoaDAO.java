@@ -14,7 +14,7 @@ public class RankingPessoaDAO {
 		this.conexao = new JDBCFactory().getConnection();
 	}
 
-	public RankingPessoa adicionaConfiguracao(RankingPessoa rankingPessoa)
+	public RankingPessoa adicionaRankingPessoa(RankingPessoa rankingPessoa)
 			throws SQLException {
 
 		Connection dbConnection = null;
