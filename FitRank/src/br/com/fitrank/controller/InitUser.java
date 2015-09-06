@@ -11,10 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import br.com.fitrank.modelo.Pessoa;
 import br.com.fitrank.service.PessoaServico;
 
-import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
-import com.restfb.Parameter;
 import com.restfb.types.User;
 
 public class InitUser extends HttpServlet {

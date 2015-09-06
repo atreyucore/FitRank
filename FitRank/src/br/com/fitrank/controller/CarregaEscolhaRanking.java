@@ -16,7 +16,6 @@ import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
 import com.restfb.Parameter;
-import com.restfb.types.User;
 
 public class CarregaEscolhaRanking extends HttpServlet {
 	private static final long serialVersionUID = 1L;

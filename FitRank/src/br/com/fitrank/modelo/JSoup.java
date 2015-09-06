@@ -3,6 +3,8 @@ package br.com.fitrank.modelo;
 //Entidade Jsoup do banco 
 public class JSoup {
 
+	private int id_jsoup;
+	
 	private String id_course;
 	
 	private Float distance;
@@ -53,9 +55,17 @@ public class JSoup {
 
 	private Float no_zone_heart_rate_duration;
 	
-	private byte[] json_couse;
+	private byte[] json_course;
 	
 	private String json_url;
+	
+	public int getId_jsoup() {
+		return id_jsoup;
+	}
+
+	public void setId_jsoup(int id_jsoup) {
+		this.id_jsoup = id_jsoup;
+	}
 
 	public String getId_course() {
 		return id_course;
@@ -250,12 +260,12 @@ public class JSoup {
 		this.no_zone_heart_rate_duration = no_zone_heart_rate_duration;
 	}
 
-	public byte[] getJson_couse() {
-		return json_couse;
+	public byte[] getJson_course() {
+		return json_course;
 	}
 
-	public void setJson_couse(byte[] json_couse) {
-		this.json_couse = json_couse;
+	public void setJson_course(byte[] json_course) {
+		this.json_course = json_course;
 	}
 
 	public String getJson_url() {

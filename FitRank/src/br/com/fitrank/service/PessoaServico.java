@@ -76,21 +76,21 @@ public class PessoaServico {
 			return null;
 		}
 	}
-	
-	public boolean removePessoaFromIdServico(User usuarioFacebook){
-		
-		pessoa = new Pessoa();
-		this.pessoaDAO = new PessoaDAO();
-		
-		if(usuarioFacebook.getId()!=null && !usuarioFacebook.getId().equals(""))
-			pessoa.setId_usuario(usuarioFacebook.getId());
-		
-	    try {
-			return pessoaDAO.removePessoaFromId(pessoa);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
+//	
+//	public boolean removePessoaFromIdServico(User usuarioFacebook){
+//		
+//		pessoa = new Pessoa();
+//		this.pessoaDAO = new PessoaDAO();
+//		
+//		if(usuarioFacebook.getId()!=null && !usuarioFacebook.getId().equals(""))
+//			pessoa.setId_usuario(usuarioFacebook.getId());
+//		
+//	    try {
+//			return pessoaDAO.removePessoaFromId(pessoa);
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//			return false;
+//		}
+//	}
 
 }

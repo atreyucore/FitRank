@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import br.com.fitrank.modelo.Configuracao;
 import br.com.fitrank.util.JDBCFactory;
@@ -23,21 +22,27 @@ public class ConfiguracaoDAO {
 		Connection dbConnection = null;
 		PreparedStatement preparedStatement = null;
 
-		String insertTableSQL = "INSERT INTO configuracao (modalidade,"
-				+ " dia_noite, intervalo_data, favorito, padrao_modalidade, id_pessoa) "
-				+ "VALUES (?, ?, ?, ?, ?, ?)";
+		String insertTableSQL = "INSERT INTO configuracao ("
+				+ "modalidade, "
+				+ "dia_noite, "
+				+ "intervalo_data, "
+				+ "favorito, "
+				+ "padrao_modalidade, "
+				+ "id_pessoa"
+				+ ") VALUES (?, ?, ?, ?, ?, ?)";
 
 		try {
 			dbConnection = conexao;
 			preparedStatement = dbConnection.prepareStatement(insertTableSQL);
 
-		
-			preparedStatement.setString(1, configuracao.getModalidade());
-			preparedStatement.setString(2, configuracao.getDiaNoite());
-			preparedStatement.setString(3, configuracao.getIntervaloData());
-			preparedStatement.setInt(4, configuracao.getFavorito());
-			preparedStatement.setInt(5, configuracao.getPadraoModalidade());
-			preparedStatement.setString(6, configuracao.getIdPessoa());
+			int i = 0;
+			
+			preparedStatement.setString(++i, configuracao.getModalidade());
+			preparedStatement.setString(++i, configuracao.getDiaNoite());
+			preparedStatement.setString(++i, configuracao.getIntervaloData());
+			preparedStatement.setInt(++i, configuracao.getFavorito());
+			preparedStatement.setInt(++i, configuracao.getPadraoModalidade());
+			preparedStatement.setString(++i, configuracao.getIdPessoa());
 
 			// execute insert SQL stetement
 			preparedStatement.executeUpdate();
@@ -72,20 +77,22 @@ public Configuracao atualizaConfiguracao(Configuracao configuracao) throws SQLEx
 				+ "intervalo_data = ?, "
 				+ "favorito = ?, "
 				+ "padrao_modalidade = ?, "
-				+ "id_pessoa = ? where id_configuracao = ?";
+				+ "id_pessoa = ? "
+				+ "where id_configuracao = ?";
 
 		try {
 			dbConnection = conexao;
 			preparedStatement = dbConnection.prepareStatement(updateTableSQL);
 
+			int i = 0;
 			
-			preparedStatement.setString(1, configuracao.getModalidade());
-			preparedStatement.setString(2, configuracao.getDiaNoite());
-			preparedStatement.setString(3, configuracao.getIntervaloData());
-			preparedStatement.setInt(4, configuracao.getFavorito());
-			preparedStatement.setInt(5, configuracao.getPadraoModalidade());
-			preparedStatement.setString(6, configuracao.getIdPessoa());
-			preparedStatement.setInt(7, configuracao.getIdConfiguracao());
+			preparedStatement.setString(++i, configuracao.getModalidade());
+			preparedStatement.setString(++i, configuracao.getDiaNoite());
+			preparedStatement.setString(++i, configuracao.getIntervaloData());
+			preparedStatement.setInt(++i, configuracao.getFavorito());
+			preparedStatement.setInt(++i, configuracao.getPadraoModalidade());
+			preparedStatement.setString(++i, configuracao.getIdPessoa());
+			preparedStatement.setInt(++i, configuracao.getIdConfiguracao());
 			
 			// execute insert SQL stetement
 			preparedStatement.executeUpdate();
@@ -109,76 +116,55 @@ public Configuracao atualizaConfiguracao(Configuracao configuracao) throws SQLEx
 		return configuracao;
 	}
 	
-	public boolean removeConfiguracaoFromId(Configuracao configuracao) throws SQLException {
-
-		Connection dbConnection = null;
-		PreparedStatement preparedStatement = null;
- 
-		String deleteSQL = "DELETE from configuracao WHERE id_configuracao = ?";
- 
-		try {
-			dbConnection = conexao;
-			preparedStatement = dbConnection.prepareStatement(deleteSQL);
-			preparedStatement.setInt(1, configuracao.getIdConfiguracao());
- 
-			// execute delete SQL stetement
-			preparedStatement.executeUpdate();
-			return true;
-		} catch (SQLException e) {
- 
-			System.out.println(e.getMessage());
-			return false;
-		} finally {
- 
-			if (preparedStatement != null) {
-				preparedStatement.close();
-			}
- 
-			if (dbConnection != null) {
-				dbConnection.close();
-			}
- 
-		}
-	}
 
 	public Configuracao leConfiguracao(Configuracao configuracao) throws SQLException {
 		
 		Connection dbConnection = null;
-		Statement statement = null;
-
-		String selectTableSQL = "SELECT id_configuracao, modalidade, "
-				+ "dia_noite, intervalo_data, "
-				+ "favorito, padrao_modalidade, "
-				+ "id_pessoa from configuracao limit 1";
+		PreparedStatement preparedStatement = null;
+	
+		String selectTableSQL = "SELECT "
+				+ "id_configuracao, "
+				+ "modalidade, "
+				+ "dia_noite, "
+				+ "intervalo_data, "
+				+ "favorito, "
+				+ "padrao_modalidade, "
+				+ "id_pessoa "
+				+ "FROM configuracao "
+				+ "WHERE id_configuracao = ?";
 		
 		try {
 			
 			dbConnection = conexao;
-			statement = dbConnection.createStatement();
+			preparedStatement = dbConnection.prepareStatement(selectTableSQL);
 			
-			ResultSet rs = statement.executeQuery(selectTableSQL);
-			
-			rs.next();
+			ResultSet rs = preparedStatement.executeQuery(selectTableSQL);
 			
 			
-			configuracao.setIdConfiguracao(rs.getInt("id_configuracao"));
-			configuracao.setModalidade(rs.getString("modalidade"));
-			configuracao.setDiaNoite(rs.getString("dia_noite"));
-			configuracao.setIntervaloData(rs.getString("intervalo_data"));
-			configuracao.setFavorito(rs.getInt("favorito"));
-			configuracao.setPadraoModalidade(rs.getInt("padrao_modalidade"));
-			configuracao.setIdPessoa(rs.getString("id_pessoa"));
+			preparedStatement.setInt(1, configuracao.getIdConfiguracao());
 			
+			
+			while (rs.next()) {
+				
+				configuracao.setIdConfiguracao(rs.getInt("id_configuracao"));
+				configuracao.setModalidade(rs.getString("modalidade"));
+				configuracao.setDiaNoite(rs.getString("dia_noite"));
+				configuracao.setIntervaloData(rs.getString("intervalo_data"));
+				configuracao.setFavorito(rs.getInt("favorito"));
+				configuracao.setPadraoModalidade(rs.getInt("padrao_modalidade"));
+				configuracao.setIdPessoa(rs.getString("id_pessoa"));
+
+			}
 		} catch (SQLException e) {
 			 
 			System.out.println(e.getMessage());
- 
+	
 		} finally {
- 
-			if (statement != null) {
-				statement.close();
+	
+			if (preparedStatement != null) {
+				preparedStatement.close();
 			}
- 
+	
 			if (dbConnection != null) {
 				dbConnection.close();
 			}
@@ -187,6 +173,38 @@ public Configuracao atualizaConfiguracao(Configuracao configuracao) throws SQLEx
 		
 		return configuracao;
 	}
-	
+
+//	public boolean removeConfiguracaoFromId(Configuracao configuracao) throws SQLException {
+//
+//		Connection dbConnection = null;
+//		PreparedStatement preparedStatement = null;
+// 
+//		String deleteSQL = "DELETE from configuracao WHERE id_configuracao = ?";
+// 
+//		try {
+//			dbConnection = conexao;
+//			preparedStatement = dbConnection.prepareStatement(deleteSQL);
+//			preparedStatement.setInt(++i, configuracao.getIdConfiguracao());
+// 
+//			// execute delete SQL stetement
+//			preparedStatement.executeUpdate();
+//			return true;
+//		} catch (SQLException e) {
+// 
+//			System.out.println(e.getMessage());
+//			return false;
+//		} finally {
+// 
+//			if (preparedStatement != null) {
+//				preparedStatement.close();
+//			}
+// 
+//			if (dbConnection != null) {
+//				dbConnection.close();
+//			}
+// 
+//		}
+//	}
+
 	
 }
