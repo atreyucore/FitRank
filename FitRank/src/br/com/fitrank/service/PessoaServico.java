@@ -26,7 +26,7 @@ public class PessoaServico {
 			pessoa.setNome(usuarioFacebook.getName());
 			
 		
-		SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyyy");
+		SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyyy"); //TODO gabriel: formato da data com barras?
 		String formattedDate = formatter.format(new Date());
 		pessoa.setData_cadastro(formattedDate);
 		
