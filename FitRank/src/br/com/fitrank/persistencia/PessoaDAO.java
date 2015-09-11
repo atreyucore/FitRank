@@ -123,8 +123,6 @@ public class PessoaDAO {
 			preparedStatement.setString(1, pessoa.getId_usuario());
 			ResultSet rs = preparedStatement.executeQuery();
 			
-			
-			
 			if ( rs.next() ) {
 				
 				pessoa.setId_usuario(rs.getString("id_usuario"));

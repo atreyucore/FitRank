@@ -11,7 +11,7 @@ import br.com.fitrank.modelo.Amizade;
 import br.com.fitrank.util.JDBCFactory;
 
 public class AmizadeDAO {
-	
+
 	private Connection conexao;
 
 	public AmizadeDAO() {
@@ -23,18 +23,18 @@ public class AmizadeDAO {
 		Connection dbConnection = null;
 		PreparedStatement preparedStatement = null;
 
-		String insertTableSQL = "INSERT INTO amizade ("
+		String insertTableSQL = "INSERT INTO amizade (" 
 				+ "id_pessoa, "
-				+ "id_amigo, "
-				+ "data_amizade"
+				+ "id_amigo, " 
+				+ "data_amizade" 
 				+ ") VALUES (?, ?, ?)";
 
 		try {
 			dbConnection = conexao;
 			preparedStatement = dbConnection.prepareStatement(insertTableSQL);
-			
+
 			int i = 0;
-			
+
 			preparedStatement.setString(++i, amizade.getId_pessoa());
 			preparedStatement.setString(++i, amizade.getId_amigo());
 			preparedStatement.setString(++i, amizade.getData_amizade());
@@ -59,24 +59,23 @@ public class AmizadeDAO {
 		}
 		return amizade;
 	}
-	
+
 	public Amizade atualizaAmizade(Amizade amizade) throws SQLException {
 
-		
 		Connection dbConnection = null;
 		PreparedStatement preparedStatement = null;
 
-		String updateTableSQL  = "update amizade set "
+		String updateTableSQL = "update amizade set " 
 				+ "id_amigo = ?, "
-				+ "data_amizade = ? "
+				+ "data_amizade = ? " 
 				+ "where id_pessoa = ?";
 
 		try {
 			dbConnection = conexao;
 			preparedStatement = dbConnection.prepareStatement(updateTableSQL);
-			
+
 			int i = 0;
-			
+
 			preparedStatement.setString(++i, amizade.getId_amigo());
 			preparedStatement.setString(++i, amizade.getData_amizade());
 			preparedStatement.setString(++i, amizade.getId_pessoa());
@@ -99,29 +98,29 @@ public class AmizadeDAO {
 			}
 
 		}
-		
+
 		return amizade;
 	}
 
 	public List<Amizade> listaAmizades(String idPessoa) throws SQLException {
-		
+
 		Connection dbConnection = null;
 		PreparedStatement preparedStatement = null;
 		Amizade amizade;
 		ArrayList<Amizade> listaAmizades = new ArrayList<Amizade>();
 
-		String selectTableSQL = "SELECT "
-				+ "id_pessoa, "
+		String selectTableSQL = "SELECT " 
+				+ "id_pessoa, " 
 				+ "id_amigo, "
-				+ "data_amizade "
-				+ "from amizade "
+				+ "data_amizade " 
+				+ "from amizade " 
 				+ "where id_pessoa = ?";
-		
+
 		try {
-			
+
 			dbConnection = conexao;
 			preparedStatement = dbConnection.prepareStatement(selectTableSQL);
-			
+
 			preparedStatement.setString(1, idPessoa);
 
 			// execute select SQL statement
@@ -134,13 +133,13 @@ public class AmizadeDAO {
 				amizade.setData_amizade(rs.getString("data_amizade"));
 				listaAmizades.add(amizade);
 			}
-			
+
 		} catch (SQLException e) {
-			 
+
 			System.out.println(e.getMessage());
- 
+
 		} finally {
- 
+
 			if (preparedStatement != null) {
 				preparedStatement.close();
 			}
@@ -148,45 +147,98 @@ public class AmizadeDAO {
 			if (dbConnection != null) {
 				dbConnection.close();
 			}
-			
+
 		}
-		
+
 		return listaAmizades;
 	}
-//	
-//	public boolean removeAmizadeFromId(Amizade amizade) throws SQLException {
-//
-//		Connection dbConnection = null;
-//		PreparedStatement preparedStatement = null;
-// 
-//		String deleteSQL = "DELETE from amizade WHERE id_pessoa = ? and id_amigo = ?";
-// 
-//		try {
-//			dbConnection = conexao;
-//			preparedStatement = dbConnection.prepareStatement(deleteSQL);
-//			
-//			preparedStatement.setString(++i, amizade.getIdPessoa());
-//			preparedStatement.setString(++i, amizade.getIdAmigo());
-// 
-//			// execute delete SQL stetement
-//			preparedStatement.executeUpdate();
-//			return true;
-//		} catch (SQLException e) {
-// 
-//			System.out.println(e.getMessage());
-//			return false;
-//		} finally {
-// 
-//			if (preparedStatement != null) {
-//				preparedStatement.close();
-//			}
-// 
-//			if (dbConnection != null) {
-//				dbConnection.close();
-//			}
-// 
-//		}
-//	}
+
+	public Amizade leAmizade(Amizade amizade)
+			throws SQLException {
+
+		Connection dbConnection = null;
+		PreparedStatement preparedStatement = null;
+		Amizade amizadeResult = null;
+		
+		
+		String selectTableSQL = "SELECT " 
+				+ "id_pessoa, " 
+				+ "id_amigo, "
+				+ "data_amizade " 
+				+ "from amizade "
+				+ "where id_pessoa = ? and id_amizade = ?";
+
+		try {
+
+			dbConnection = conexao;
+			preparedStatement = dbConnection.prepareStatement(selectTableSQL);
+
+			preparedStatement.setString(1, amizade.getId_pessoa());
+			preparedStatement.setString(2, amizade.getId_amigo());
+			
+			
+			// execute select SQL statement
+			ResultSet rs = preparedStatement.executeQuery();
+			
+			while (rs.next()) {
+				amizadeResult = new Amizade();
+				amizadeResult.setId_pessoa(rs.getString("id_pessoa"));
+				amizadeResult.setId_amigo(rs.getString("id_amigo"));
+				amizadeResult.setData_amizade(rs.getString("data_amizade"));
+			}
+
+		} catch (SQLException e) {
+
+			System.out.println(e.getMessage());
+			
+		} finally {
+
+			if (preparedStatement != null) {
+				preparedStatement.close();
+			}
+
+			if (dbConnection != null) {
+				dbConnection.close();
+			}
+
+		}
+
+		return amizadeResult;
+	}
+	//
+	// public boolean removeAmizadeFromId(Amizade amizade) throws SQLException {
+	//
+	// Connection dbConnection = null;
+	// PreparedStatement preparedStatement = null;
+	//
+	// String deleteSQL =
+	// "DELETE from amizade WHERE id_pessoa = ? and id_amigo = ?";
+	//
+	// try {
+	// dbConnection = conexao;
+	// preparedStatement = dbConnection.prepareStatement(deleteSQL);
+	//
+	// preparedStatement.setString(++i, amizade.getIdPessoa());
+	// preparedStatement.setString(++i, amizade.getIdAmigo());
+	//
+	// // execute delete SQL stetement
+	// preparedStatement.executeUpdate();
+	// return true;
+	// } catch (SQLException e) {
+	//
+	// System.out.println(e.getMessage());
+	// return false;
+	// } finally {
+	//
+	// if (preparedStatement != null) {
+	// preparedStatement.close();
+	// }
+	//
+	// if (dbConnection != null) {
+	// dbConnection.close();
+	// }
+	//
+	// }
+	// }
 
 }
-
