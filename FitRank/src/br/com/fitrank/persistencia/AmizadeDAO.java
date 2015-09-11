@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import br.com.fitrank.modelo.Amizade;
 import br.com.fitrank.util.JDBCFactory;
@@ -101,10 +103,12 @@ public class AmizadeDAO {
 		return amizade;
 	}
 
-	public Amizade leAmizade(Amizade amizade) throws SQLException {
+	public List<Amizade> listaAmizades(String idPessoa) throws SQLException {
 		
 		Connection dbConnection = null;
 		PreparedStatement preparedStatement = null;
+		Amizade amizade;
+		ArrayList<Amizade> listaAmizades = new ArrayList<Amizade>();
 
 		String selectTableSQL = "SELECT "
 				+ "id_pessoa, "
@@ -118,17 +122,17 @@ public class AmizadeDAO {
 			dbConnection = conexao;
 			preparedStatement = dbConnection.prepareStatement(selectTableSQL);
 			
-			preparedStatement.setString(1, amizade.getId_pessoa());
+			preparedStatement.setString(1, idPessoa);
 
-			// execute select SQL stetement
+			// execute select SQL statement
 			ResultSet rs = preparedStatement.executeQuery();
 
 			while (rs.next()) {
-
+				amizade = new Amizade();
 				amizade.setId_pessoa(rs.getString("id_pessoa"));
 				amizade.setId_amigo(rs.getString("id_amigo"));
 				amizade.setData_amizade(rs.getString("data_amizade"));
-
+				listaAmizades.add(amizade);
 			}
 			
 		} catch (SQLException e) {
@@ -147,7 +151,7 @@ public class AmizadeDAO {
 			
 		}
 		
-		return amizade;
+		return listaAmizades;
 	}
 //	
 //	public boolean removeAmizadeFromId(Amizade amizade) throws SQLException {
