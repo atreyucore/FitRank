@@ -15,12 +15,12 @@ public class PessoaDAO {
 	private Connection conexao;
 
 	public PessoaDAO() {
-		this.conexao = new JDBCFactory().getConnection();
+		
 	}
 
 	public Pessoa adicionaPessoa(Pessoa pessoa) throws SQLException {
 
-		Connection dbConnection = null;
+		conexao = new JDBCFactory().getConnection();
 		PreparedStatement preparedStatement = null;
 
 		String insertTableSQL = "INSERT INTO pessoa ("
@@ -30,8 +30,7 @@ public class PessoaDAO {
 				+ ") VALUES (?,?,?)";
 
 		try {
-			dbConnection = conexao;
-			preparedStatement = dbConnection.prepareStatement(insertTableSQL);
+			preparedStatement = conexao.prepareStatement(insertTableSQL);
 			
 			int i = 0;
 			
@@ -52,8 +51,8 @@ public class PessoaDAO {
 				preparedStatement.close();
 			}
 
-			if (dbConnection != null) {
-				dbConnection.close();
+			if (conexao != null) {
+				conexao.close();
 			}
 
 		}
@@ -63,7 +62,7 @@ public class PessoaDAO {
 	public Pessoa atualizaPessoa(Pessoa pessoa) throws SQLException {
 	
 		
-		Connection dbConnection = null;
+		conexao = new JDBCFactory().getConnection();
 		PreparedStatement preparedStatement = null;
 	
 		String updateTableSQL  = "update pessoa set "
@@ -71,8 +70,7 @@ public class PessoaDAO {
 				+ "where id_usuario = ?";
 	
 		try {
-			dbConnection = conexao;
-			preparedStatement = dbConnection.prepareStatement(updateTableSQL);
+			preparedStatement = conexao.prepareStatement(updateTableSQL);
 			
 			int i = 0;
 			
@@ -93,8 +91,8 @@ public class PessoaDAO {
 				preparedStatement.close();
 			}
 	
-			if (dbConnection != null) {
-				dbConnection.close();
+			if (conexao != null) {
+				conexao.close();
 			}
 	
 		}
@@ -105,7 +103,7 @@ public class PessoaDAO {
 
 	public Pessoa lePessoa(String idPessoa) throws SQLException {
 		
-		Connection dbConnection = null;
+		conexao = new JDBCFactory().getConnection();
 		PreparedStatement preparedStatement = null;
 		Pessoa pessoa = null;
 
@@ -117,9 +115,7 @@ public class PessoaDAO {
 				+ "where id_usuario = ?";
 		
 		try {
-			
-			dbConnection = conexao;
-			preparedStatement = dbConnection.prepareStatement(selectTableSQL);
+			preparedStatement = conexao.prepareStatement(selectTableSQL);
 			
 			preparedStatement.setString(1, idPessoa);
 			ResultSet rs = preparedStatement.executeQuery();
@@ -142,8 +138,8 @@ public class PessoaDAO {
 				preparedStatement.close();
 			}
  
-			if (dbConnection != null) {
-				dbConnection.close();
+			if (conexao != null) {
+				conexao.close();
 			}
 			
 		}
