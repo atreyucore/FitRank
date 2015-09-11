@@ -2,7 +2,9 @@ package br.com.fitrank.service;
 
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.restfb.types.User;
 
@@ -14,7 +16,7 @@ import br.com.fitrank.util.ConstantesFitRank;
 
 public class AmizadeServico {
 	
-	private AmizadeDAO amizadeDAO;
+	private AmizadeDAO amizadeDAO = new AmizadeDAO();
 	private Amizade amizade;
 	
 	public Amizade adicionaAmizadeServico(String idPessoa, String idAmigo) {
@@ -46,6 +48,18 @@ public class AmizadeServico {
 			return null;
 		}
 	    
+	}
+	
+	public List<Amizade> listaAmizades(String idPessoa){
+		ArrayList<Amizade> listaAmigos;
+		try {
+			listaAmigos = (ArrayList<Amizade>) amizadeDAO.listaAmizades(idPessoa);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+		return listaAmigos;
 	}
 	
 	public Amizade leAmizadeServico(String idPessoa, String idAmigo){
