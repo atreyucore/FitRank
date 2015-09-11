@@ -120,10 +120,10 @@ public class PessoaDAO {
 			dbConnection = conexao;
 			preparedStatement = dbConnection.prepareStatement(selectTableSQL);
 			
-			ResultSet rs = preparedStatement.executeQuery(selectTableSQL);
-			
-			
 			preparedStatement.setString(1, pessoa.getId_usuario());
+			ResultSet rs = preparedStatement.executeQuery();
+			
+			
 			
 			if ( rs.next() ) {
 				
