@@ -1,5 +1,7 @@
 package br.com.fitrank.modelo;
 
+import java.util.List;
+
 /** Entity(name="pessoa")
  *
  */
@@ -11,6 +13,7 @@ public class Pessoa {
 //	Column(name="nome")
 	private String nome;
 
+	private List<Pessoa> amigos;
 	
 	public String getData_cadastro() {
 		return data_cadastro;
@@ -29,6 +32,12 @@ public class Pessoa {
 	}
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+	public List<Pessoa> getAmigos() {
+		return amigos;
+	}
+	public void setAmigos(List<Pessoa> amigos) {
+		this.amigos = amigos;
 	}
 	
 	

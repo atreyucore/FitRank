@@ -103,10 +103,11 @@ public class PessoaDAO {
 	}
 	
 
-	public Pessoa lePessoa(Pessoa pessoa) throws SQLException {
+	public Pessoa lePessoa(String idPessoa) throws SQLException {
 		
 		Connection dbConnection = null;
 		PreparedStatement preparedStatement = null;
+		Pessoa pessoa = null;
 
 		String selectTableSQL = "SELECT "
 				+ "id_usuario, "
@@ -120,19 +121,14 @@ public class PessoaDAO {
 			dbConnection = conexao;
 			preparedStatement = dbConnection.prepareStatement(selectTableSQL);
 			
-			preparedStatement.setString(1, pessoa.getId_usuario());
+			preparedStatement.setString(1, idPessoa);
 			ResultSet rs = preparedStatement.executeQuery();
 			
-			
-			
 			if ( rs.next() ) {
-				
+				pessoa = new Pessoa();
 				pessoa.setId_usuario(rs.getString("id_usuario"));
 				pessoa.setData_cadastro(rs.getString("data_cadastro"));
-				pessoa.setNome(rs.getString("nome"));
-				
-			} else {
-				pessoa = null;
+				pessoa.setNome(rs.getString("nome"));	
 			}
 				
 			

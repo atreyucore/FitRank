@@ -2,8 +2,11 @@ package br.com.fitrank.service;
 
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import br.com.fitrank.modelo.Amizade;
 import br.com.fitrank.modelo.Pessoa;
 import br.com.fitrank.persistencia.PessoaDAO;
 
@@ -12,6 +15,7 @@ import com.restfb.types.User;
 public class PessoaServico {
 	
 	private PessoaDAO pessoaDAO;
+	private AmizadeServico amizadeServico;
 	private Pessoa pessoa;
 
 	public Pessoa adicionaPessoaServico(User usuarioFacebook){
@@ -70,7 +74,23 @@ public class PessoaServico {
 			pessoa.setId_usuario(usuarioFacebook.getId());
 		
 	    try {
-			return pessoaDAO.lePessoa(pessoa);
+			pessoa =  pessoaDAO.lePessoa(pessoa.getId_usuario());
+			
+			if(pessoa != null){
+				amizadeServico = new AmizadeServico();
+				List<Amizade> listaAmizades = amizadeServico.listaAmizades(pessoa.getId_usuario());
+				
+				ArrayList<Pessoa> amigosPessoa = new ArrayList<Pessoa>();
+				
+				for (Amizade amizade : listaAmizades) {
+					Pessoa amigo = pessoaDAO.lePessoa(amizade.getId_amigo());
+					amigosPessoa.add(amigo);
+				}
+				
+				pessoa.setAmigos(amigosPessoa);
+			}
+			
+			return pessoa;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
