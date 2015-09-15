@@ -14,6 +14,8 @@ public class Pessoa {
 	private String nome;
 //	Column(name="data_ultimo_login")	
 	private String data_ultimo_login;
+	
+	private Configuracao configuracaoFavorita;
 
 	private List<Pessoa> amigos;
 	
@@ -46,6 +48,12 @@ public class Pessoa {
 	}
 	public void setData_ultimo_login(String data_ultimo_login) {
 		this.data_ultimo_login = data_ultimo_login;
+	}
+	public Configuracao getConfiguracaoFavorita() {
+		return configuracaoFavorita;
+	}
+	public void setConfiguracaoFavorita(Configuracao configuracaoFavorita) {
+		this.configuracaoFavorita = configuracaoFavorita;
 	}
 	
 }

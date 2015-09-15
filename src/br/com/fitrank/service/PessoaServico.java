@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import br.com.fitrank.modelo.Amizade;
+import br.com.fitrank.modelo.Configuracao;
 import br.com.fitrank.modelo.Pessoa;
 import br.com.fitrank.persistencia.PessoaDAO;
 import br.com.fitrank.util.ConstantesFitRank;
@@ -17,8 +18,9 @@ import com.restfb.types.User;
 public class PessoaServico {
 	
 	private PessoaDAO pessoaDAO;
-	private AmizadeServico amizadeServico;
 	private Pessoa pessoa;
+	private AmizadeServico amizadeServico;
+	private ConfiguracaoServico configuracaoServico;
 
 	public Pessoa adicionaPessoaServico(User usuarioFacebook){
 	
@@ -61,7 +63,7 @@ public class PessoaServico {
 		
 	    try {
 			pessoa = pessoaDAO.atualizaPessoa(pessoa);
-			preencheListaAmigosPessoa(pessoa);
+			preenchePessoa(pessoa);
 			
 			return pessoa;
 		} catch (SQLException e) {
@@ -82,7 +84,7 @@ public class PessoaServico {
 		
 	    try {
 			pessoa =  pessoaDAO.lePessoa(pessoa.getId_usuario());
-			preencheListaAmigosPessoa(pessoa);
+			preenchePessoa(pessoa);
 			
 			return pessoa;
 		} catch (SQLException e) {
@@ -91,20 +93,31 @@ public class PessoaServico {
 		}
 	}
 	
-	private void preencheListaAmigosPessoa(Pessoa pessoa) throws SQLException{
+	private void preenchePessoa(Pessoa pessoa) throws SQLException{
 		if(pessoa != null){
-			amizadeServico = new AmizadeServico();
-			List<Amizade> listaAmizades = amizadeServico.listaAmizades(pessoa.getId_usuario());
-			
-			ArrayList<Pessoa> amigosPessoa = new ArrayList<Pessoa>();
-			
-			for (Amizade amizade : listaAmizades) {
-				Pessoa amigo = pessoaDAO.lePessoa(amizade.getId_amigo());
-				amigosPessoa.add(amigo);
-			}
-			
-			pessoa.setAmigos(amigosPessoa);
+			preencheListaAmigosPessoa(pessoa);
+			recuperaConfiguracaoFavoritaPessoa(pessoa);
 		}
+	}
+	
+	private void preencheListaAmigosPessoa(Pessoa pessoa) throws SQLException{
+		this.amizadeServico = new AmizadeServico();
+		List<Amizade> listaAmizades = amizadeServico.listaAmizades(pessoa.getId_usuario());
+		
+		ArrayList<Pessoa> amigosPessoa = new ArrayList<Pessoa>();
+		
+		for (Amizade amizade : listaAmizades) {
+			Pessoa amigo = pessoaDAO.lePessoa(amizade.getId_amigo());
+			amigosPessoa.add(amigo);
+		}
+		
+		pessoa.setAmigos(amigosPessoa);
+	}
+	
+	private void recuperaConfiguracaoFavoritaPessoa(Pessoa pessoa) throws SQLException{
+		this.configuracaoServico = new ConfiguracaoServico();
+		Configuracao configuracao = configuracaoServico.leConfiguracaoFavorita(pessoa.getId_usuario());
+		pessoa.setConfiguracaoFavorita(configuracao);
 	}
 //	
 //	public boolean removePessoaFromIdServico(User usuarioFacebook){
