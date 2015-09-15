@@ -115,7 +115,7 @@ public class PessoaDAO {
 				+ "id_usuario, "
 				+ "data_cadastro, "
 				+ "nome,"
-				+ "data_ultimo_login"
+				+ "data_ultimo_login "
 				+ "from pessoa "
 				+ "where id_usuario = ?";
 		
