@@ -26,8 +26,9 @@ public class PessoaDAO {
 		String insertTableSQL = "INSERT INTO pessoa ("
 				+ "id_usuario, "
 				+ "data_cadastro, "
-				+ "nome"
-				+ ") VALUES (?,?,?)";
+				+ "nome,"
+				+ "data_ultimo_login"
+				+ ") VALUES (?,?,?,?)";
 
 		try {
 			preparedStatement = conexao.prepareStatement(insertTableSQL);
@@ -37,6 +38,7 @@ public class PessoaDAO {
 			preparedStatement.setString(++i, pessoa.getId_usuario());
 			preparedStatement.setString(++i, pessoa.getData_cadastro());
 			preparedStatement.setString(++i, pessoa.getNome());
+			preparedStatement.setString(++i, pessoa.getData_ultimo_login());
 
 			// execute insert SQL stetement
 			preparedStatement.executeUpdate();
@@ -110,7 +112,8 @@ public class PessoaDAO {
 		String selectTableSQL = "SELECT "
 				+ "id_usuario, "
 				+ "data_cadastro, "
-				+ "nome "
+				+ "nome,"
+				+ "data_ultimo_login"
 				+ "from pessoa "
 				+ "where id_usuario = ?";
 		
@@ -124,7 +127,8 @@ public class PessoaDAO {
 				pessoa = new Pessoa();
 				pessoa.setId_usuario(rs.getString("id_usuario"));
 				pessoa.setData_cadastro(rs.getString("data_cadastro"));
-				pessoa.setNome(rs.getString("nome"));	
+				pessoa.setNome(rs.getString("nome"));
+				pessoa.setData_ultimo_login(rs.getString("data_ultimo_login"));
 			}
 				
 			
