@@ -10,6 +10,7 @@ import br.com.fitrank.modelo.Amizade;
 import br.com.fitrank.modelo.Pessoa;
 import br.com.fitrank.persistencia.PessoaDAO;
 import br.com.fitrank.util.ConstantesFitRank;
+import br.com.fitrank.util.StringUtil;
 
 import com.restfb.types.User;
 
@@ -59,7 +60,10 @@ public class PessoaServico {
 		}
 		
 	    try {
-			return pessoaDAO.atualizaPessoa(pessoa);
+			pessoa = pessoaDAO.atualizaPessoa(pessoa);
+			preencheListaAmigosPessoa(pessoa);
+			
+			return pessoa;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
@@ -72,30 +76,34 @@ public class PessoaServico {
 		pessoa = new Pessoa();
 		this.pessoaDAO = new PessoaDAO();
 		
-		if(usuarioFacebook.getId()!=null && !usuarioFacebook.getId().equals(""))
+		if(!StringUtil.isEmptyOrNull(usuarioFacebook.getId())){
 			pessoa.setId_usuario(usuarioFacebook.getId());
+		}
 		
 	    try {
 			pessoa =  pessoaDAO.lePessoa(pessoa.getId_usuario());
-			
-			if(pessoa != null){
-				amizadeServico = new AmizadeServico();
-				List<Amizade> listaAmizades = amizadeServico.listaAmizades(pessoa.getId_usuario());
-				
-				ArrayList<Pessoa> amigosPessoa = new ArrayList<Pessoa>();
-				
-				for (Amizade amizade : listaAmizades) {
-					Pessoa amigo = pessoaDAO.lePessoa(amizade.getId_amigo());
-					amigosPessoa.add(amigo);
-				}
-				
-				pessoa.setAmigos(amigosPessoa);
-			}
+			preencheListaAmigosPessoa(pessoa);
 			
 			return pessoa;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
+		}
+	}
+	
+	private void preencheListaAmigosPessoa(Pessoa pessoa) throws SQLException{
+		if(pessoa != null){
+			amizadeServico = new AmizadeServico();
+			List<Amizade> listaAmizades = amizadeServico.listaAmizades(pessoa.getId_usuario());
+			
+			ArrayList<Pessoa> amigosPessoa = new ArrayList<Pessoa>();
+			
+			for (Amizade amizade : listaAmizades) {
+				Pessoa amigo = pessoaDAO.lePessoa(amizade.getId_amigo());
+				amigosPessoa.add(amigo);
+			}
+			
+			pessoa.setAmigos(amigosPessoa);
 		}
 	}
 //	
