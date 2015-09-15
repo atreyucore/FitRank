@@ -69,7 +69,7 @@ public class PessoaDAO {
 	
 		String updateTableSQL  = "update pessoa set "
 				+ "nome = ? "
-				+ "data_ultimo_login = ?"
+				+ "data_ultimo_login = ? "
 				+ "where id_usuario = ?";
 	
 		try {

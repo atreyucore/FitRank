@@ -19,39 +19,39 @@ import com.restfb.Parameter;
 import com.restfb.types.User;
 
 public class InitUser extends HttpServlet {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	PessoaServico pessoaServico = new PessoaServico();
 	AmizadeServico amizadeServico = new AmizadeServico();
-   
-    public InitUser() {
-      
-    }
 
-   
-  protected void inicia(HttpServletRequest request, HttpServletResponse response)
+	public InitUser() {
+
+	}
+
+	protected void inicia(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
 	   
 	   FacebookClient facebookClient = new DefaultFacebookClient(request.getParameter("token"));
 	   User facebookUser = facebookClient.fetchObject("me", User.class);
 	   Connection<User> friendsFB = facebookClient.fetchConnection("me/friends", User.class, Parameter.with("fields", "name, id"));
 	   
-	   
 	   Pessoa pessoa = new Pessoa();
 	   
 	   if (pessoaServico.lePessoaServico(facebookUser) == null ) {
 		   pessoa = pessoaServico.adicionaPessoaServico(facebookUser);
+	   } else {
+		   pessoa = pessoaServico.atualizaPessoaServico(facebookUser);
 	   }
-	   
+	   	
 //	   String[] profPicUrls = new String[friendsFB.getData().size()];
 //	   String[] ids = new String[friendsFB.getData().size()];
-	   for (int i=0;i < friendsFB.getData().size(); i++) {
-		  String idAmigo = friendsFB.getData().get(i).getId();
-		  
-		  if (amizadeServico.leAmizadeServico(facebookUser.getId(), idAmigo) == null ) {
-			  amizadeServico.adicionaAmizadeServico(facebookUser.getId(), idAmigo);
-		  }
+//	   for (int i=0;i < friendsFB.getData().size(); i++) {
+	   for ( User friendFB : friendsFB.getData()) {
+//		  String idAmigo = friendsFB.getData().get(i).getId();
+		   
+		  atualizaAmizadeUsuario(facebookUser, friendFB);
+
 //		  ids[i] = id;
 //		  profPicUrls[i] = friendsFB.getData().get(i).getPicture() != null ? friendsFB.getData().get(i).getPicture().getUrl() : "imagem/401.png" ;
 		 
@@ -60,21 +60,27 @@ public class InitUser extends HttpServlet {
 //TODO	   Recuperar configuração de favorito aqui!
 	   request.setAttribute("token", request.getParameter("token"));
 	   
-//	   request.setAttribute("ids", ids);
-//	   request.setAttribute("profPicUrl", profPicUrls);
-	   
-	   
 	   RequestDispatcher rd = request.getRequestDispatcher("/escolheModalidade.jsp");  
 	   rd.forward(request,response);  
    }
-   
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		inicia(request, response);
+
+	private void atualizaAmizadeUsuario(User facebookUser, User friendFB) {
 		
+		String idAmigo = friendFB.getId();
+		
+		if (amizadeServico.leAmizadeServico(facebookUser.getId(), idAmigo) == null) {
+			amizadeServico.adicionaAmizadeServico(facebookUser.getId(), idAmigo);
+		}
 	}
 
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		inicia(request, response);
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	}
+
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		inicia(request, response);
 	}
 
