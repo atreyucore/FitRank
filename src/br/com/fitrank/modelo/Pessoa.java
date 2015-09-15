@@ -12,6 +12,8 @@ public class Pessoa {
 	private String data_cadastro;
 //	Column(name="nome")
 	private String nome;
+//	Column(name="data_ultimo_login")	
+	private String data_ultimo_login;
 
 	private List<Pessoa> amigos;
 	
@@ -39,6 +41,11 @@ public class Pessoa {
 	public void setAmigos(List<Pessoa> amigos) {
 		this.amigos = amigos;
 	}
-	
+	public String getData_ultimo_login() {
+		return data_ultimo_login;
+	}
+	public void setData_ultimo_login(String data_ultimo_login) {
+		this.data_ultimo_login = data_ultimo_login;
+	}
 	
 }
