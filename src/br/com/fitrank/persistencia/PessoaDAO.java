@@ -69,6 +69,7 @@ public class PessoaDAO {
 	
 		String updateTableSQL  = "update pessoa set "
 				+ "nome = ? "
+				+ "data_ultimo_login = ?"
 				+ "where id_usuario = ?";
 	
 		try {
@@ -77,6 +78,7 @@ public class PessoaDAO {
 			int i = 0;
 			
 			preparedStatement.setString(++i, pessoa.getNome());
+			preparedStatement.setString(++i, pessoa.getData_ultimo_login());
 			preparedStatement.setString(++i, pessoa.getId_usuario());
 			
 	
