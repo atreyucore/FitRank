@@ -166,7 +166,7 @@ public class AmizadeDAO {
 				+ "id_amigo, "
 				+ "data_amizade " 
 				+ "from amizade "
-				+ "where id_pessoa = ? and id_amizade = ?";
+				+ "where id_pessoa = ? and id_amigo = ?";
 
 		try {
 

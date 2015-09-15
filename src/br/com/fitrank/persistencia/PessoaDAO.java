@@ -4,8 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import br.com.fitrank.modelo.Pessoa;
+import br.com.fitrank.util.ConstantesFitRank;
 import br.com.fitrank.util.JDBCFactory;
 
 
@@ -68,19 +71,22 @@ public class PessoaDAO {
 		PreparedStatement preparedStatement = null;
 	
 		String updateTableSQL  = "update pessoa set "
-				+ "nome = ? "
+				+ "nome = ?, "
 				+ "data_ultimo_login = ? "
-				+ "where id_usuario = ?";
+				+ "where id_usuario = ? ";
 	
 		try {
 			preparedStatement = conexao.prepareStatement(updateTableSQL);
 			
 			int i = 0;
 			
-			preparedStatement.setString(++i, pessoa.getNome());
-			preparedStatement.setString(++i, pessoa.getData_ultimo_login());
-			preparedStatement.setString(++i, pessoa.getId_usuario());
+			SimpleDateFormat formatter = new SimpleDateFormat(ConstantesFitRank.FORMATO_DATA);
+			String formattedDate = formatter.format(new Date());
+			pessoa.setData_cadastro(formattedDate);
 			
+			preparedStatement.setString(++i, pessoa.getNome());
+			preparedStatement.setString(++i, formattedDate);
+			preparedStatement.setString(++i, pessoa.getId_usuario());
 	
 			// execute insert SQL stetement
 			preparedStatement.executeUpdate();

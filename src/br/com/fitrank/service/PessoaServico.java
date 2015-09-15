@@ -9,6 +9,7 @@ import java.util.List;
 import br.com.fitrank.modelo.Amizade;
 import br.com.fitrank.modelo.Pessoa;
 import br.com.fitrank.persistencia.PessoaDAO;
+import br.com.fitrank.util.ConstantesFitRank;
 
 import com.restfb.types.User;
 
@@ -30,7 +31,7 @@ public class PessoaServico {
 			pessoa.setNome(usuarioFacebook.getName());
 			
 		
-		SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyyy"); //TODO gabriel: formato da data com barras?
+		SimpleDateFormat formatter = new SimpleDateFormat(ConstantesFitRank.FORMATO_DATA);
 		String formattedDate = formatter.format(new Date());
 		pessoa.setData_cadastro(formattedDate);
 		
@@ -49,12 +50,13 @@ public class PessoaServico {
 		pessoa = new Pessoa();
 		this.pessoaDAO = new PessoaDAO();
 		
-		if(usuarioFacebook.getId()!=null && !usuarioFacebook.getId().equals(""))
+		if(usuarioFacebook.getId()!=null && !usuarioFacebook.getId().equals("")){
 			pessoa.setId_usuario(usuarioFacebook.getId());
+		}
 		
-		if(usuarioFacebook.getFirstName()!=null)
+		if(usuarioFacebook.getFirstName()!=null){
 			pessoa.setNome(usuarioFacebook.getName());
-		
+		}
 		
 	    try {
 			return pessoaDAO.atualizaPessoa(pessoa);
