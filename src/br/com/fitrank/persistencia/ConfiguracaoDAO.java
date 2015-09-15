@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import br.com.fitrank.modelo.Configuracao;
+import br.com.fitrank.util.ConstantesFitRank;
 import br.com.fitrank.util.JDBCFactory;
 
 
@@ -117,7 +118,7 @@ public Configuracao atualizaConfiguracao(Configuracao configuracao) throws SQLEx
 	}
 	
 
-	public Configuracao leConfiguracao(Configuracao configuracao) throws SQLException {
+	public Configuracao leConfiguracaoPorId(Configuracao configuracao) throws SQLException {
 		
 		Connection dbConnection = null;
 		PreparedStatement preparedStatement = null;
@@ -143,6 +144,75 @@ public Configuracao atualizaConfiguracao(Configuracao configuracao) throws SQLEx
 			
 			preparedStatement.setInt(1, configuracao.getIdConfiguracao());
 			
+			
+			while (rs.next()) {
+				
+				configuracao.setIdConfiguracao(rs.getInt("id_configuracao"));
+				configuracao.setModalidade(rs.getString("modalidade"));
+				configuracao.setDiaNoite(rs.getString("dia_noite"));
+				configuracao.setIntervaloData(rs.getString("intervalo_data"));
+				configuracao.setFavorito(rs.getInt("favorito"));
+				configuracao.setPadraoModalidade(rs.getInt("padrao_modalidade"));
+				configuracao.setIdPessoa(rs.getString("id_pessoa"));
+
+			}
+		} catch (SQLException e) {
+			 
+			System.out.println(e.getMessage());
+	
+		} finally {
+	
+			if (preparedStatement != null) {
+				preparedStatement.close();
+			}
+	
+			if (dbConnection != null) {
+				dbConnection.close();
+			}
+			
+		}
+		
+		return configuracao;
+	}
+	
+	public Configuracao leConfiguracaoPorPessoa(Configuracao configuracao, Boolean isFavorito, Boolean isPadraoModalidade) throws SQLException {
+		
+		Connection dbConnection = null;
+		PreparedStatement preparedStatement = null;
+	
+		String selectTableSQL = "SELECT "
+				+ "id_configuracao, "
+				+ "modalidade, "
+				+ "dia_noite, "
+				+ "intervalo_data, "
+				+ "favorito, "
+				+ "padrao_modalidade, "
+				+ "id_pessoa "
+				+ "FROM configuracao "
+				+ "WHERE id_pessoa = ? ";
+		
+		if(isFavorito){
+			selectTableSQL += " AND favorito = ? ";
+		}
+		if(isPadraoModalidade){
+			selectTableSQL += " AND padrao_modalidade = ? ";
+		}
+		
+		try {
+			
+			dbConnection = conexao;
+			preparedStatement = dbConnection.prepareStatement(selectTableSQL);
+			
+			ResultSet rs = preparedStatement.executeQuery(selectTableSQL);
+			
+			int i = 1;
+			preparedStatement.setString(i++, configuracao.getIdPessoa());
+			if(isFavorito){
+				preparedStatement.setString(i++, ConstantesFitRank.CHAR_SIM);
+			}
+			if(isPadraoModalidade){
+				preparedStatement.setString(i++, ConstantesFitRank.CHAR_SIM);
+			}
 			
 			while (rs.next()) {
 				
