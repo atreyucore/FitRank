@@ -3,6 +3,8 @@ package br.com.fitrank.modelo;
 import java.util.Date;
 import java.util.List;
 
+import br.com.fitrank.util.DateConversor;
+
 /** Entity(name="pessoa")
  *
  */
@@ -56,5 +58,10 @@ public class Pessoa {
 	public void setConfiguracaoFavorita(Configuracao configuracaoFavorita) {
 		this.configuracaoFavorita = configuracaoFavorita;
 	}
-	
+	public String getDataCadastroFormatada() {
+		return DateConversor.DateToString(data_cadastro);
+	}
+	public String getDataUltimoLoginFormatada() {
+		return DateConversor.DateToString(data_ultimo_login);
+	}
 }

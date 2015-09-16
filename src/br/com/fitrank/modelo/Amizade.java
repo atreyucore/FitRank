@@ -2,6 +2,8 @@ package br.com.fitrank.modelo;
 
 import java.util.Date;
 
+import br.com.fitrank.util.DateConversor;
+
 /** Entity(name="amizade")
  *
  */
@@ -30,6 +32,9 @@ public class Amizade {
 	}
 	public void setData_amizade(Date data_amizade) {
 		this.data_amizade = data_amizade;
+	}
+	public String getDataAmizadeFormatada() {
+		return DateConversor.DateToString(data_amizade);
 	}
 
 }
