@@ -57,7 +57,7 @@ public class InitUser extends HttpServlet {
 		 
 	   }
 	   
-//TODO	   Recuperar configuração de favorito aqui!
+//TODO gvsribeiro utilizar dados da configuracao do usuario para montar proxima tela 
 	   request.setAttribute("token", request.getParameter("token"));
 	   
 	   RequestDispatcher rd = request.getRequestDispatcher("/escolheModalidade.jsp");  
