@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import br.com.fitrank.modelo.fb.PostFitnessFB;
+import br.com.fitrank.service.ConfiguracaoServico;
 
 import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
@@ -31,6 +32,7 @@ public class CarregaEscolhaRanking extends HttpServlet {
 	   
 	   FacebookClient facebookClient = new DefaultFacebookClient(request.getParameter("token"));
 	   Connection<PostFitnessFB> fitConnection = facebookClient.fetchConnection("me/fitness." + request.getParameter("modalidade"), PostFitnessFB.class, Parameter.with("limit", "1"));
+	   ConfiguracaoServico configuracaoServico = new ConfiguracaoServico();
 	   
 		List<PostFitnessFB> postsFit = new ArrayList<PostFitnessFB>();
 		
@@ -46,7 +48,9 @@ public class CarregaEscolhaRanking extends HttpServlet {
 	   } else {
 		   rd = request.getRequestDispatcher("/escolhaRanking.jsp"); 
 	   }
+//TODO gvsribeiro Recuperar dados de Pessoa!
 //TODO	   Recuperar configurção de favorito aqui!
+//	   configuracaoServico.leConfiguracaoPadraoModalidade(idPessoa, modalidade)
 	   
 	   request.setAttribute("token", request.getParameter("token"));
 	   	     

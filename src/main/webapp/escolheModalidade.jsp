@@ -30,17 +30,17 @@
 					</div>
 					<div class="circles">
 						<div class="circleWrapper">
-							<div class="circle walk" onClick="goToEscolhaRanking('walks')">
+							<div class="circle walk" onClick="goToEscolhaRanking('W')">
 								<img src="imagem/man-silhouette1.png">
 							</div>
 						</div>
 						<div class="circleWrapper">
-							<div class="circle run" onClick="goToEscolhaRanking('runs')">
+							<div class="circle run" onClick="goToEscolhaRanking('R')">
 								<img src="imagem/sprint.png">
 							</div>
 						</div>
 						<div class="circleWrapper">
-							<div class="circle bike" onClick="goToEscolhaRanking('bikes')">
+							<div class="circle bike" onClick="goToEscolhaRanking('B')">
 								<img src="imagem/bike11.png">
 							</div>
 						</div>

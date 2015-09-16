@@ -194,6 +194,7 @@ public Configuracao atualizaConfiguracao(Configuracao configuracao) throws SQLEx
 		}
 		if(isPadraoModalidade){
 			selectTableSQL += " AND padrao_modalidade = ? ";
+			selectTableSQL += " AND modalidade = ? ";
 		}
 		
 		try {
@@ -208,6 +209,7 @@ public Configuracao atualizaConfiguracao(Configuracao configuracao) throws SQLEx
 			}
 			if(isPadraoModalidade){
 				preparedStatement.setString(i++, ConstantesFitRank.CHAR_SIM);
+				preparedStatement.setString(i++, configuracao.getModalidade());
 			}
 			
 			ResultSet rs = preparedStatement.executeQuery();
