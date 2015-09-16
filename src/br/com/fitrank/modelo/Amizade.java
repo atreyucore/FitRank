@@ -1,5 +1,7 @@
 package br.com.fitrank.modelo;
 
+import java.util.Date;
+
 /** Entity(name="amizade")
  *
  */
@@ -9,7 +11,7 @@ public class Amizade {
 //	Column(name="id_amigo", FK="FK_ID_AMIGO_AMIZADE)
 	private String id_amigo;
 //	Column(name="data_amizade")
-	private String data_amizade;
+	private Date data_amizade;
 	
 	public String getId_pessoa() {
 		return id_pessoa;
@@ -23,10 +25,10 @@ public class Amizade {
 	public void setId_amigo(String id_amigo) {
 		this.id_amigo = id_amigo;
 	}
-	public String getData_amizade() {
+	public Date getData_amizade() {
 		return data_amizade;
 	}
-	public void setData_amizade(String data_amizade) {
+	public void setData_amizade(Date data_amizade) {
 		this.data_amizade = data_amizade;
 	}
 

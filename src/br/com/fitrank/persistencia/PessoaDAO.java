@@ -4,11 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import br.com.fitrank.modelo.Pessoa;
-import br.com.fitrank.util.ConstantesFitRank;
+import br.com.fitrank.util.DateConversor;
 import br.com.fitrank.util.JDBCFactory;
 
 
@@ -39,11 +37,11 @@ public class PessoaDAO {
 			int i = 0;
 			
 			preparedStatement.setString(++i, pessoa.getId_usuario());
-			preparedStatement.setString(++i, pessoa.getData_cadastro());
+			preparedStatement.setString(++i, DateConversor.DateToString(pessoa.getData_cadastro()));
 			preparedStatement.setString(++i, pessoa.getNome());
-			preparedStatement.setString(++i, pessoa.getData_ultimo_login());
+			preparedStatement.setString(++i, DateConversor.DateToString(pessoa.getData_ultimo_login()));
 
-			// execute insert SQL stetement
+			// execute insert SQL statement
 			preparedStatement.executeUpdate();
 
 		} catch (SQLException e) {
@@ -70,25 +68,21 @@ public class PessoaDAO {
 		conexao = new JDBCFactory().getConnection();
 		PreparedStatement preparedStatement = null;
 	
-		String updateTableSQL  = "update pessoa set "
+		String updateTableSQL  = "UPDATE pessoa set "
 				+ "nome = ?, "
 				+ "data_ultimo_login = ? "
-				+ "where id_usuario = ? ";
+				+ "WHERE id_usuario = ? ";
 	
 		try {
 			preparedStatement = conexao.prepareStatement(updateTableSQL);
 			
 			int i = 0;
 			
-			SimpleDateFormat formatter = new SimpleDateFormat(ConstantesFitRank.FORMATO_DATA);
-			String formattedDate = formatter.format(new Date());
-			pessoa.setData_cadastro(formattedDate);
-			
 			preparedStatement.setString(++i, pessoa.getNome());
-			preparedStatement.setString(++i, formattedDate);
+			preparedStatement.setString(++i, DateConversor.DateToString(pessoa.getData_ultimo_login()));
 			preparedStatement.setString(++i, pessoa.getId_usuario());
 	
-			// execute insert SQL stetement
+			// execute insert SQL statement
 			preparedStatement.executeUpdate();
 	
 		} catch (SQLException e) {
@@ -134,9 +128,9 @@ public class PessoaDAO {
 			if ( rs.next() ) {
 				pessoa = new Pessoa();
 				pessoa.setId_usuario(rs.getString("id_usuario"));
-				pessoa.setData_cadastro(rs.getString("data_cadastro"));
+				pessoa.setData_cadastro(DateConversor.StringToDate(rs.getString("data_cadastro")));
 				pessoa.setNome(rs.getString("nome"));
-				pessoa.setData_ultimo_login(rs.getString("data_ultimo_login"));
+				pessoa.setData_ultimo_login(DateConversor.StringToDate(rs.getString("data_ultimo_login")));
 			}
 				
 			

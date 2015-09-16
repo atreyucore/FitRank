@@ -1,18 +1,12 @@
 package br.com.fitrank.service;
 
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.restfb.types.User;
-
 import br.com.fitrank.modelo.Amizade;
-import br.com.fitrank.modelo.Pessoa;
 import br.com.fitrank.persistencia.AmizadeDAO;
-import br.com.fitrank.persistencia.PessoaDAO;
-import br.com.fitrank.util.ConstantesFitRank;
 
 public class AmizadeServico {
 	
@@ -24,9 +18,7 @@ public class AmizadeServico {
 		amizade = new Amizade();
 		
 		
-		SimpleDateFormat formatter = new SimpleDateFormat(ConstantesFitRank.FORMATO_DATA);
-		String formattedDate = formatter.format(new Date());
-		amizade.setData_amizade(formattedDate);
+		amizade.setData_amizade(new Date());
 		
 	    try {
 	    	this.amizadeDAO = new AmizadeDAO();

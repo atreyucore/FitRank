@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.fitrank.modelo.Amizade;
+import br.com.fitrank.util.DateConversor;
 import br.com.fitrank.util.JDBCFactory;
 
 public class AmizadeDAO {
@@ -37,7 +38,7 @@ public class AmizadeDAO {
 
 			preparedStatement.setString(++i, amizade.getId_pessoa());
 			preparedStatement.setString(++i, amizade.getId_amigo());
-			preparedStatement.setString(++i, amizade.getData_amizade());
+			preparedStatement.setString(++i, DateConversor.DateToString(amizade.getData_amizade()));
 
 			// execute insert SQL stetement
 			preparedStatement.executeUpdate();
@@ -77,7 +78,7 @@ public class AmizadeDAO {
 			int i = 0;
 
 			preparedStatement.setString(++i, amizade.getId_amigo());
-			preparedStatement.setString(++i, amizade.getData_amizade());
+			preparedStatement.setString(++i, DateConversor.DateToString(amizade.getData_amizade()));
 			preparedStatement.setString(++i, amizade.getId_pessoa());
 
 			// execute insert SQL stetement
@@ -130,7 +131,7 @@ public class AmizadeDAO {
 				amizade = new Amizade();
 				amizade.setId_pessoa(rs.getString("id_pessoa"));
 				amizade.setId_amigo(rs.getString("id_amigo"));
-				amizade.setData_amizade(rs.getString("data_amizade"));
+				amizade.setData_amizade(DateConversor.StringToDate(rs.getString("data_amizade")));
 				listaAmizades.add(amizade);
 			}
 
@@ -184,7 +185,7 @@ public class AmizadeDAO {
 				amizadeResult = new Amizade();
 				amizadeResult.setId_pessoa(rs.getString("id_pessoa"));
 				amizadeResult.setId_amigo(rs.getString("id_amigo"));
-				amizadeResult.setData_amizade(rs.getString("data_amizade"));
+				amizadeResult.setData_amizade(DateConversor.StringToDate(rs.getString("data_amizade")));
 			}
 
 		} catch (SQLException e) {

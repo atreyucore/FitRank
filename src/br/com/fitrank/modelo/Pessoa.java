@@ -1,5 +1,6 @@
 package br.com.fitrank.modelo;
 
+import java.util.Date;
 import java.util.List;
 
 /** Entity(name="pessoa")
@@ -9,20 +10,20 @@ public class Pessoa {
 //	Column(name="id_usuario", Primary Key)
 	private String id_usuario;
 //	Column(name="data_cadastro")
-	private String data_cadastro;
+	private Date data_cadastro;
 //	Column(name="nome")
 	private String nome;
 //	Column(name="data_ultimo_login")	
-	private String data_ultimo_login;
+	private Date data_ultimo_login;
 	
 	private Configuracao configuracaoFavorita;
 
 	private List<Pessoa> amigos;
 	
-	public String getData_cadastro() {
+	public Date getData_cadastro() {
 		return data_cadastro;
 	}
-	public void setData_cadastro(String data_cadastro) {
+	public void setData_cadastro(Date data_cadastro) {
 		this.data_cadastro = data_cadastro;
 	}	
 	public String getId_usuario() {
@@ -43,10 +44,10 @@ public class Pessoa {
 	public void setAmigos(List<Pessoa> amigos) {
 		this.amigos = amigos;
 	}
-	public String getData_ultimo_login() {
+	public Date getData_ultimo_login() {
 		return data_ultimo_login;
 	}
-	public void setData_ultimo_login(String data_ultimo_login) {
+	public void setData_ultimo_login(Date data_ultimo_login) {
 		this.data_ultimo_login = data_ultimo_login;
 	}
 	public Configuracao getConfiguracaoFavorita() {
