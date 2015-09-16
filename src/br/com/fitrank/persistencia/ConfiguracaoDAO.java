@@ -139,11 +139,9 @@ public Configuracao atualizaConfiguracao(Configuracao configuracao) throws SQLEx
 			dbConnection = conexao;
 			preparedStatement = dbConnection.prepareStatement(selectTableSQL);
 			
-			ResultSet rs = preparedStatement.executeQuery(selectTableSQL);
-			
-			
 			preparedStatement.setInt(1, configuracao.getIdConfiguracao());
 			
+			ResultSet rs = preparedStatement.executeQuery();
 			
 			while (rs.next()) {
 				
@@ -203,8 +201,6 @@ public Configuracao atualizaConfiguracao(Configuracao configuracao) throws SQLEx
 			dbConnection = conexao;
 			preparedStatement = dbConnection.prepareStatement(selectTableSQL);
 			
-			ResultSet rs = preparedStatement.executeQuery(selectTableSQL);
-			
 			int i = 1;
 			preparedStatement.setString(i++, configuracao.getIdPessoa());
 			if(isFavorito){
@@ -213,6 +209,8 @@ public Configuracao atualizaConfiguracao(Configuracao configuracao) throws SQLEx
 			if(isPadraoModalidade){
 				preparedStatement.setString(i++, ConstantesFitRank.CHAR_SIM);
 			}
+			
+			ResultSet rs = preparedStatement.executeQuery();
 			
 			while (rs.next()) {
 				
