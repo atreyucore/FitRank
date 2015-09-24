@@ -1,6 +1,7 @@
 package br.com.fitrank.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,8 +9,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import br.com.fitrank.modelo.Aplicativo;
 import br.com.fitrank.modelo.Pessoa;
+import br.com.fitrank.modelo.fb.PostFitnessFB;
 import br.com.fitrank.service.AmizadeServico;
+import br.com.fitrank.service.AplicativoServico;
 import br.com.fitrank.service.PessoaServico;
 
 import com.restfb.Connection;
@@ -33,7 +37,9 @@ public class InitUser extends HttpServlet {
 		throws ServletException, IOException {
 	   
 	   FacebookClient facebookClient = new DefaultFacebookClient(request.getParameter("token"));
+	   
 	   User facebookUser = facebookClient.fetchObject("me", User.class);
+	   
 	   Connection<User> friendsFB = facebookClient.fetchConnection("me/friends", User.class, Parameter.with("fields", "name, id"));
 	   
 	   Pessoa pessoa = new Pessoa();
@@ -56,6 +62,9 @@ public class InitUser extends HttpServlet {
 //		  profPicUrls[i] = friendsFB.getData().get(i).getPicture() != null ? friendsFB.getData().get(i).getPicture().getUrl() : "imagem/401.png" ;
 		 
 	   }
+	   
+	   
+		   
 	   
 //TODO gvsribeiro utilizar dados da configuracao do usuario para montar proxima tela 
 	   request.setAttribute("token", request.getParameter("token"));
