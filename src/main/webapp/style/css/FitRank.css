@@ -120,17 +120,24 @@ html, body {
 	width: 64px;
 }
 
-.circle.velocimeter {
+.circle.velocimeter,.circle.races {
 	background-color: rgb(157, 234, 200);
 	height: 128px;
 	width: 128px;
 }
 
-.circle.races {
-	background-color: rgb(157, 234, 200);
-	height: 128px;
-	width: 128px;
+.selectedMode {
+	border-style: solid;
+    border-color: darkorange;
+    border-width: 3px;
 }
+
+.selectedShift {
+	border-style: solid;
+    border-color: royalblue;
+    border-width: 3px;
+}
+
 
 .circle.sun {
 	background-color: rgb(196, 231, 191);

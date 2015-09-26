@@ -25,30 +25,23 @@ public class CarregaEscolhaRanking extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	AplicativoServico aplicativoServico = new AplicativoServico();
+	
+	ConfiguracaoServico configuracaoServico = new ConfiguracaoServico();
+	
+	List<PostFitnessFB> postsFit = new ArrayList<PostFitnessFB>();
 
+	ArrayList<Aplicativo> aplicativos = new ArrayList<Aplicativo>();
+	
+	ArrayList<Aplicativo> aplicativosNaoInserir = new ArrayList<Aplicativo>();
+	
 	public CarregaEscolhaRanking() {
 
 	}
 
 	protected void inicia(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		String modalidade = null;
-
-		switch (request.getParameter("modalidade")) {
-		case ConstantesFitRank.MODALIDADE_CAMINHADA:
-			modalidade = "walks";
-			break;
-		case ConstantesFitRank.MODALIDADE_CORRIDA:
-			modalidade = "runs";
-			break;
-
-		case ConstantesFitRank.MODALIDADE_BICICLETA:
-			modalidade = "bikes";
-			break;
-
-		default:
-			break;
-		}
+		
+		String modalidade = defineModalidade(request.getParameter("modalidade"));
 
 		FacebookClient facebookClient = new DefaultFacebookClient(
 				request.getParameter("token"));
@@ -56,12 +49,6 @@ public class CarregaEscolhaRanking extends HttpServlet {
 		Connection<PostFitnessFB> fitConnection = facebookClient
 				.fetchConnection("me/fitness." + modalidade,
 						PostFitnessFB.class, Parameter.with("limit", "1"));
-
-		ConfiguracaoServico configuracaoServico = new ConfiguracaoServico();
-
-		List<PostFitnessFB> postsFit = new ArrayList<PostFitnessFB>();
-
-		ArrayList<Aplicativo> aplicativos = new ArrayList<Aplicativo>();
 
 		for (PostFitnessFB postFit : fitConnection.getData()) {
 
@@ -81,7 +68,6 @@ public class CarregaEscolhaRanking extends HttpServlet {
 		// Insere aplicativos que estão sendo utilizados pelo usuário, no banco.
 		if (aplicativos.size() > 1) {
 
-			ArrayList<Aplicativo> aplicativosNaoInserir = new ArrayList<Aplicativo>();
 			aplicativosNaoInserir = aplicativoServico
 					.leListaAplicativosServico(aplicativos);
 
@@ -117,6 +103,23 @@ public class CarregaEscolhaRanking extends HttpServlet {
 		request.setAttribute("token", request.getParameter("token"));
 
 		rd.forward(request, response);
+	}
+
+	private String defineModalidade(String parameter) {
+		switch (parameter) {
+		case ConstantesFitRank.MODALIDADE_CAMINHADA:
+			return "walks";
+			
+		case ConstantesFitRank.MODALIDADE_CORRIDA:
+			return "runs";
+
+		case ConstantesFitRank.MODALIDADE_BICICLETA:
+			return "bikes";
+
+		default:
+			return null;
+			
+		}
 	}
 
 	protected void doGet(HttpServletRequest request,
