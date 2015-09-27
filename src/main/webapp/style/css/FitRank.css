@@ -161,8 +161,8 @@ html, body {
 	width: 64px;
 	position: relative;
 	/* 	top: 25px;	 */
-	position: relative;
-	    top: 130px;
+/* 	position: relative; */
+/* 	    top: 130px; */
 }
 
 .circle.bestRank {
@@ -234,4 +234,34 @@ span.profileName {
 
 .rankingLine {
 	line-height: 200px;
+}
+
+
+/*slider*/
+.circleWrapper.rankChoose.slider {
+    margin-right: 200px;
+    margin-top: 91px;
+}
+
+.ui-widget-content {
+	border: none !important; 
+    background: none !important;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+	border: none !important; 
+    background: none !important;
+}
+
+.ui-slider-vertical.ui-slider-pips .ui-slider-pip {
+	left: 106px !important;
+}
+
+.ui-slider-pip-initial:not([class*=ui-slider-pip-selected]) {
+	color: rgb(153, 153, 153) !important;
+}
+
+.ui-slider-pip-initial [class*=ui-slider-pip-selected] {
+    font-weight: bold !important; 
+    color: #FF7A00 !important;
 }

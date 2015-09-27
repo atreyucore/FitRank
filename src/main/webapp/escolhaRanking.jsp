@@ -15,16 +15,26 @@
 		<script type="text/javascript">
 		
 			$(document).ready(function(){
-// 				var time = ["dia", "semana", "mês"];
+				var time = ["Dia", "Semana", "Mês"];
 				
-// 				$(".slider").slider({ 
-// 					min: 0, 
-// 			        max: time.length-1, 
-// 			        orientation: "vertical"
-// 			    }).slider("pips", {
-// 			        rest: "label",
-// 			        labels: time
-// 			    });
+				$(".slider").slider({ 
+					min: 0, 
+			        max: time.length-1, 
+			        orientation: "vertical"
+			    }).slider("pips", {
+			        rest: "label",
+			        labels: time
+			    });
+				
+				$(".ui-slider-handle.ui-state-default.ui-corner-all").append("<div class='circle calendario'><img src='imagem/calendar157.png'></div>");
+				
+				$(".ui-slider-pip").each(function() {
+					var bottomInitial = $(this).css("bottom");
+					bottomInitial.replace("%","");
+					bottomInitial = parseInt(bottomInitial) -40;
+					bottomInitial = bottomInitial + "%";
+					$(this).css("bottom", bottomInitial); 
+				});
 				
 				preparaEscolhas(".velocimeter,.races", "selectedMode");
 				preparaEscolhas(".sun,.moon", "selectedShift");
@@ -91,9 +101,9 @@
 						</div>
 						
 						<div class="circleWrapper rankChoose slider">
-							<div class="circle calendario">
-	  	 						<img src="imagem/calendar157.png">
-	  	 					</div>
+<!-- 							<div class="circle calendario"> -->
+<!-- 	  	 						<img src="imagem/calendar157.png"> -->
+<!-- 	  	 					</div> -->
 						</div>
 						<div class="circleWrapper rankChoose" style="position: relative;top: 200px;">
 	<!-- 						<div class="circle bestRank"> -->
