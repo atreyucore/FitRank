@@ -40,12 +40,42 @@ public class ConfiguracaoServico {
 			configuracao.setModalidade(modalidade);
 			
 			try {
-				configuracao = configuracaoDAO.leConfiguracaoPorPessoa(configuracao, true, false);
+				configuracao = configuracaoDAO.leConfiguracaoPorPessoa(configuracao, false, true);
 			} catch (SQLException e) {
 				e.printStackTrace();
 				return null;
 			}
 		}
+		
+		return configuracao;
+	}
+	
+	public Configuracao adicionaConfiguracao(Configuracao configuracao){
+		
+		this.configuracaoDAO = new ConfiguracaoDAO();
+
+		try {
+			configuracao = configuracaoDAO.adicionaConfiguracao(configuracao);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+		
+		return configuracao;
+	}
+	
+	public Configuracao atualizaConfiguracao(Configuracao configuracao){
+		
+		this.configuracaoDAO = new ConfiguracaoDAO();
+
+		try {
+			configuracao = configuracaoDAO.atualizaConfiguracao(configuracao);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		
 		
 		return configuracao;
 	}

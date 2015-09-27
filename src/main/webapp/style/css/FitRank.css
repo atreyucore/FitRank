@@ -120,7 +120,7 @@ html, body {
 	width: 64px;
 }
 
-.circle.velocimeter,.circle.races {
+.circle.velocidade,.circle.distancia {
 	background-color: rgb(157, 234, 200);
 	height: 128px;
 	width: 128px;
@@ -139,7 +139,7 @@ html, body {
 }
 
 
-.circle.sun {
+.circle.dia {
 	background-color: rgb(196, 231, 191);
 	height: 64px;
 	width: 64px;
@@ -147,7 +147,7 @@ html, body {
 	/* 	top: 25px; */
 }
 
-.circle.moon {
+.circle.noite {
 	background-color: rgb(196, 231, 191);
 	height: 64px;
 	width: 64px;

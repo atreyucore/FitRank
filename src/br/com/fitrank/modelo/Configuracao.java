@@ -9,14 +9,16 @@ public class Configuracao {
 	private int idConfiguracao;
 //	Column(name="modalidade")
 	private String modalidade;
+//	Column(name="modo")
+	private String modo;	
 //	Column(name="dia_noite")
 	private String diaNoite;
 //	Column(name="intervalo_data")
 	private String intervaloData;
 //	Column(name="favorito")
-	private int favorito;
+	private boolean favorito;
 //	Column(name="padrao_modalidade")
-	private int padraoModalidade;
+	private boolean padraoModalidade;
 //	Column(name="id_pessoa", FK="FK1_PESSOA_CONF")
 	private String idPessoa;
 	
@@ -32,6 +34,12 @@ public class Configuracao {
 	public void setModalidade(String modalidade) {
 		this.modalidade = modalidade;
 	}
+	public String getModo() {
+		return modo;
+	}
+	public void setModo(String modo) {
+		this.modo = modo;
+	}
 	public String getDiaNoite() {
 		return diaNoite;
 	}
@@ -44,16 +52,16 @@ public class Configuracao {
 	public void setIntervaloData(String intervaloData) {
 		this.intervaloData = intervaloData;
 	}
-	public int getFavorito() {
+	public boolean isFavorito() {
 		return favorito;
 	}
-	public void setFavorito(int favorito) {
+	public void setFavorito(boolean favorito) {
 		this.favorito = favorito;
 	}
-	public int getPadraoModalidade() {
+	public boolean isPadraoModalidade() {
 		return padraoModalidade;
 	}
-	public void setPadraoModalidade(int padraoModalidade) {
+	public void setPadraoModalidade(boolean padraoModalidade) {
 		this.padraoModalidade = padraoModalidade;
 	}
 	public String getIdPessoa() {
@@ -62,5 +70,4 @@ public class Configuracao {
 	public void setIdPessoa(String idPessoa) {
 		this.idPessoa = idPessoa;
 	}
-		
 }

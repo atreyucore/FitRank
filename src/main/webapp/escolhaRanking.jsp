@@ -15,7 +15,55 @@
 		<script type="text/javascript">
 		
 			$(document).ready(function(){
-				var time = ["Dia", "Semana", "Mês"];
+				preparaSlider();
+				preparaEscolhas(".velocidade,.distancia", "selectedMode");
+				preparaEscolhas(".dia,.noite", "selectedShift");
+				
+				preparaConfiguracaoPadrao();
+			})	
+			
+			function preparaConfiguracaoPadrao() {
+				if ("<%=(String) request.getAttribute("default")%>" === "S") {
+					switch("<%=(String) request.getAttribute("modo")%>") {
+						case "V":
+							$(".velocidade").click();
+							break;
+						case "D":
+							$(".distancia").click();
+							break;
+						default:
+							break;
+					}
+					
+					switch("<%=(String) request.getAttribute("turno")%>") {
+						case "D":
+							$(".dia").click();
+							break;
+						case "N":
+							$(".noite").click();
+							break;
+						default:
+							break;
+					}
+					
+					switch("<%=(String) request.getAttribute("periodo")%>") {
+						case "D":
+							$(".slider").slider({value: 0});
+							break;
+						case "S":
+							$(".slider").slider({value: 1});
+							break;
+						case "M":
+							$(".slider").slider({value: 2});
+							break;
+						default:
+							break;
+					}
+				}
+			}
+			
+			function preparaSlider() {
+				var time = ["Dia", "Semana", "M&ecirc;s"];
 				
 				$(".slider").slider({ 
 					min: 0, 
@@ -34,12 +82,9 @@
 					bottomInitial = parseInt(bottomInitial) -40;
 					bottomInitial = bottomInitial + "%";
 					$(this).css("bottom", bottomInitial); 
-				});
-				
-				preparaEscolhas(".velocimeter,.races", "selectedMode");
-				preparaEscolhas(".sun,.moon", "selectedShift");
-			})	
-						
+				});				
+			}
+			
 			function preparaEscolhas(classesEscolhas, classeModificadora) {
 				$(classesEscolhas).on("click", function() {
 					
@@ -53,12 +98,54 @@
 				});
 			}
 			
-			function salvarFavorito(){
-				//TODO Fazer aqui a chamada do servlet com os parametros de configuracao favorita
+			
+			function salvarConfiguração(botao) {
+				
+				if ($(".selectedMode").size() != 0){
+					var modo = $(".selectedMode").attr("class").split(" ")[1];
+				}
+				
+				if ($(".selectedShift").size() != 0){
+					var turno = $(".selectedShift").attr("class").split(" ")[1];
+				}
+				
+				var periodo = $(".ui-slider-pip-selected>.ui-slider-label").attr("data-value");
+				
+				switch(botao) {
+					case "favorito":
+						salvarFavorito(modo, turno, periodo);
+						break;
+					case "padrao":
+						salvarPadrao(modo, turno, periodo);
+						break;
+					default:
+						break;
+				}
+			} 
+			
+			function salvarFavorito(modo, turno, periodo){
+				var jqxhr = $.ajax( "SalvaConfiguracao?fav=S&default=N&modalidade=" + 
+						'<%=(String) request.getAttribute("modalidade")%>' + "&modo=" + modo + "&turno=" + turno + "&periodo=" + periodo + "&token="
+						+ '<%=(String) request.getAttribute("token")%>');
+				jqxhr.done(function() {
+					alert('Favorito salvo com sucesso');
+				});
+// 				window.location= "SalvaConfiguracao?fav=S&default=N&modalidade=" + 
+<%-- 						'<%=(String) request.getAttribute("modalidade")%>' + "&modo=" + modo + "&turno=" + turno + "&periodo=" + periodo + "&token=" --%>
+<%-- 						+ '<%=(String) request.getAttribute("token")%>'; --%>
 			}
 			
-			function salvarPadrao(){
+			function salvarPadrao(modo, turno, periodo){
 				//TODO Fazer aqui a chamada do servlet com os parametros de configuracao padrao
+				var jqxhr = $.ajax("SalvaConfiguracao?fav=N&default=S&modalidade=" + 
+						'<%=(String) request.getAttribute("modalidade")%>' + "&modo=" + modo + "&turno=" + turno + "&periodo=" + periodo + "&token="
+						+ '<%=(String) request.getAttribute("token")%>');
+				jqxhr.done(function() {
+					alert('Padrao salvo com sucesso');
+				});
+// 				window.location= "SalvaConfiguracao?fav=N&default=S&modalidade=" + 
+<%-- 				'<%=(String) request.getAttribute("modalidade")%>' + "&modo=" + modo + "&turno=" + turno + "&periodo=" + periodo + "&token=" --%>
+<%-- 				+ '<%=(String) request.getAttribute("token")%>'; --%>
 			}
 		</script>
 	</head>
@@ -74,8 +161,12 @@
 								FitRank<sup class="supCopy">&copy;</sup>
 							</span> 
 							<div class="fav"> 
-								<img class="fav" src="imagem/tick11_big.png" style="border-radius: 50%;background-color: rgb(101,166,133);"/>
-								<img class="fav" src="imagem/star212_big.png" style="border-radius: 50%;background-color: rgb(241,239,169);" />
+<!-- 								salva padrao -->
+								<img class="fav" src="imagem/tick11_big.png" style="border-radius: 50%;background-color: rgb(101,166,133);"
+									onclick = "salvarConfiguração('padrao')"/>
+<!-- 								salva favorito -->
+								<img class="fav" src="imagem/star212_big.png" style="border-radius: 50%;background-color: rgb(241,239,169);" 
+									onclick = "salvarConfiguração('favorito')"/>
 								<img class="fav" src="imagem/social24.png" style="border-radius: 50%;background-color: rgb(191, 230, 231);" />
 								<img class="fav" src="imagem/medal52.png" style="border-radius: 50%;background-color: rgb(193, 74, 74);" 
 									onclick="window.location = 'ranking.jsp';"/>
@@ -89,13 +180,13 @@
 	<!-- 				</div> -->
 					<div class="circles">
 						<div class="circleWrapper rankChoose">
-							<div class="circle velocimeter" >
+							<div class="circle velocidade" >
 								<img src="imagem/speedometer14.png"> 
 							</div>
 						</div>
 						
 						<div class="circleWrapper rankChoose">
-							<div class="circle sun" >
+							<div class="circle dia" >
 								<img src="imagem/sun95.png"> 
 							</div>
 						</div>
@@ -116,12 +207,12 @@
 					</div>
 					<div class="circles">
 						<div class="circleWrapper rankChoose">
-							<div class="circle races" >
+							<div class="circle distancia" >
 								<img src="imagem/races.png">
 							</div>
 						</div>
 						<div class="circleWrapper rankChoose">
-							<div class="circle moon" >
+							<div class="circle noite" >
 								<img src="imagem/camera70.png">
 							</div>
 						</div>
