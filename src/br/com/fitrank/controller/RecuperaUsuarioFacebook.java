@@ -48,7 +48,14 @@ public class RecuperaUsuarioFacebook extends HttpServlet {
 //	   Usuario usuario = new Usuario();
 	   Pessoa pessoa = new Pessoa();
 	   PessoaServico pessoaServico = new PessoaServico();
-	   pessoa = pessoaServico.adicionaPessoaServico(facebookUser);
+	   if(facebookUser.getId()!=null && !facebookUser.getId().equals("")){
+		   pessoa.setId_usuario(facebookUser.getId());
+	   }
+		
+	   if(facebookUser.getFirstName()!=null){
+		   pessoa.setNome(facebookUser.getName());
+	   }
+	   pessoa = pessoaServico.adicionaPessoaServico(pessoa);
        
 	   //teste crud pessoa
 	   Pessoa pessoaSelecionada =  new Pessoa();

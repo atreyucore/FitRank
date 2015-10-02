@@ -17,6 +17,8 @@ public class Pessoa {
 	private String nome;
 //	Column(name="data_ultimo_login")	
 	private Date data_ultimo_login;
+//	Column(name="rank_anual")	
+	private String rank_anual;
 	
 	private Configuracao configuracaoFavorita;
 
@@ -51,6 +53,12 @@ public class Pessoa {
 	}
 	public void setData_ultimo_login(Date data_ultimo_login) {
 		this.data_ultimo_login = data_ultimo_login;
+	}
+	public String getRank_anual() {
+		return rank_anual;
+	}
+	public void setRank_anual(String rank_anual) {
+		this.rank_anual = rank_anual;
 	}
 	public Configuracao getConfiguracaoFavorita() {
 		return configuracaoFavorita;

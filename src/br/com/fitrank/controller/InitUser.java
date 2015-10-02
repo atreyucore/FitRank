@@ -1,7 +1,6 @@
 package br.com.fitrank.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,11 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import br.com.fitrank.modelo.Aplicativo;
 import br.com.fitrank.modelo.Pessoa;
-import br.com.fitrank.modelo.fb.PostFitness.PostFitnessFB;
 import br.com.fitrank.service.AmizadeServico;
-import br.com.fitrank.service.AplicativoServico;
 import br.com.fitrank.service.PessoaServico;
 
 import com.restfb.Connection;
@@ -44,10 +40,18 @@ public class InitUser extends HttpServlet {
 	   
 	   Pessoa pessoa = new Pessoa();
 	   
+	   if(facebookUser.getId()!=null && !facebookUser.getId().equals("")){
+		   pessoa.setId_usuario(facebookUser.getId());
+	   }
+		
+	   if(facebookUser.getFirstName()!=null){
+		   pessoa.setNome(facebookUser.getName());
+	   }
+	   
 	   if (pessoaServico.lePessoaServico(facebookUser) == null ) {
-		   pessoa = pessoaServico.adicionaPessoaServico(facebookUser);
+		   pessoa = pessoaServico.adicionaPessoaServico(pessoa);
 	   } else {
-		   pessoa = pessoaServico.atualizaPessoaServico(facebookUser);
+		   pessoa = pessoaServico.atualizaPessoaServico(pessoa);
 	   }
 	   	
 //	   String[] profPicUrls = new String[friendsFB.getData().size()];
@@ -55,7 +59,7 @@ public class InitUser extends HttpServlet {
 //	   for (int i=0;i < friendsFB.getData().size(); i++) {
 	   for ( User friendFB : friendsFB.getData()) {
 //		  String idAmigo = friendsFB.getData().get(i).getId();
-		  //TODO trazer todas as maizades para verificar a existência em memória (deixar menos custoso)) 
+		   
 		  atualizaAmizadeUsuario(facebookUser, friendFB);
 
 //		  ids[i] = id;

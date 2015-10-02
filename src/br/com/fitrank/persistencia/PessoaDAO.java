@@ -71,6 +71,7 @@ public class PessoaDAO {
 		String updateTableSQL  = "UPDATE pessoa set "
 				+ "nome = ?, "
 				+ "data_ultimo_login = ? "
+				+ "rank_anual = ? "
 				+ "WHERE id_usuario = ? ";
 	
 		try {
@@ -80,6 +81,7 @@ public class PessoaDAO {
 			
 			preparedStatement.setString(++i, pessoa.getNome());
 			preparedStatement.setString(++i, DateConversor.DateToString(pessoa.getData_ultimo_login()));
+			preparedStatement.setString(++i, pessoa.getRank_anual());
 			preparedStatement.setString(++i, pessoa.getId_usuario());
 	
 			// execute insert SQL statement
@@ -115,7 +117,8 @@ public class PessoaDAO {
 				+ "id_usuario, "
 				+ "data_cadastro, "
 				+ "nome,"
-				+ "data_ultimo_login "
+				+ "data_ultimo_login, "
+				+ "rank_anual "
 				+ "from pessoa "
 				+ "where id_usuario = ?";
 		
@@ -131,6 +134,7 @@ public class PessoaDAO {
 				pessoa.setData_cadastro(DateConversor.StringToDate(rs.getString("data_cadastro")));
 				pessoa.setNome(rs.getString("nome"));
 				pessoa.setData_ultimo_login(DateConversor.StringToDate(rs.getString("data_ultimo_login")));
+				pessoa.setRank_anual(rs.getString("rank_anual"));
 			}
 				
 			
