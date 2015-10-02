@@ -20,18 +20,9 @@ public class PessoaServico {
 	private AmizadeServico amizadeServico;
 	private ConfiguracaoServico configuracaoServico;
 
-	public Pessoa adicionaPessoaServico(User usuarioFacebook){
-	
-		pessoa = new Pessoa();
+	public Pessoa adicionaPessoaServico(Pessoa pessoa){
+		
 		this.pessoaDAO = new PessoaDAO();
-		
-		if(usuarioFacebook.getId()!=null && !usuarioFacebook.getId().equals("")){
-			pessoa.setId_usuario(usuarioFacebook.getId());
-		}
-		
-		if(usuarioFacebook.getFirstName()!=null){
-			pessoa.setNome(usuarioFacebook.getName());
-		}
 			
 		pessoa.setData_cadastro(new Date());
 		pessoa.setData_ultimo_login(new Date());
@@ -45,19 +36,10 @@ public class PessoaServico {
 	    
 	}
 	
-	public Pessoa atualizaPessoaServico(User usuarioFacebook){
+	public Pessoa atualizaPessoaServico(Pessoa pessoa){
 		
-		pessoa = new Pessoa();
 		this.pessoaDAO = new PessoaDAO();
-		
-		if(usuarioFacebook.getId()!=null && !usuarioFacebook.getId().equals("")){
-			pessoa.setId_usuario(usuarioFacebook.getId());
-		}
-		
-		if(usuarioFacebook.getFirstName()!=null){
-			pessoa.setNome(usuarioFacebook.getName());
-		}
-		
+				
 		pessoa.setData_ultimo_login(new Date());
 		
 	    try {

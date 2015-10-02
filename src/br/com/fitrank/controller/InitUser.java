@@ -44,10 +44,18 @@ public class InitUser extends HttpServlet {
 	   
 	   Pessoa pessoa = new Pessoa();
 	   
+	   if(facebookUser.getId()!=null && !facebookUser.getId().equals("")){
+		   pessoa.setId_usuario(facebookUser.getId());
+	   }
+		
+	   if(facebookUser.getFirstName()!=null){
+		   pessoa.setNome(facebookUser.getName());
+	   }
+	   
 	   if (pessoaServico.lePessoaServico(facebookUser) == null ) {
-		   pessoa = pessoaServico.adicionaPessoaServico(facebookUser);
+		   pessoa = pessoaServico.adicionaPessoaServico(pessoa);
 	   } else {
-		   pessoa = pessoaServico.atualizaPessoaServico(facebookUser);
+		   pessoa = pessoaServico.atualizaPessoaServico(pessoa);
 	   }
 	   	
 //	   String[] profPicUrls = new String[friendsFB.getData().size()];
