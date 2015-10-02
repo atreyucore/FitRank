@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import br.com.fitrank.modelo.Aplicativo;
 import br.com.fitrank.modelo.Pessoa;
-import br.com.fitrank.modelo.fb.PostFitnessFB;
+import br.com.fitrank.modelo.fb.PostFitness.PostFitnessFB;
 import br.com.fitrank.service.AmizadeServico;
 import br.com.fitrank.service.AplicativoServico;
 import br.com.fitrank.service.PessoaServico;
@@ -55,7 +55,7 @@ public class InitUser extends HttpServlet {
 //	   for (int i=0;i < friendsFB.getData().size(); i++) {
 	   for ( User friendFB : friendsFB.getData()) {
 //		  String idAmigo = friendsFB.getData().get(i).getId();
-		   
+		  //TODO trazer todas as maizades para verificar a existência em memória (deixar menos custoso)) 
 		  atualizaAmizadeUsuario(facebookUser, friendFB);
 
 //		  ids[i] = id;

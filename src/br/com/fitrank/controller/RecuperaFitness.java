@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import br.com.fitrank.modelo.fb.PostFitnessFB;
+import br.com.fitrank.modelo.fb.PostFitness.PostFitnessFB;
 
 import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;

@@ -1,4 +1,4 @@
-package br.com.fitrank.modelo.fb;
+package br.com.fitrank.modelo.fb.PostFitness;
 
 import static com.restfb.util.DateUtils.toDateFromLongFormat;
 
@@ -32,7 +32,7 @@ public class PostFitnessFB extends Post implements Serializable {
 	private boolean noFeedStory;
 	
 	@Facebook("data")
-	private CourseData dataCourse;
+	private CourseDataPostFitness dataCourse;
 
 	public Date getStartTime() {
 		return toDateFromLongFormat(startTime);
@@ -54,11 +54,11 @@ public class PostFitnessFB extends Post implements Serializable {
 		return noFeedStory;
 	}
 	
-	public CourseData getDataCourse() {
+	public CourseDataPostFitness getDataCourse() {
 		return dataCourse;
 	}
 	
-	public void setDataCourse(CourseData dataCourse) {
+	public void setDataCourse(CourseDataPostFitness dataCourse) {
 		this.dataCourse = dataCourse;
 	}
 }

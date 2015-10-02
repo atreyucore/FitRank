@@ -1,8 +1,8 @@
-package br.com.fitrank.modelo.fb;
+package br.com.fitrank.modelo.fb.PostFitness;
 
 import com.restfb.Facebook;
 
-public class CourseData {
+public class CourseDataPostFitness {
 	
 	@Facebook("course")
 	private Course course;

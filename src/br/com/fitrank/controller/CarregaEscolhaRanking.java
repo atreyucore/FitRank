@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import br.com.fitrank.modelo.Aplicativo;
 import br.com.fitrank.modelo.Configuracao;
-import br.com.fitrank.modelo.fb.PostFitnessFB;
+import br.com.fitrank.modelo.fb.PostFitness.PostFitnessFB;
 import br.com.fitrank.service.AplicativoServico;
 import br.com.fitrank.service.ConfiguracaoServico;
 import br.com.fitrank.util.ConstantesFitRank;
@@ -53,9 +53,7 @@ public class CarregaEscolhaRanking extends HttpServlet {
 		String fav = (String) request.getParameter("fav");
 		
 		Configuracao configuracao = null;
-		
-		
-		
+				
 		Connection<PostFitnessFB> fitConnection = facebookClient
 				.fetchConnection("me/fitness." + modalidade,
 						PostFitnessFB.class, Parameter.with("limit", "1"));
