@@ -7,6 +7,8 @@ public class RankingPessoa {
 	private String id_pessoa;
 	
 	private int colocacao;
+	
+	private float resultado;
 
 	public int getId_ranking() {
 		return id_ranking;
@@ -30,6 +32,14 @@ public class RankingPessoa {
 
 	public void setColocacao(int colocacao) {
 		this.colocacao = colocacao;
+	}
+
+	public float getResultado() {
+		return resultado;
+	}
+
+	public void setResultado(float resultado) {
+		this.resultado = resultado;
 	}
 	
 	
