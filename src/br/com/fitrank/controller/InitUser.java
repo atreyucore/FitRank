@@ -33,7 +33,7 @@ public class InitUser extends HttpServlet {
 		throws ServletException, IOException {
 	   
 	   FacebookClient facebookClient = new DefaultFacebookClient(request.getParameter("token"));
-	   
+
 	   User facebookUser = facebookClient.fetchObject("me", User.class);
 	   
 	   Connection<User> friendsFB = facebookClient.fetchConnection("me/friends", User.class, Parameter.with("fields", "name, id"));
