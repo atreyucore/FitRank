@@ -20,7 +20,7 @@
 				preparaEscolhas(".dia,.noite", "selectedShift");
 				
 				preparaConfiguracaoPadrao();
-			})	
+			});
 			
 			function preparaConfiguracaoPadrao() {
 				if ("<%=(String) request.getAttribute("default")%>" === "S") {
@@ -99,7 +99,7 @@
 			}
 			
 			
-			function salvarConfiguração(botao) {
+			function handleConfiguração(botao) {
 				
 				if ($(".selectedMode").size() != 0){
 					var modo = $(".selectedMode").attr("class").split(" ")[1];
@@ -118,6 +118,9 @@
 					case "padrao":
 						salvarPadrao(modo, turno, periodo);
 						break;
+					case "ranking":
+						gerarRanking(modo, turno, periodo);
+						break;
 					default:
 						break;
 				}
@@ -130,9 +133,6 @@
 				jqxhr.done(function() {
 					alert('Favorito salvo com sucesso');
 				});
-// 				window.location= "SalvaConfiguracao?fav=S&default=N&modalidade=" + 
-<%-- 						'<%=(String) request.getAttribute("modalidade")%>' + "&modo=" + modo + "&turno=" + turno + "&periodo=" + periodo + "&token=" --%>
-<%-- 						+ '<%=(String) request.getAttribute("token")%>'; --%>
 			}
 			
 			function salvarPadrao(modo, turno, periodo){
@@ -143,9 +143,12 @@
 				jqxhr.done(function() {
 					alert('Padrao salvo com sucesso');
 				});
-// 				window.location= "SalvaConfiguracao?fav=N&default=S&modalidade=" + 
-<%-- 				'<%=(String) request.getAttribute("modalidade")%>' + "&modo=" + modo + "&turno=" + turno + "&periodo=" + periodo + "&token=" --%>
-<%-- 				+ '<%=(String) request.getAttribute("token")%>'; --%>
+			}
+			
+			function gerarRanking(modo, turno, periodo){
+				window.location = "CarregaRanking?modalidade=" + 
+					'<%=(String) request.getAttribute("modalidade")%>' + "&modo=" + modo + "&turno=" + turno + "&periodo=" + periodo + "&token="
+					+ '<%=(String) request.getAttribute("token")%>';
 			}
 		</script>
 	</head>
@@ -163,13 +166,13 @@
 							<div class="fav"> 
 <!-- 								salva padrao -->
 								<img class="fav" src="imagem/tick11_big.png" style="border-radius: 50%;background-color: rgb(101,166,133);"
-									onclick = "salvarConfiguração('padrao')"/>
+									onclick = "handleConfiguração('padrao')"/>
 <!-- 								salva favorito -->
 								<img class="fav" src="imagem/star212_big.png" style="border-radius: 50%;background-color: rgb(241,239,169);" 
-									onclick = "salvarConfiguração('favorito')"/>
+									onclick = "handleConfiguração('favorito')"/>
 								<img class="fav" src="imagem/social24.png" style="border-radius: 50%;background-color: rgb(191, 230, 231);" />
 								<img class="fav" src="imagem/medal52.png" style="border-radius: 50%;background-color: rgb(193, 74, 74);" 
-									onclick="window.location = 'ranking.jsp';"/>
+									onclick="handleConfiguração('ranking')"/>
 							</div>
 						</div>
 					</div>

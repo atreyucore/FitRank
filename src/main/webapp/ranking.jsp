@@ -5,6 +5,68 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<title>Escolher a configuração do Ranking</title>
+		<script type="text/javascript" src="js/jquery-1.11.2.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$(".ranking").css("display","none");
+			    preparaConfiguracao();
+			});
+			
+			function preparaConfiguracao() {
+				
+				switch("<%=(String) request.getAttribute("modalidade")%>") {
+					case "R":
+						$(".run").css("display","");
+						break;
+					case "W":
+						$(".walk").css("display","");
+						break;
+					case "B":
+						$(".bike").css("display","");
+						break;
+					default:
+						break;
+				}
+				switch("<%=(String) request.getAttribute("modo")%>") {
+					case "velocidade":
+						$(".velocidade").css("display","");
+						break;
+					case "distancia":
+						$(".distancia").css("display","");
+						break;
+					default:
+						break;
+				}
+				
+				switch("<%=(String) request.getAttribute("turno")%>") {
+					case "dia":
+						$(".dia").css("display","");
+						break;
+					case "noite":
+						$(".noite").css("display","");
+						break;
+					default:
+						break;
+				}
+				
+				$(".calendario").css("display","");
+				
+				switch("<%=(String) request.getAttribute("periodo")%>") {
+					case "0":
+						$(".chosenPeriod").text("Dia");
+						break;
+					case "1":
+						$(".chosenPeriod").text("Semana");
+						break;
+					case "2":
+						$(".chosenPeriod").text("Mês");
+						break;
+					default:
+						break;
+				}
+			} 
+			
+		</script>
 		<link rel="stylesheet" type="text/css" href="./style/css/FitRank.css">
 	</head>
 
@@ -20,28 +82,40 @@
 							</span> 
 						</div>
 					</div>
-	<!-- 				<div> -->
-	<!-- 					<img class="rank" src="imagem/game44.png" /> -->
-						
-	
-	<!-- 				</div> -->
 					<div class="circles">
-						<div class="circle run ranking" onClick="goToEscolhaRanking('runs')">
+						<div class="circle walk ranking">
+							<img src="imagem/man-silhouette1.png">
+						</div>
+						
+						<div class="circle run ranking" >
 							<img src="imagem/sprint.png">
 						</div>
 						
-						<div class="circle velocimeter ranking" >
+						<div class="circle bike ranking" >
+							<img src="imagem/bike11.png">
+						</div>
+						
+						<div class="circle velocidade ranking" >
 							<img src="imagem/speedometer14.png"> 
 						</div>
-						
-						
-						<div class="circle sun ranking smallTile" >
+
+						<div class="circle distancia ranking" >
+							<img src="imagem/races.png">
+						</div>
+
+						<div class="circle dia ranking" >
 							<img src="imagem/sun95.png"> 
 						</div>
+
+						<div class="circle noite ranking" >
+							<img src="imagem/camera70.png">
+						</div>
+						
+						
 						
 						<div class="circle calendario ranking smallTile">
   	 						<img src="imagem/calendar157.png">
-  	 						<p class="capsula chosenPeriod">Mês</p>
+  	 						<p class="capsula chosenPeriod"></p>
   	 					</div>
 					</div>
 					
