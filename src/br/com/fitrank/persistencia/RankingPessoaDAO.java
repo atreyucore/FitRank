@@ -183,7 +183,7 @@ public class RankingPessoaDAO {
 							+	"			AND p.id_usuario = pf.id_pessoa								"
 							+	"			AND (str_to_date(pf.data_publicacao, '%d/%m/%Y') 			"
 	     					+	"					BETWEEN str_to_date(?, '%d/%m/%Y') 					"
-		      				+	"						AND str_to_date('27/09/2015', '%d/%m/%Y'))		"
+		      				+	"						AND str_to_date(?, '%d/%m/%Y'))		"
 							+	"		 GROUP BY p.id_usuario											"
 							+	"		 ORDER BY SUM(pf.distancia_percorrida) DESC ) consulta 			";
 	
@@ -194,6 +194,8 @@ public class RankingPessoaDAO {
 			
 			preparedStatement.setString(i++, pessoa.getId_usuario());
 			preparedStatement.setString(i++, DateConversor.DateToString(new Date()));
+			preparedStatement.setString(i++, DateConversor.getPreviousWeek());
+			
 			
 			ResultSet rs = preparedStatement.executeQuery(selectTableSQL);
 			
@@ -207,9 +209,6 @@ public class RankingPessoaDAO {
 				
 				listaRanking.add(rankingPessoa);
 			}
-			
-			// execute insert SQL stetement
-			preparedStatement.executeUpdate();
 	
 		} catch (SQLException e) {
 	
