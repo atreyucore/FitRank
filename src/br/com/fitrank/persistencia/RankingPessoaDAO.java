@@ -194,7 +194,7 @@ public class RankingPessoaDAO {
 			
 			preparedStatement.setString(i++, pessoa.getId_usuario());
 			preparedStatement.setString(i++, DateConversor.DateToString(new Date()));
-			preparedStatement.setString(i++, DateConversor.getPreviousWeek());
+			preparedStatement.setString(i++, DateConversor.getPreviousWeekString());
 			
 			
 			ResultSet rs = preparedStatement.executeQuery(selectTableSQL);

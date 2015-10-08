@@ -24,28 +24,67 @@ public class DateConversor {
 			return null;
 		}
 	}
+			
+	public static Date getPreviousYear(){
+		gc = new GregorianCalendar();
+		gc.add(Calendar.YEAR, -1);
+		return gc.getTime();
+	}
 	
-	public static String getPreviousYear(){
+	public static Date getPreviousMonth(){
+		gc = new GregorianCalendar();
+		gc.add(Calendar.MONTH, -1);
+		return gc.getTime();
+	}
+	
+	public static Date getPreviousWeek(){
+		gc = new GregorianCalendar();
+		gc.add(Calendar.WEEK_OF_YEAR, -1);
+		return gc.getTime();
+	}
+	
+	public static Date getPreviousDay(){
+		gc = new GregorianCalendar();
+		gc.add(Calendar.DAY_OF_YEAR, -1);
+		return gc.getTime();
+	}
+	
+	public static String getPreviousYearString(){
 		gc = new GregorianCalendar();
 		gc.add(Calendar.YEAR, -1);
 		return FORMATTER.format(gc.getTime());
 	}
 	
-	public static String getPreviousMonth(){
+	
+	public static String getPreviousMonthString(){
 		gc = new GregorianCalendar();
 		gc.add(Calendar.MONTH, -1);
 		return FORMATTER.format(gc.getTime());
 	}
 	
-	public static String getPreviousWeek(){
+	public static String getPreviousWeekString(){
 		gc = new GregorianCalendar();
 		gc.add(Calendar.WEEK_OF_YEAR, -1);
 		return FORMATTER.format(gc.getTime());
 	}
 	
-	public static String getPreviousDay(){
+	public static String getPreviousDayString(){
 		gc = new GregorianCalendar();
 		gc.add(Calendar.DAY_OF_YEAR, -1);
 		return FORMATTER.format(gc.getTime());
 	}
+	
+	public static GregorianCalendar convertDateToGregorian(Date date) {
+		gc = new GregorianCalendar();
+		gc.setTime(date);
+		return gc;
+	}
+	
+	public static int getHourFromDate(Date date) {
+		gc = new GregorianCalendar();
+		gc.setTime(date);
+		return gc.get(Calendar.HOUR_OF_DAY);
+	}
+	
+	
 }
