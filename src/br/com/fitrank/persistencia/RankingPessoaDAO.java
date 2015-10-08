@@ -8,8 +8,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import br.com.fitrank.modelo.Pessoa;
+import br.com.fitrank.modelo.Configuracao;
 import br.com.fitrank.modelo.RankingPessoa;
+import br.com.fitrank.util.ConstantesFitRank;
 import br.com.fitrank.util.DateConversor;
 import br.com.fitrank.util.JDBCFactory;
 
@@ -161,7 +162,7 @@ public class RankingPessoaDAO {
 		return rankingPessoa;
 	}
 	
-	public List<RankingPessoa> geraRankingPessoa(Pessoa pessoa)
+	public List<RankingPessoa> geraRankingDistancia(Configuracao configuracao)
 			throws SQLException {
 	
 		Connection dbConnection = null;
@@ -183,7 +184,7 @@ public class RankingPessoaDAO {
 							+	"			AND p.id_usuario = pf.id_pessoa								"
 							+	"			AND (str_to_date(pf.data_publicacao, '%d/%m/%Y') 			"
 	     					+	"					BETWEEN str_to_date(?, '%d/%m/%Y') 					"
-		      				+	"						AND str_to_date(?, '%d/%m/%Y'))		"
+		      				+	"						AND str_to_date(?, '%d/%m/%Y'))					"
 							+	"		 GROUP BY p.id_usuario											"
 							+	"		 ORDER BY SUM(pf.distancia_percorrida) DESC ) consulta 			";
 	
@@ -192,9 +193,101 @@ public class RankingPessoaDAO {
 			preparedStatement = dbConnection.prepareStatement(selectTableSQL);
 			int i = 1;
 			
-			preparedStatement.setString(i++, pessoa.getId_usuario());
+			preparedStatement.setString(i++, configuracao.getIdPessoa());
 			preparedStatement.setString(i++, DateConversor.DateToString(new Date()));
 			preparedStatement.setString(i++, DateConversor.getPreviousWeekString());
+			
+			if(ConstantesFitRank.DIA.equalsIgnoreCase(configuracao.getIntervaloData())){
+				preparedStatement.setString(i++, DateConversor.getPreviousDay());
+				
+			} else if(ConstantesFitRank.SEMANA.equalsIgnoreCase(configuracao.getIntervaloData())){
+				preparedStatement.setString(i++, DateConversor.getPreviousWeek());
+				
+			} else if(ConstantesFitRank.MES.equalsIgnoreCase(configuracao.getIntervaloData())){
+				preparedStatement.setString(i++, DateConversor.getPreviousMonth());
+				
+			} else if(ConstantesFitRank.ANO.equalsIgnoreCase(configuracao.getIntervaloData())){
+				preparedStatement.setString(i++, DateConversor.getPreviousYear());
+			}
+			
+			
+			ResultSet rs = preparedStatement.executeQuery(selectTableSQL);
+			
+			RankingPessoa rankingPessoa;
+
+			while ( rs.next() ) {
+				rankingPessoa = new RankingPessoa();
+				rankingPessoa.setId_pessoa(rs.getString("id_pessoa"));
+				rankingPessoa.setColocacao(rs.getInt("colocacao"));
+				rankingPessoa.setResultado(rs.getFloat("resultado"));
+				
+				listaRanking.add(rankingPessoa);
+			}
+	
+		} catch (SQLException e) {
+	
+			System.out.println(e.getMessage());
+	
+		} finally {
+	
+			if (preparedStatement != null) {
+				preparedStatement.close();
+			}
+	
+			if (dbConnection != null) {
+				dbConnection.close();
+			}
+	
+		}
+		return listaRanking;
+	}
+	
+	public List<RankingPessoa> geraRankingVelocidadeMedia(Configuracao configuracao)
+			throws SQLException {
+	
+		Connection dbConnection = null;
+		PreparedStatement preparedStatement = null;
+		List<RankingPessoa> listaRanking = new ArrayList<RankingPessoa>();
+	
+		String selectTableSQL = "SELECT @rownum := @rownum + 1 AS colocacao,							"
+		 					+	"		consulta.id_usuario id_pessoa,									"
+		 					+	"		consulta.resultado resultado									"
+							+	"  FROM (SELECT @rownum := 0) r,										"
+							+	"		(SELECT p.id_usuario,											"
+		 					+	"				SUM(pf.distancia_percorrida/pf.duracao) resultado		"
+							+	"				FROM post_fitness pf,									"
+  		 					+	"					 pessoa p											"
+							+	"		  WHERE (p.id_usuario IN (SELECT a.id_amigo						"
+							+	"									FROM amizade a						"
+							+	"								   WHERE a.id_pessoa = p.id_usuario)	"
+							+	"				 OR p.id_usuario = ?)									"
+							+	"			AND p.id_usuario = pf.id_pessoa								"
+							+	"			AND (str_to_date(pf.data_publicacao, '%d/%m/%Y') 			"
+	     					+	"					BETWEEN str_to_date(?, '%d/%m/%Y') 					"
+		      				+	"						AND str_to_date(?, '%d/%m/%Y'))					"
+							+	"		 GROUP BY p.id_usuario											"
+							+	"		 ORDER BY SUM(pf.distancia_percorrida) DESC ) consulta 			";
+	
+		try {
+			dbConnection = conexao;
+			preparedStatement = dbConnection.prepareStatement(selectTableSQL);
+			int i = 1;
+			
+			preparedStatement.setString(i++, configuracao.getIdPessoa());
+			preparedStatement.setString(i++, DateConversor.DateToString(new Date()));
+			
+			if(ConstantesFitRank.DIA.equalsIgnoreCase(configuracao.getIntervaloData())){
+				preparedStatement.setString(i++, DateConversor.getPreviousDay());
+				
+			} else if(ConstantesFitRank.SEMANA.equalsIgnoreCase(configuracao.getIntervaloData())){
+				preparedStatement.setString(i++, DateConversor.getPreviousWeek());
+				
+			} else if(ConstantesFitRank.MES.equalsIgnoreCase(configuracao.getIntervaloData())){
+				preparedStatement.setString(i++, DateConversor.getPreviousMonth());
+				
+			} else if(ConstantesFitRank.ANO.equalsIgnoreCase(configuracao.getIntervaloData())){
+				preparedStatement.setString(i++, DateConversor.getPreviousYear());
+			}
 			
 			
 			ResultSet rs = preparedStatement.executeQuery(selectTableSQL);
