@@ -198,16 +198,16 @@ public class RankingPessoaDAO {
 			preparedStatement.setString(i++, DateConversor.getPreviousWeekString());
 			
 			if(ConstantesFitRank.DIA.equalsIgnoreCase(configuracao.getIntervaloData())){
-				preparedStatement.setString(i++, DateConversor.getPreviousDay());
+				preparedStatement.setString(i++, DateConversor.getPreviousDayString());
 				
 			} else if(ConstantesFitRank.SEMANA.equalsIgnoreCase(configuracao.getIntervaloData())){
-				preparedStatement.setString(i++, DateConversor.getPreviousWeek());
+				preparedStatement.setString(i++, DateConversor.getPreviousWeekString());
 				
 			} else if(ConstantesFitRank.MES.equalsIgnoreCase(configuracao.getIntervaloData())){
-				preparedStatement.setString(i++, DateConversor.getPreviousMonth());
+				preparedStatement.setString(i++, DateConversor.getPreviousMonthString());
 				
 			} else if(ConstantesFitRank.ANO.equalsIgnoreCase(configuracao.getIntervaloData())){
-				preparedStatement.setString(i++, DateConversor.getPreviousYear());
+				preparedStatement.setString(i++, DateConversor.getPreviousYearString());
 			}
 			
 			
@@ -277,16 +277,16 @@ public class RankingPessoaDAO {
 			preparedStatement.setString(i++, DateConversor.DateToString(new Date()));
 			
 			if(ConstantesFitRank.DIA.equalsIgnoreCase(configuracao.getIntervaloData())){
-				preparedStatement.setString(i++, DateConversor.getPreviousDay());
+				preparedStatement.setString(i++, DateConversor.getPreviousDayString());
 				
 			} else if(ConstantesFitRank.SEMANA.equalsIgnoreCase(configuracao.getIntervaloData())){
-				preparedStatement.setString(i++, DateConversor.getPreviousWeek());
+				preparedStatement.setString(i++, DateConversor.getPreviousWeekString());
 				
 			} else if(ConstantesFitRank.MES.equalsIgnoreCase(configuracao.getIntervaloData())){
-				preparedStatement.setString(i++, DateConversor.getPreviousMonth());
+				preparedStatement.setString(i++, DateConversor.getPreviousMonthString());
 				
 			} else if(ConstantesFitRank.ANO.equalsIgnoreCase(configuracao.getIntervaloData())){
-				preparedStatement.setString(i++, DateConversor.getPreviousYear());
+				preparedStatement.setString(i++, DateConversor.getPreviousYearString());
 			}
 			
 			
