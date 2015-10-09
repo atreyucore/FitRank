@@ -118,6 +118,9 @@ public class PessoaDAO {
 				+ "data_cadastro, "
 				+ "nome,"
 				+ "data_ultimo_login, "
+				+ "data_ultima_atualizacao_runs, "
+				+ "data_ultima_atualizacao_walks, "
+				+ "data_ultima_atualizacao_bikes, "
 				+ "rank_anual "
 				+ "from pessoa "
 				+ "where id_usuario = ?";
@@ -134,6 +137,9 @@ public class PessoaDAO {
 				pessoa.setData_cadastro(DateConversor.StringToDate(rs.getString("data_cadastro")));
 				pessoa.setNome(rs.getString("nome"));
 				pessoa.setData_ultimo_login(DateConversor.StringToDate(rs.getString("data_ultimo_login")));
+				pessoa.setData_ultima_atualizacao_runs(DateConversor.StringToDate( rs.getString("data_ultima_atualizacao_runs") ) );
+				pessoa.setData_ultima_atualizacao_runs(DateConversor.StringToDate( rs.getString("data_ultima_atualizacao_walks") ) );
+				pessoa.setData_ultima_atualizacao_runs(DateConversor.StringToDate( rs.getString("data_ultima_atualizacao_bikes") ) );
 				pessoa.setRank_anual(rs.getString("rank_anual"));
 			}
 				
@@ -156,6 +162,7 @@ public class PessoaDAO {
 		
 		return pessoa;
 	}
+	
 //	public boolean removePessoaFromId(Pessoa pessoa) throws SQLException {
 //
 //		Connection dbConnection = null;

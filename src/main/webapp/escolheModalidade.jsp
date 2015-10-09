@@ -13,8 +13,12 @@
 	<%}%>
 	function goToEscolhaRanking(modalidade) {
 		window.location = 'CarregaEscolhaRanking?modalidade=' + modalidade + '&token=' + '<%=(String) request.getAttribute("token")%>';
-
 	}
+	
+	function goToRankingFavorito() {
+		window.location = 'CarregaEscolhaRanking?fav=S&token=' + '<%=(String) request.getAttribute("token")%>';
+	}
+	
 </script>
 </head>
 <body>
@@ -52,7 +56,7 @@
 							</div>
 						</div>
 						<div class="circleWrapper">
-							<div class="circle favorite" >
+							<div class="circle favorite"  onClick="goToRankingFavorito()" >
 								<img src="imagem/favourites7.png">
 							</div>
 						</div>

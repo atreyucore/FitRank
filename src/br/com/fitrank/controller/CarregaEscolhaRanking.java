@@ -15,6 +15,8 @@ import br.com.fitrank.modelo.Configuracao;
 import br.com.fitrank.modelo.fb.PostFitness.PostFitnessFB;
 import br.com.fitrank.service.AplicativoServico;
 import br.com.fitrank.service.ConfiguracaoServico;
+import br.com.fitrank.service.PessoaServico;
+import br.com.fitrank.service.PostFitnessServico;
 import br.com.fitrank.util.ConstantesFitRank;
 
 import com.restfb.Connection;
@@ -26,9 +28,13 @@ import com.restfb.types.User;
 public class CarregaEscolhaRanking extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	AplicativoServico aplicativoServico = new AplicativoServico();
+	AplicativoServico aplicativoServico     = new AplicativoServico();
 	
 	ConfiguracaoServico configuracaoServico = new ConfiguracaoServico();
+	
+	PessoaServico pessoaServico				= new PessoaServico();
+	
+	PostFitnessServico postFitnessServico   = new PostFitnessServico();
 	
 	public CarregaEscolhaRanking() {
 
@@ -37,13 +43,13 @@ public class CarregaEscolhaRanking extends HttpServlet {
 	protected void inicia(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
+		RequestDispatcher rd = null;
+		
 		ArrayList<Aplicativo> aplicativos = new ArrayList<Aplicativo>();
 		
 		List<PostFitnessFB> postsFit = new ArrayList<PostFitnessFB>();
 		
 		ArrayList<Aplicativo> aplicativosNaoInserir = new ArrayList<Aplicativo>();
-		
-		String modalidade = defineModalidade((String) request.getParameter("modalidade"));
 		
 		FacebookClient facebookClient = new DefaultFacebookClient(
 				request.getParameter("token"));
@@ -53,65 +59,71 @@ public class CarregaEscolhaRanking extends HttpServlet {
 		String fav = (String) request.getParameter("fav");
 		
 		Configuracao configuracao = null;
-				
-		Connection<PostFitnessFB> fitConnection = facebookClient
-				.fetchConnection("me/fitness." + modalidade,
-						PostFitnessFB.class, Parameter.with("limit", "1"));
 		
-		for (PostFitnessFB postFit : fitConnection.getData()) {
-
-			postsFit.add(postFit);
-
-			// Adiciona aplicativo à Lista
-			Aplicativo aplicativo = new Aplicativo();
-
-			aplicativo.setId_aplicativo(postFit.getApplication().getId());
-			aplicativo.setNome(postFit.getApplication().getName());
-
-			if (!aplicativos.contains(aplicativo)) {
-				aplicativos.add(aplicativo);
+		if (! fav.equals("S") && fav != null ) {
+			
+			String modalidade = defineModalidade((String) request.getParameter("modalidade"));
+			
+			Connection<PostFitnessFB> fitConnection = facebookClient
+					.fetchConnection("me/fitness." + modalidade,
+							PostFitnessFB.class, Parameter.with("limit", "1"));
+			
+			for (PostFitnessFB postFit : fitConnection.getData()) {
+	
+				postsFit.add(postFit);
+	
+				// Adiciona aplicativo à Lista
+				Aplicativo aplicativo = new Aplicativo();
+	
+				aplicativo.setId_aplicativo(postFit.getApplication().getId());
+				aplicativo.setNome(postFit.getApplication().getName());
+	
+				if (!aplicativos.contains(aplicativo)) {
+					aplicativos.add(aplicativo);
+				}
 			}
-		}
-
-		// Insere aplicativos que estão sendo utilizados pelo usuário, no banco.
-		if (aplicativos.size() > 1) {
-
-			aplicativosNaoInserir = aplicativoServico
-					.leListaAplicativosServico(aplicativos);
-
-			if (aplicativosNaoInserir != null) {
-				aplicativos.removeAll(aplicativosNaoInserir);
+	
+			// Insere aplicativos que estão sendo utilizados pelo usuário, no banco.
+			if (aplicativos.size() > 1) {
+	
+				aplicativosNaoInserir = aplicativoServico
+						.leListaAplicativosServico(aplicativos);
+	
+				if (aplicativosNaoInserir != null) {
+					aplicativos.removeAll(aplicativosNaoInserir);
+				}
+	
+				if (aplicativos.size() > 1)
+					aplicativoServico.adicionaAplicativosServico(aplicativos);
 			}
-
-			if (aplicativos.size() > 1)
-				aplicativoServico.adicionaAplicativosServico(aplicativos);
-		}
-
-		if (aplicativos.size() == 1) {
-			if (aplicativoServico.leAplicativoServico(aplicativos.get(0)
-					.getId_aplicativo()) == null) {
-				aplicativoServico.adicionaAplicativoServico(aplicativos.get(0));
+	
+			if (aplicativos.size() == 1) {
+				if (aplicativoServico.leAplicativoServico(aplicativos.get(0)
+						.getId_aplicativo()) == null) {
+					aplicativoServico.adicionaAplicativoServico(aplicativos.get(0));
+				}
 			}
-		}
-
-		RequestDispatcher rd = null;
-
-		if (postsFit.size() == 0) {
-			request.setAttribute("erro",
-					"Você não tem nenhum registro nesta categoria.");
-			request.setAttribute("token", (String) request.getParameter("token"));
-			request.getRequestDispatcher("/escolheModalidade.jsp").forward(request, response);;
-			return;
-		} else {
-			rd = request.getRequestDispatcher("/escolhaRanking.jsp");
-		}
+	
+			
+	
+			if (postsFit.size() == 0) {
+				request.setAttribute("erro",
+						"Você não tem nenhum registro nesta categoria.");
+				request.setAttribute("token", (String) request.getParameter("token"));
+				request.getRequestDispatcher("/escolheModalidade.jsp").forward(request, response);;
+				return;
+			} else {
+				rd = request.getRequestDispatcher("/CarregaRanking");
+			}
 		// TODO gvsribeiro Recuperar dados de Pessoa!
 		// TODO Recuperar configurção de favorito aqui!
+			
+				configuracao = configuracaoServico.leConfiguracaoPadraoModalidade( facebookUser.getId(), (String) request.getParameter("modalidade"));
+		}
 		
-		if (fav == null) {
-			configuracao = configuracaoServico.leConfiguracaoPadraoModalidade( facebookUser.getId(), (String) request.getParameter("modalidade"));
-		} else if (fav.equals("S")){
+		if (fav.equals("S")){
 			configuracao = configuracaoServico.leConfiguracaoFavorita(facebookUser.getId());
+			rd = request.getRequestDispatcher("/CarregaRanking");
 		}
 		
 		if (configuracao != null) {
@@ -123,7 +135,7 @@ public class CarregaEscolhaRanking extends HttpServlet {
 			request.setAttribute("periodo", configuracao.getIntervaloData());
 			
 		} else {
-			request.setAttribute("modalidade", (String) request.getParameter("modalidade"));
+			request.setAttribute("modalidade", request.getParameter("modalidade") != null ? (String) request.getParameter("modalidade") : "");
 		}
 		
 		
@@ -131,7 +143,69 @@ public class CarregaEscolhaRanking extends HttpServlet {
 		
 		rd.forward(request, response);
 	}
+	
+	private void handlePrimeiraAtividade(String modalidade, User facebookUser) {
 
+		switch (modalidade) {
+			case ConstantesFitRank.MODALIDADE_CAMINHADA:
+				
+				if (pessoaServico.lePessoaServico(facebookUser).getData_ultima_atualizacao_walks() == null) {
+					executaPrimeiraAtualizacao(ConstantesFitRank.MODALIDADE_CAMINHADA);
+				}
+				
+				break;
+			case ConstantesFitRank.MODALIDADE_CORRIDA:
+				
+				if (pessoaServico.lePessoaServico(facebookUser).getData_ultima_atualizacao_runs() == null) {
+					
+				}
+				
+				break;	
+			case ConstantesFitRank.MODALIDADE_BICICLETA:
+				
+				if (pessoaServico.lePessoaServico(facebookUser).getData_ultima_atualizacao_bikes() == null) {
+					
+				}
+				
+				break;	
+			default:
+				break;			
+		}
+	}
+	
+	
+	private void executaPrimeiraAtualizacao(String modalidade) {
+		
+//		Connection<PostFitnessFB> fitConnection = facebookClient.fetchConnection("me/fitness." + defineModalidade(modalidade), 
+//				PostFitnessFB.class, Parameter.with("limit", "99999"));
+		
+//		for (PostFitnessFB postFit : fitConnection.getData()) {
+			
+//			postsFit.add(postFit);
+			
+//			postFit.getId();
+			//id pessoa
+//			postFit.getStartTime();
+//			postFit.getEndTime();
+			//modalidade
+//			postFit.getApplication().getId();
+			
+			// Adiciona aplicativo à Lista
+//			Aplicativo aplicativo = new Aplicativo();
+//
+//			aplicativo.setId_aplicativo(postFit.getApplication().getId());
+//			aplicativo.setNome(postFit.getApplication().getName());
+
+//			if (!aplicativos.contains(aplicativo)) {
+//				aplicativos.add(aplicativo);
+//			}
+//		}
+		
+		
+//		postFitnessServico.adicionaPostFitnessServico();
+		
+	}
+	
 	private String defineModalidade(String parameter) {
 		switch (parameter) {
 		case ConstantesFitRank.MODALIDADE_CAMINHADA:
@@ -144,7 +218,7 @@ public class CarregaEscolhaRanking extends HttpServlet {
 			return "bikes";
 
 		default:
-			return null;
+			return parameter;
 			
 		}
 	}
