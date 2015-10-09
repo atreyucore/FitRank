@@ -4,8 +4,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
+import br.com.fitrank.modelo.Configuracao;
 import br.com.fitrank.modelo.RankingPessoa;
+import br.com.fitrank.util.ConstantesFitRank;
+import br.com.fitrank.util.DateConversor;
 import br.com.fitrank.util.JDBCFactory;
 
 public class RankingPessoaDAO {
@@ -24,8 +30,9 @@ public class RankingPessoaDAO {
 		String insertTableSQL = "INSERT INTO ranking_pessoa("
 				+ "id_ranking, "
 				+ "id_pessoa, "
-				+ "colocacao" 
-				+ ") VALUES (?, ?, ?)";
+				+ "colocacao, "
+				+ "resultado "
+				+ ") VALUES (?, ?, ?, ?)";
 
 		try {
 			dbConnection = conexao;
@@ -36,6 +43,7 @@ public class RankingPessoaDAO {
 			preparedStatement.setInt(++i, rankingPessoa.getId_ranking());
 			preparedStatement.setString(++i, rankingPessoa.getId_pessoa());
 			preparedStatement.setInt(++i, rankingPessoa.getColocacao());
+			preparedStatement.setFloat(++i, rankingPessoa.getResultado());
 
 			// execute insert SQL stetement
 			preparedStatement.executeUpdate();
@@ -67,6 +75,7 @@ public class RankingPessoaDAO {
 		String insertTableSQL = "UPDATE ranking_pessoa set "
 				+ "id_pessoa = ?,"
 				+ "colocacao = ? " 
+				+ "resultado = ?"
 				+ "where id_ranking = ?";
 	
 		try {
@@ -77,6 +86,7 @@ public class RankingPessoaDAO {
 			
 			preparedStatement.setInt(++i, rankingPessoa.getColocacao());
 			preparedStatement.setInt(++i, rankingPessoa.getId_ranking());
+			preparedStatement.setFloat(++i, rankingPessoa.getResultado());
 			preparedStatement.setString(++i, rankingPessoa.getId_pessoa());
 	
 			// execute insert SQL stetement
@@ -109,7 +119,8 @@ public class RankingPessoaDAO {
 		String selectTableSQL = "SELECT "
 				+ "id_ranking, "
 				+ "id_pessoa,"
-				+ "colocacao "
+				+ "colocacao, "
+				+ "resultado "
 				+ "FROM ranking_pessoa "
 				+ "where id_ranking = ?";
 	
@@ -127,6 +138,7 @@ public class RankingPessoaDAO {
 				rankingPessoa.setId_ranking(rs.getInt("id_ranking"));
 				rankingPessoa.setId_pessoa(rs.getString("id_pessoa"));
 				rankingPessoa.setColocacao(rs.getInt("colocacao"));
+				rankingPessoa.setResultado(rs.getFloat("resultado"));
 			}
 			
 			// execute insert SQL stetement
