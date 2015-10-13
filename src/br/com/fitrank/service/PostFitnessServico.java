@@ -1,8 +1,10 @@
 package br.com.fitrank.service;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import br.com.fitrank.modelo.PostFitness;
+import br.com.fitrank.modelo.fb.PostFitness.PostFitnessFB;
 import br.com.fitrank.persistencia.PostFitnessDAO;
 
 public class PostFitnessServico {
@@ -19,6 +21,19 @@ public class PostFitnessServico {
 			
 			e.printStackTrace();
 			return null;
+		}
+	}
+	
+	public boolean adicionaListaPostFitnessServico(ArrayList<PostFitness> listaPostFitness) {
+		
+		this.postFitnessDAO = new PostFitnessDAO();
+		
+	    try {
+	    	return postFitnessDAO.adicionaListaPostFitness(listaPostFitness);
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+			return false;
 		}
 	}
 }

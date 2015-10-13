@@ -14,4 +14,8 @@ public final class ConstantesFitRank {
 	public static final String CHAR_SIM = "S";
 	public static final String CHAR_NAO = "N";
 	public static final int TAMANHO_PADRAO_RANKING = 10;
+	
+	public static final String ID_APP_NIKE = "84697719333";
+	public static final String ID_APP_RUNTASTIC = "162918433202";
+	public static final String ID_APP_RUNKEEPER = "62572192129";
 }

@@ -3,9 +3,11 @@ package br.com.fitrank.util;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class PostFitnessUtil {
 	
-	public double getNikeDistance(String courseTitle) {
+	public static double getNikeDistance(String courseTitle) {
 		
 		String miles = courseTitle.split("miles")[0].trim();
 		
@@ -18,11 +20,11 @@ public class PostFitnessUtil {
 		return kms;
 	}
 	
-	public double getNikeDuration(String strStartTime, String strEndTime) {
+	public static double getNikeDuration(Date startTime, Date endTime) {
 		
-		Date startTime =  DateConversor.StringToDate(strStartTime);
+//		Date startTime =  DateConversor.StringToDate(strStartTime);
 		
-		Date endTime =  DateConversor.StringToDate(strEndTime);
+//		Date endTime =  DateConversor.StringToDate(strEndTime);
 		
 		GregorianCalendar gcStartTime = DateConversor.convertDateToGregorian(startTime);
 		
@@ -34,7 +36,7 @@ public class PostFitnessUtil {
 		
 	}
 	
-	public double getRuntasticDistance(String courseTitle) {
+	public static double getRuntasticDistance(String courseTitle) {
 	
 		courseTitle = courseTitle.replace("a ", "");
 		
@@ -43,7 +45,7 @@ public class PostFitnessUtil {
 		return Double.parseDouble(kms);
 	}
 	
-	public double getRuntasticDuration(String courseTitle) {
+	public static double getRuntasticDuration(String courseTitle) {
 		
 		courseTitle = courseTitle.split("in")[1].trim();
 		
@@ -62,4 +64,55 @@ public class PostFitnessUtil {
 		return doubleHour + doubleMinutesInHour + doubleSecondsInHour;
 		
 	}
+	
+	public static double getRunKeeperDistance(String courseTitle) {
+		
+//		courseTitle = courseTitle.replace("a ", "");
+		
+		String kms = courseTitle.split("km")[0].trim();
+		
+		return Double.parseDouble(kms);
+	}
+	
+	public static double getRunKeeperDuration(String courseTitle) {
+		
+		int countColons = StringUtils.countMatches(courseTitle, ":");
+		
+		
+		courseTitle = courseTitle.split("in")[1].trim();
+		
+		String strHour = "";
+		String strMinutes = "";
+		String strSeconds = "";
+		
+		if (countColons == 1) {
+			
+			strMinutes = courseTitle.split(":")[0].trim();
+			
+			strSeconds = courseTitle.split(":")[1].trim();
+			
+		} else if (countColons == 2) {
+			strHour = courseTitle.split(":")[0].trim();
+			
+			strMinutes = courseTitle.split(":")[1].trim();
+			
+			strSeconds = courseTitle.split(":")[2].trim();
+		}
+		
+		
+		double doubleHour = 0.0;
+		double doubleMinutesInHour = 0.0;
+		double doubleSecondsInHour = 0.0;
+		
+		if (! strHour.equals("")){
+			doubleMinutesInHour = Double.parseDouble(strMinutes) / 60;
+			
+			doubleSecondsInHour = Double.parseDouble(strSeconds) / 3600;
+		} else {
+			doubleHour = Double.parseDouble(strHour);
+		}
+		
+		return doubleHour + doubleMinutesInHour + doubleSecondsInHour;
+		
+	}	
 }
