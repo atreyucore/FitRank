@@ -2,6 +2,7 @@ package br.com.fitrank.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import br.com.fitrank.modelo.Aplicativo;
 import br.com.fitrank.modelo.Configuracao;
+import br.com.fitrank.modelo.Pessoa;
 import br.com.fitrank.modelo.PostFitness;
 import br.com.fitrank.modelo.fb.PostFitness.PostFitnessFB;
 import br.com.fitrank.service.AplicativoServico;
@@ -31,14 +33,14 @@ import com.restfb.types.User;
 public class CarregaEscolhaRanking extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	AplicativoServico aplicativoServico     = new AplicativoServico();
-	
+	AplicativoServico aplicativoServico = new AplicativoServico();
+
 	ConfiguracaoServico configuracaoServico = new ConfiguracaoServico();
-	
-	PessoaServico pessoaServico				= new PessoaServico();
-	
-	PostFitnessServico postFitnessServico   = new PostFitnessServico();
-	
+
+	PessoaServico pessoaServico = new PessoaServico();
+
+	PostFitnessServico postFitnessServico = new PostFitnessServico();
+
 	public CarregaEscolhaRanking() {
 
 	}
@@ -47,193 +49,277 @@ public class CarregaEscolhaRanking extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 
 		RequestDispatcher rd = null;
-		
+
 		ArrayList<Aplicativo> aplicativos = new ArrayList<Aplicativo>();
-		
+
 		List<PostFitnessFB> postsFit = new ArrayList<PostFitnessFB>();
-		
+
 		ArrayList<Aplicativo> aplicativosNaoInserir = new ArrayList<Aplicativo>();
-		
+
 		FacebookClient facebookClient = new DefaultFacebookClient(
 				request.getParameter("token"));
-		
+
 		User facebookUser = facebookClient.fetchObject("me", User.class);
-		
+
 		String fav = (String) request.getParameter("fav");
-		
+
+		String modalidadeFB = defineModalidade((String) request
+				.getParameter("modalidade"));
+
+		String modalidade = (String) request.getParameter("modalidade");
+
 		Configuracao configuracao = null;
-		
-		if (! fav.equals("S") && fav != null ) {
-			
-			String modalidade = defineModalidade((String) request.getParameter("modalidade"));
-			
-			Connection<PostFitnessFB> fitConnection = facebookClient
-					.fetchConnection("me/fitness." + modalidade,
-							PostFitnessFB.class, Parameter.with("limit", "1"));
-			
-			for (PostFitnessFB postFit : fitConnection.getData()) {
-	
-				postsFit.add(postFit);
-	
-				// Adiciona aplicativo à Lista
-				Aplicativo aplicativo = new Aplicativo();
-	
-				aplicativo.setId_aplicativo(postFit.getApplication().getId());
-				aplicativo.setNome(postFit.getApplication().getName());
-	
-				if (!aplicativos.contains(aplicativo)) {
-					aplicativos.add(aplicativo);
+
+		if (fav == null || !fav.equals("S")) {
+
+			Date ultimaAtualizacao = handleUltimaAtividade(modalidade,
+					facebookClient, facebookUser);
+
+			if (ultimaAtualizacao != null) {
+
+				int limit = calculaLimiteDeBusca(ultimaAtualizacao);
+
+				Connection<PostFitnessFB> fitConnection = facebookClient
+						.fetchConnection("me/fitness." + modalidadeFB,
+								PostFitnessFB.class,
+								Parameter.with("limit", String.valueOf(limit)));
+
+				for (PostFitnessFB postFit : fitConnection.getData()) {
+
+					postsFit.add(postFit);
+
+					// Adiciona aplicativo à Lista
+					Aplicativo aplicativo = new Aplicativo();
+
+					aplicativo.setId_aplicativo(postFit.getApplication()
+							.getId());
+					aplicativo.setNome(postFit.getApplication().getName());
+
+					if (!aplicativos.contains(aplicativo)) {
+						aplicativos.add(aplicativo);
+					}
 				}
-			}
-	
-			// Insere aplicativos que estão sendo utilizados pelo usuário, no banco.
-			if (aplicativos.size() > 1) {
-	
-				aplicativosNaoInserir = aplicativoServico
-						.leListaAplicativosServico(aplicativos);
-	
-				if (aplicativosNaoInserir != null) {
-					aplicativos.removeAll(aplicativosNaoInserir);
+
+				// Insere aplicativos que estão sendo utilizados pelo
+				// usuário, no banco.
+				if (aplicativos.size() > 1) {
+
+					aplicativosNaoInserir = aplicativoServico
+							.leListaAplicativosServico(aplicativos);
+
+					if (aplicativosNaoInserir != null) {
+						aplicativos.removeAll(aplicativosNaoInserir);
+					}
+
+					if (aplicativos.size() > 1)
+						aplicativoServico
+								.adicionaAplicativosServico(aplicativos);
 				}
-	
-				if (aplicativos.size() > 1)
-					aplicativoServico.adicionaAplicativosServico(aplicativos);
-			}
-	
-			if (aplicativos.size() == 1) {
-				if (aplicativoServico.leAplicativoServico(aplicativos.get(0)
-						.getId_aplicativo()) == null) {
-					aplicativoServico.adicionaAplicativoServico(aplicativos.get(0));
+
+				if (aplicativos.size() == 1) {
+					if (aplicativoServico.leAplicativoServico(aplicativos
+							.get(0).getId_aplicativo()) == null) {
+						aplicativoServico.adicionaAplicativoServico(aplicativos
+								.get(0));
+					}
 				}
+
+				if (postsFit.size() == 0) {
+					request.setAttribute("erro",
+							"Você não tem nenhum registro nesta categoria.");
+					request.setAttribute("token",
+							(String) request.getParameter("token"));
+					request.getRequestDispatcher("/escolheModalidade.jsp")
+							.forward(request, response);
+					;
+					return;
+				} else {
+					rd = request.getRequestDispatcher("/CarregaRanking");
+				}
+				// TODO gvsribeiro Recuperar dados de Pessoa!
+
+				configuracao = configuracaoServico
+						.leConfiguracaoPadraoModalidade(facebookUser.getId(),
+								modalidade);
 			}
-	
-			
-	
-			if (postsFit.size() == 0) {
+
+		} else if (fav.equals("S")) {
+
+			configuracao = configuracaoServico
+					.leConfiguracaoFavorita(facebookUser.getId());
+
+			if (configuracao == null) {
 				request.setAttribute("erro",
-						"Você não tem nenhum registro nesta categoria.");
-				request.setAttribute("token", (String) request.getParameter("token"));
-				request.getRequestDispatcher("/escolheModalidade.jsp").forward(request, response);;
+						"Você ainda não cadastrou configuração favorita.");
+				request.setAttribute("token",
+						(String) request.getParameter("token"));
+				request.getRequestDispatcher("/escolheModalidade.jsp").forward(
+						request, response);
 				return;
 			} else {
 				rd = request.getRequestDispatcher("/CarregaRanking");
 			}
-		// TODO gvsribeiro Recuperar dados de Pessoa!
-		// TODO Recuperar configurção de favorito aqui!
-			
-				configuracao = configuracaoServico.leConfiguracaoPadraoModalidade( facebookUser.getId(), (String) request.getParameter("modalidade"));
 		}
-		
-		if (fav.equals("S")){
-			configuracao = configuracaoServico.leConfiguracaoFavorita(facebookUser.getId());
-			rd = request.getRequestDispatcher("/CarregaRanking");
-		}
-		
+
 		if (configuracao != null) {
 			request.setAttribute("modalidade", configuracao.getModalidade());
 			request.setAttribute("modo", configuracao.getModo());
 			request.setAttribute("turno", configuracao.getDiaNoite());
-			request.setAttribute("favorito", configuracao.isFavorito() ? "S" : "N");
-			request.setAttribute("default", configuracao.isPadraoModalidade() ? "S" : "N");
+			request.setAttribute("favorito", configuracao.isFavorito() ? "S"
+					: "N");
+			request.setAttribute("default",
+					configuracao.isPadraoModalidade() ? "S" : "N");
 			request.setAttribute("periodo", configuracao.getIntervaloData());
-			
+
 		} else {
-			request.setAttribute("modalidade", request.getParameter("modalidade") != null ? (String) request.getParameter("modalidade") : "");
+
+			request.setAttribute(
+					"modalidade",
+					request.getParameter("modalidade") != null ? (String) request
+							.getParameter("modalidade") : "");
+
 		}
-		
-		
+
 		request.setAttribute("token", (String) request.getParameter("token"));
-		
+
 		rd.forward(request, response);
 	}
-	
-	private void handlePrimeiraAtividade(String modalidade, FacebookClient facebookClient, User facebookUser ) {
+
+	private int calculaLimiteDeBusca(Date ultimaAtualizacao) {
+		return DateConversor.getDaysDifference(new Date(), ultimaAtualizacao) * 2;
+	}
+
+	private Date handleUltimaAtividade(String modalidade,
+			FacebookClient facebookClient, User facebookUser) {
 
 		switch (modalidade) {
-			case ConstantesFitRank.MODALIDADE_CAMINHADA:
-				
-				if (pessoaServico.lePessoaServico(facebookUser).getData_ultima_atualizacao_walks() == null) {
-					executaPrimeiraAtualizacao(ConstantesFitRank.MODALIDADE_CAMINHADA, facebookClient, facebookUser);
-				}
-				
-				break;
-			case ConstantesFitRank.MODALIDADE_CORRIDA:
-				
-				if (pessoaServico.lePessoaServico(facebookUser).getData_ultima_atualizacao_runs() == null) {
-					
-				}
-				
-				break;	
-			case ConstantesFitRank.MODALIDADE_BICICLETA:
-				
-				if (pessoaServico.lePessoaServico(facebookUser).getData_ultima_atualizacao_bikes() == null) {
-					
-				}
-				
-				break;	
-			default:
-				break;			
+		case ConstantesFitRank.MODALIDADE_CAMINHADA:
+			Date ultimoWalk = pessoaServico.lePessoaServico(facebookUser)
+					.getData_ultima_atualizacao_walks();
+
+			if (ultimoWalk == null) {
+				// Primeira atividade desta modalidade
+				executaPrimeiraAtualizacao(
+						ConstantesFitRank.MODALIDADE_CAMINHADA, facebookClient,
+						facebookUser);
+			}
+
+			return ultimoWalk;
+		case ConstantesFitRank.MODALIDADE_CORRIDA:
+			Date ultimoRuns = pessoaServico.lePessoaServico(facebookUser)
+					.getData_ultima_atualizacao_runs();
+
+			if (ultimoRuns == null) {
+				// Primeira atividade desta modalidade
+				executaPrimeiraAtualizacao(
+						ConstantesFitRank.MODALIDADE_CORRIDA, facebookClient,
+						facebookUser);
+			}
+
+			return ultimoRuns;
+		case ConstantesFitRank.MODALIDADE_BICICLETA:
+			Date ultimoBikes = pessoaServico.lePessoaServico(facebookUser)
+					.getData_ultima_atualizacao_bikes();
+
+			if (ultimoBikes == null) {
+				// Primeira atividade desta modalidade
+				executaPrimeiraAtualizacao(
+						ConstantesFitRank.MODALIDADE_BICICLETA, facebookClient,
+						facebookUser);
+			}
+
+			return ultimoBikes;
+		default:
+			return null;
 		}
 	}
-	
-	
-	private void executaPrimeiraAtualizacao(String modalidade, FacebookClient facebookClient, User facebookUser) {
-		
-		Connection<PostFitnessFB> fitConnection = facebookClient.fetchConnection("me/fitness." + defineModalidade(modalidade), 
-				PostFitnessFB.class, Parameter.with("limit", "99999"));
-		
+
+	private void executaPrimeiraAtualizacao(String modalidade,
+			FacebookClient facebookClient, User facebookUser) {
+
+		Connection<PostFitnessFB> fitConnection = facebookClient
+				.fetchConnection("me/fitness." + defineModalidade(modalidade),
+						PostFitnessFB.class, Parameter.with("limit", "99999"));
+
 		ArrayList<PostFitness> postsFit = new ArrayList<PostFitness>();
-		
-		
+
 		for (PostFitnessFB postFit : fitConnection.getData()) {
-			
-			
-			//id pessoa
-			//modalidade
-			
+
+			// id pessoa
+			// modalidade
+
 			// Adiciona aplicativo à Lista
-			PostFitness postFitness= new PostFitness();
+			PostFitness postFitness = new PostFitness();
 
 			postFitness.setId_publicacao(postFit.getId());
 			postFitness.setId_pessoa(facebookUser.getId());
-			
-			
+
 			postFitness.setId_app(postFit.getApplication().getId());
-			
+
 			switch (postFit.getApplication().getId()) {
-				case ConstantesFitRank.ID_APP_NIKE:
-					postFitness.setDistancia_percorrida(PostFitnessUtil.getNikeDistance(postFit.getDataCourse().getCourse().getTitle()));
-					postFitness.setDuracao(PostFitnessUtil.getNikeDuration(postFit.getStartTime(), postFit.getEndTime()));
-				case ConstantesFitRank.ID_APP_RUNTASTIC:
-					postFitness.setDistancia_percorrida(PostFitnessUtil.getRuntasticDistance(postFit.getDataCourse().getCourse().getTitle()));
-					postFitness.setDuracao(PostFitnessUtil.getRuntasticDuration(postFit.getDataCourse().getCourse().getTitle()));
-				case ConstantesFitRank.ID_APP_RUNKEEPER:
-					postFitness.setDistancia_percorrida(PostFitnessUtil.getRunKeeperDistance(postFit.getDataCourse().getCourse().getTitle()));
-					postFitness.setDuracao(PostFitnessUtil.getRunKeeperDuration(postFit.getDataCourse().getCourse().getTitle()));
-				default:
-					break;
+			case ConstantesFitRank.ID_APP_NIKE:
+				postFitness.setDistancia_percorrida(PostFitnessUtil
+						.getNikeDistance(postFit.getDataCourse().getCourse()
+								.getTitle()));
+				postFitness.setDuracao(PostFitnessUtil.getNikeDuration(
+						postFit.getStartTime(), postFit.getEndTime()));
+			case ConstantesFitRank.ID_APP_RUNTASTIC:
+				postFitness.setDistancia_percorrida(PostFitnessUtil
+						.getRuntasticDistance(postFit.getDataCourse()
+								.getCourse().getTitle()));
+				postFitness.setDuracao(PostFitnessUtil
+						.getRuntasticDuration(postFit.getDataCourse()
+								.getCourse().getTitle()));
+			case ConstantesFitRank.ID_APP_RUNKEEPER:
+				postFitness.setDistancia_percorrida(PostFitnessUtil
+						.getRunKeeperDistance(postFit.getDataCourse()
+								.getCourse().getTitle()));
+				postFitness.setDuracao(PostFitnessUtil
+						.getRunKeeperDuration(postFit.getDataCourse()
+								.getCourse().getTitle()));
+			default:
+				break;
 			}
-			
-			postFitness.setData_publicacao(DateConversor.DateToString(postFit.getStartTime()));
-			
+
+			postFitness.setData_publicacao(DateConversor.DateToString(postFit
+					.getPublishTime()));
+
 			postFitness.setUrl(postFit.getDataCourse().getCourse().getUrl());
-			
+
 			postFitness.setModalidade(modalidade);
 
 			postsFit.add(postFitness);
-			
+
 		}
-		
-		
+
 		postFitnessServico.adicionaListaPostFitnessServico(postsFit);
-		
+
+		Pessoa pessoa = pessoaServico.lePessoaServico(facebookUser);
+
+		switch (modalidade) {
+		case ConstantesFitRank.MODALIDADE_CAMINHADA:
+			pessoa.setData_ultima_atualizacao_walks(new Date());
+
+		case ConstantesFitRank.MODALIDADE_CORRIDA:
+			pessoa.setData_ultima_atualizacao_runs(new Date());
+
+		case ConstantesFitRank.MODALIDADE_BICICLETA:
+			pessoa.setData_ultima_atualizacao_bikes(new Date());
+
+		default:
+			break;
+
+		}
+
+		pessoaServico.atualizaPessoaServico(pessoa);
+
 	}
-	
+
 	private String defineModalidade(String parameter) {
 		switch (parameter) {
 		case ConstantesFitRank.MODALIDADE_CAMINHADA:
 			return "walks";
-			
+
 		case ConstantesFitRank.MODALIDADE_CORRIDA:
 			return "runs";
 
@@ -242,7 +328,7 @@ public class CarregaEscolhaRanking extends HttpServlet {
 
 		default:
 			return parameter;
-			
+
 		}
 	}
 

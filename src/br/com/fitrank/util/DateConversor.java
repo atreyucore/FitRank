@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.concurrent.TimeUnit;
 
 public class DateConversor {
 	
@@ -13,14 +14,21 @@ public class DateConversor {
 	private static GregorianCalendar gc;
 	
 	public static String DateToString(Date data) {
-		return FORMATTER.format(data);
+		try {
+			return FORMATTER.format(data);
+		} catch(NullPointerException e) {
+			return null;
+		}
 	}
 	
 	public static Date StringToDate(String data){
 		try {
 			return FORMATTER.parse(data);
-		} catch (ParseException e) {
-			System.out.println("DateConveror.StringToDate(String data) recebendo String inválida ou nula.");;
+		} catch (ParseException e ) {
+			System.out.println("DateConveror.StringToDate(String data) recebendo String inválida.");
+			return null;
+		} catch (NullPointerException e) {
+			System.out.println("DateConveror.StringToDate(String data) recebendo String nula.");
 			return null;
 		}
 	}
@@ -86,5 +94,9 @@ public class DateConversor {
 		return gc.get(Calendar.HOUR_OF_DAY);
 	}
 	
+	public static int getDaysDifference(Date date1, Date date2) {
+		long daysDifference = date2.getTime() - date1.getTime();
+		return (int) TimeUnit.DAYS.convert(daysDifference, TimeUnit.MILLISECONDS);
+	}
 	
 }

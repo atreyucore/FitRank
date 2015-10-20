@@ -72,7 +72,7 @@ public class PessoaServico {
 			e.printStackTrace();
 			return null;
 		}
-	}
+	}	
 	
 	private void preenchePessoa(Pessoa pessoa) throws SQLException{
 		if(pessoa != null){
