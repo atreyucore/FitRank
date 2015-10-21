@@ -168,51 +168,66 @@ public class RankingPessoaDAO {
 		Connection dbConnection = null;
 		PreparedStatement preparedStatement = null;
 		List<RankingPessoa> listaRanking = new ArrayList<RankingPessoa>();
+		
+		String dataInicial = "";
+		
+		if(ConstantesFitRank.DIA.equalsIgnoreCase(configuracao.getIntervaloData())){
+			dataInicial = DateConversor.getPreviousDayString();
+			
+		} else if(ConstantesFitRank.SEMANA.equalsIgnoreCase(configuracao.getIntervaloData())){
+			dataInicial =  DateConversor.getPreviousWeekString();
+			
+		} else if(ConstantesFitRank.MES.equalsIgnoreCase(configuracao.getIntervaloData())){
+			dataInicial = DateConversor.getPreviousMonthString();
+			
+		} else if(ConstantesFitRank.ANO.equalsIgnoreCase(configuracao.getIntervaloData())){
+			dataInicial = DateConversor.getPreviousYearString();
+		}
 	
-		String selectTableSQL = "SELECT @rownum := @rownum + 1 AS colocacao,							"
-		 					+	"		consulta.id_usuario id_pessoa,									"
-		 					+	"		consulta.resultado resultado									"
-							+	"  FROM (SELECT @rownum := 0) r,										"
-							+	"		(SELECT p.id_usuario,											"
-		 					+	"				SUM(pf.distancia_percorrida) resultado					"
-							+	"				FROM post_fitness pf,									"
-  		 					+	"					 pessoa p											"
-							+	"		  WHERE (p.id_usuario IN (SELECT a.id_amigo						"
-							+	"									FROM amizade a						"
-							+	"								   WHERE a.id_pessoa = p.id_usuario)	"
-							+	"				 OR p.id_usuario = ? )									"
-							+	"			AND p.id_usuario = pf.id_pessoa								"
-							+   "			AND pf.modalidade = ?										"
-							+	"			AND (str_to_date(pf.data_publicacao, '%d/%m/%Y') 			"
-	     					+	"					BETWEEN str_to_date(?, '%d/%m/%Y') 					"
-		      				+	"						AND str_to_date(?, '%d/%m/%Y'))					"
-							+	"		 GROUP BY p.id_usuario											"
-							+	"		 ORDER BY SUM(pf.distancia_percorrida) DESC ) consulta 			";
+		String selectTableSQL = "SELECT @rownum := @rownum + 1 AS colocacao,							\n"
+					+	"		consulta.id_usuario id_pessoa,									\n"
+					+	"		consulta.resultado resultado									\n"
+				+	"  FROM (SELECT @rownum := 0) r,										\n"
+				+	"		(SELECT p.id_usuario,											\n"
+					+	"				SUM(pf.distancia_percorrida) resultado		\n"
+				+	"				FROM post_fitness pf,									\n"
+					+	"					 pessoa p											\n"
+				+	"		  WHERE (p.id_usuario IN (SELECT a.id_amigo						\n"
+				+	"									FROM amizade a						\n"
+				+	"								   WHERE a.id_pessoa = p.id_usuario)	\n"
+				+	"				 OR p.id_usuario = '"+configuracao.getIdPessoa()+"')									\n"
+				+	"			AND p.id_usuario = pf.id_pessoa								\n"
+				+   "			AND pf.modalidade = '"+configuracao.getModalidade()+"'										\n"							
+				+	"			AND (str_to_date(pf.data_publicacao, '%d/%m/%Y') 			\n"
+					+	"					BETWEEN str_to_date('"+dataInicial+"', '%d/%m/%Y') 					\n"
+  				+	"						AND str_to_date('"+DateConversor.DateToString(new Date())+"', '%d/%m/%Y'))					\n"
+				+	"		 GROUP BY p.id_usuario											\n"
+				+	"		 ORDER BY SUM(pf.distancia_percorrida) DESC ) consulta 			\n";
 	
 		try {
 			dbConnection = conexao;
 			selectTableSQL = selectTableSQL.replace("\t", "");
 			preparedStatement = dbConnection.prepareStatement(selectTableSQL);
-			int i = 1;
-			
-			preparedStatement.setString(i++, configuracao.getIdPessoa());
-			preparedStatement.setString(i++, configuracao.getModalidade());
-			
-			
-			if(ConstantesFitRank.DIA.equalsIgnoreCase(configuracao.getIntervaloData())){
-				preparedStatement.setString(i++, DateConversor.getPreviousDayString());
-				
-			} else if(ConstantesFitRank.SEMANA.equalsIgnoreCase(configuracao.getIntervaloData())){
-				preparedStatement.setString(i++, DateConversor.getPreviousWeekString());
-				
-			} else if(ConstantesFitRank.MES.equalsIgnoreCase(configuracao.getIntervaloData())){
-				preparedStatement.setString(i++, DateConversor.getPreviousMonthString());
-				
-			} else if(ConstantesFitRank.ANO.equalsIgnoreCase(configuracao.getIntervaloData())){
-				preparedStatement.setString(i++, DateConversor.getPreviousYearString());
-			}
-			
-			preparedStatement.setString(i++, DateConversor.DateToString(new Date()));
+//			int i = 1;
+//			
+//			preparedStatement.setString(i++, configuracao.getIdPessoa());
+//			preparedStatement.setString(i++, configuracao.getModalidade());
+//			
+//			
+//			if(ConstantesFitRank.DIA.equalsIgnoreCase(configuracao.getIntervaloData())){
+//				preparedStatement.setString(i++, DateConversor.getPreviousDayString());
+//				
+//			} else if(ConstantesFitRank.SEMANA.equalsIgnoreCase(configuracao.getIntervaloData())){
+//				preparedStatement.setString(i++, DateConversor.getPreviousWeekString());
+//				
+//			} else if(ConstantesFitRank.MES.equalsIgnoreCase(configuracao.getIntervaloData())){
+//				preparedStatement.setString(i++, DateConversor.getPreviousMonthString());
+//				
+//			} else if(ConstantesFitRank.ANO.equalsIgnoreCase(configuracao.getIntervaloData())){
+//				preparedStatement.setString(i++, DateConversor.getPreviousYearString());
+//			}
+//			
+//			preparedStatement.setString(i++, DateConversor.DateToString(new Date()));
 			
 			ResultSet rs = preparedStatement.executeQuery(selectTableSQL);
 			
@@ -251,50 +266,65 @@ public class RankingPessoaDAO {
 		Connection dbConnection = null;
 		PreparedStatement preparedStatement = null;
 		List<RankingPessoa> listaRanking = new ArrayList<RankingPessoa>();
+		
+		String dataInicial = "";
+		
+		if(ConstantesFitRank.DIA.equalsIgnoreCase(configuracao.getIntervaloData())){
+			dataInicial = DateConversor.getPreviousDayString();
+			
+		} else if(ConstantesFitRank.SEMANA.equalsIgnoreCase(configuracao.getIntervaloData())){
+			dataInicial =  DateConversor.getPreviousWeekString();
+			
+		} else if(ConstantesFitRank.MES.equalsIgnoreCase(configuracao.getIntervaloData())){
+			dataInicial = DateConversor.getPreviousMonthString();
+			
+		} else if(ConstantesFitRank.ANO.equalsIgnoreCase(configuracao.getIntervaloData())){
+			dataInicial = DateConversor.getPreviousYearString();
+		}
 	
-		String selectTableSQL = "SELECT @rownum := @rownum + 1 AS colocacao,							"
-		 					+	"		consulta.id_usuario id_pessoa,									"
-		 					+	"		consulta.resultado resultado									"
-							+	"  FROM (SELECT @rownum := 0) r,										"
-							+	"		(SELECT p.id_usuario,											"
-		 					+	"				SUM(pf.distancia_percorrida/pf.duracao) resultado		"
-							+	"				FROM post_fitness pf,									"
-  		 					+	"					 pessoa p											"
-							+	"		  WHERE (p.id_usuario IN (SELECT a.id_amigo						"
-							+	"									FROM amizade a						"
-							+	"								   WHERE a.id_pessoa = p.id_usuario)	"
-							+	"				 OR p.id_usuario = ?)									"
-							+	"			AND p.id_usuario = pf.id_pessoa								"
-							+   "			AND pf.modalidade = ?										"							
-							+	"			AND (str_to_date(pf.data_publicacao, '%d/%m/%Y') 			"
-	     					+	"					BETWEEN str_to_date(?, '%d/%m/%Y') 					"
-		      				+	"						AND str_to_date(?, '%d/%m/%Y'))					"
-							+	"		 GROUP BY p.id_usuario											"
-							+	"		 ORDER BY SUM(pf.distancia_percorrida) DESC ) consulta 			";
+		String selectTableSQL = "SELECT @rownum := @rownum + 1 AS colocacao,							\n"
+		 					+	"		consulta.id_usuario id_pessoa,									\n"
+		 					+	"		consulta.resultado resultado									\n"
+							+	"  FROM (SELECT @rownum := 0) r,										\n"
+							+	"		(SELECT p.id_usuario,											\n"
+		 					+	"				SUM(pf.distancia_percorrida/pf.duracao) resultado		\n"
+							+	"				FROM post_fitness pf,									\n"
+  		 					+	"					 pessoa p											\n"
+							+	"		  WHERE (p.id_usuario IN (SELECT a.id_amigo						\n"
+							+	"									FROM amizade a						\n"
+							+	"								   WHERE a.id_pessoa = p.id_usuario)	\n"
+							+	"				 OR p.id_usuario = '"+configuracao.getIdPessoa()+"')									\n"
+							+	"			AND p.id_usuario = pf.id_pessoa								\n"
+							+   "			AND pf.modalidade = '"+configuracao.getModalidade()+"'										\n"							
+							+	"			AND (str_to_date(pf.data_publicacao, '%d/%m/%Y') 			\n"
+	     					+	"					BETWEEN str_to_date('"+dataInicial+"', '%d/%m/%Y') 					\n"
+		      				+	"						AND str_to_date('"+DateConversor.DateToString(new Date())+"', '%d/%m/%Y'))					\n"
+							+	"		 GROUP BY p.id_usuario											\n"
+							+	"		 ORDER BY SUM(pf.distancia_percorrida) DESC ) consulta 			\n";
 	
 		try {
 			dbConnection = conexao;
 			selectTableSQL = selectTableSQL.replace("\t", "");
 			preparedStatement = dbConnection.prepareStatement(selectTableSQL);
-			int i = 1;
+//			int i = 1;
 			
-			preparedStatement.setString(i++, configuracao.getIdPessoa());
-			preparedStatement.setString(i++, configuracao.getModalidade());
+//			preparedStatement.setString(i++, configuracao.getIdPessoa());
+//			preparedStatement.setString(i++, configuracao.getModalidade());
 			
-			if(ConstantesFitRank.DIA.equalsIgnoreCase(configuracao.getIntervaloData())){
-				preparedStatement.setString(i++, DateConversor.getPreviousDayString());
-				
-			} else if(ConstantesFitRank.SEMANA.equalsIgnoreCase(configuracao.getIntervaloData())){
-				preparedStatement.setString(i++, DateConversor.getPreviousWeekString());
-				
-			} else if(ConstantesFitRank.MES.equalsIgnoreCase(configuracao.getIntervaloData())){
-				preparedStatement.setString(i++, DateConversor.getPreviousMonthString());
-				
-			} else if(ConstantesFitRank.ANO.equalsIgnoreCase(configuracao.getIntervaloData())){
-				preparedStatement.setString(i++, DateConversor.getPreviousYearString());
-			}
+//			if(ConstantesFitRank.DIA.equalsIgnoreCase(configuracao.getIntervaloData())){
+//				preparedStatement.setString(i++, DateConversor.getPreviousDayString());
+//				
+//			} else if(ConstantesFitRank.SEMANA.equalsIgnoreCase(configuracao.getIntervaloData())){
+//				preparedStatement.setString(i++, DateConversor.getPreviousWeekString());
+//				
+//			} else if(ConstantesFitRank.MES.equalsIgnoreCase(configuracao.getIntervaloData())){
+//				preparedStatement.setString(i++, DateConversor.getPreviousMonthString());
+//				
+//			} else if(ConstantesFitRank.ANO.equalsIgnoreCase(configuracao.getIntervaloData())){
+//				preparedStatement.setString(i++, DateConversor.getPreviousYearString());
+//			}
 			
-			preparedStatement.setString(i++, DateConversor.DateToString(new Date()));
+//			preparedStatement.setString(i++, DateConversor.DateToString(new Date()));
 			
 			ResultSet rs = preparedStatement.executeQuery(selectTableSQL);
 			
