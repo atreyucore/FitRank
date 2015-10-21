@@ -94,9 +94,18 @@ public class DateConversor {
 		return gc.get(Calendar.HOUR_OF_DAY);
 	}
 	
+	public static int getDayFromDate(Date date) {
+		gc = new GregorianCalendar();
+		gc.setTime(date);
+		return gc.get(Calendar.DAY_OF_MONTH);
+	}
+	
 	public static int getDaysDifference(Date date1, Date date2) {
-		long daysDifference = date2.getTime() - date1.getTime();
-		return (int) TimeUnit.DAYS.convert(daysDifference, TimeUnit.MILLISECONDS);
+		
+		
+		long daysDifference = date2.getTime()/1000 - date1.getTime()/1000;
+		 
+		return (int) TimeUnit.DAYS.convert(daysDifference, TimeUnit.SECONDS);
 	}
 	
 }

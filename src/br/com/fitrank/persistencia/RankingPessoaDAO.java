@@ -180,8 +180,9 @@ public class RankingPessoaDAO {
 							+	"		  WHERE (p.id_usuario IN (SELECT a.id_amigo						"
 							+	"									FROM amizade a						"
 							+	"								   WHERE a.id_pessoa = p.id_usuario)	"
-							+	"				 OR p.id_usuario = ?)									"
+							+	"				 OR p.id_usuario = ? )									"
 							+	"			AND p.id_usuario = pf.id_pessoa								"
+							+   "			AND pf.modalidade = ?										"
 							+	"			AND (str_to_date(pf.data_publicacao, '%d/%m/%Y') 			"
 	     					+	"					BETWEEN str_to_date(?, '%d/%m/%Y') 					"
 		      				+	"						AND str_to_date(?, '%d/%m/%Y'))					"
@@ -190,12 +191,13 @@ public class RankingPessoaDAO {
 	
 		try {
 			dbConnection = conexao;
+			selectTableSQL = selectTableSQL.replace("\t", "");
 			preparedStatement = dbConnection.prepareStatement(selectTableSQL);
 			int i = 1;
 			
 			preparedStatement.setString(i++, configuracao.getIdPessoa());
-			preparedStatement.setString(i++, DateConversor.DateToString(new Date()));
-			preparedStatement.setString(i++, DateConversor.getPreviousWeekString());
+			preparedStatement.setString(i++, configuracao.getModalidade());
+			
 			
 			if(ConstantesFitRank.DIA.equalsIgnoreCase(configuracao.getIntervaloData())){
 				preparedStatement.setString(i++, DateConversor.getPreviousDayString());
@@ -210,6 +212,7 @@ public class RankingPessoaDAO {
 				preparedStatement.setString(i++, DateConversor.getPreviousYearString());
 			}
 			
+			preparedStatement.setString(i++, DateConversor.DateToString(new Date()));
 			
 			ResultSet rs = preparedStatement.executeQuery(selectTableSQL);
 			
@@ -262,6 +265,7 @@ public class RankingPessoaDAO {
 							+	"								   WHERE a.id_pessoa = p.id_usuario)	"
 							+	"				 OR p.id_usuario = ?)									"
 							+	"			AND p.id_usuario = pf.id_pessoa								"
+							+   "			AND pf.modalidade = ?										"							
 							+	"			AND (str_to_date(pf.data_publicacao, '%d/%m/%Y') 			"
 	     					+	"					BETWEEN str_to_date(?, '%d/%m/%Y') 					"
 		      				+	"						AND str_to_date(?, '%d/%m/%Y'))					"
@@ -270,11 +274,12 @@ public class RankingPessoaDAO {
 	
 		try {
 			dbConnection = conexao;
+			selectTableSQL = selectTableSQL.replace("\t", "");
 			preparedStatement = dbConnection.prepareStatement(selectTableSQL);
 			int i = 1;
 			
 			preparedStatement.setString(i++, configuracao.getIdPessoa());
-			preparedStatement.setString(i++, DateConversor.DateToString(new Date()));
+			preparedStatement.setString(i++, configuracao.getModalidade());
 			
 			if(ConstantesFitRank.DIA.equalsIgnoreCase(configuracao.getIntervaloData())){
 				preparedStatement.setString(i++, DateConversor.getPreviousDayString());
@@ -289,6 +294,7 @@ public class RankingPessoaDAO {
 				preparedStatement.setString(i++, DateConversor.getPreviousYearString());
 			}
 			
+			preparedStatement.setString(i++, DateConversor.DateToString(new Date()));
 			
 			ResultSet rs = preparedStatement.executeQuery(selectTableSQL);
 			

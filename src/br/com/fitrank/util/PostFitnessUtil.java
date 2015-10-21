@@ -104,7 +104,7 @@ public class PostFitnessUtil {
 		double doubleMinutesInHour = 0.0;
 		double doubleSecondsInHour = 0.0;
 		
-		if (! strHour.equals("")){
+		if (strHour.equals("")){
 			doubleMinutesInHour = Double.parseDouble(strMinutes) / 60;
 			
 			doubleSecondsInHour = Double.parseDouble(strSeconds) / 3600;

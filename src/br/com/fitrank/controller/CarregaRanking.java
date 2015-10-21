@@ -10,12 +10,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import br.com.fitrank.modelo.Aplicativo;
+import br.com.fitrank.modelo.Configuracao;
+import br.com.fitrank.modelo.RankingPessoa;
 import br.com.fitrank.modelo.fb.PostFitness.PostFitnessFB;
+import br.com.fitrank.service.RankingPessoaServico;
 import br.com.fitrank.util.ConstantesFitRank;
-import br.com.fitrank.util.DateConversor;
 
-import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
 import com.restfb.Parameter;
@@ -27,6 +27,8 @@ import com.restfb.types.User;
 
 public class CarregaRanking extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	RankingPessoaServico rankingPessoaServico = new RankingPessoaServico();
 	
 	String modalidade = null;
 	String modo = null;  
@@ -44,22 +46,41 @@ public class CarregaRanking extends HttpServlet {
     	
     	FacebookClient facebookClient = new DefaultFacebookClient(request.getParameter("token"));
     	
+    	List<RankingPessoa> listRankingPessoas = new ArrayList<RankingPessoa>();
     	
-    	modalidade = (String) request.getParameter("modalidade");
-    	modo = (String) request.getParameter("modo");  
-    	turno = (String) request.getParameter("turno");
-    	periodo = (String) request.getParameter("periodo");
+    	modalidade = request.getAttribute("modalidade") == null ? (String) request.getParameter("modalidade") : (String) request.getAttribute("modalidade") ;
+    	modo = request.getAttribute("modo") == null ? (String) request.getParameter("modo") : (String) request.getAttribute("modo") ;
+    	turno = request.getAttribute("turno") == null ? (String) request.getParameter("turno") : (String) request.getAttribute("turno") ;
+    	periodo = request.getAttribute("periodo") == null ? (String) request.getParameter("periodo") : (String) request.getAttribute("periodo") ;
 //    	fav = (String) request.getParameter("fav");
 //    	padrao = (String) request.getParameter("default");
     	
-    	String meuValorRanking = calculaValorRankingFB(facebookClient, "me");
+//    	String meuValorRanking = calculaValorRankingFB(facebookClient, "me");
     	
-    	Connection<User> friendsFB = facebookClient.fetchConnection("me/friends", User.class, Parameter.with("fields", "name, id"));
+    	User me = facebookClient.fetchObject("me", User.class, Parameter.with("fields", "id"));
+//    	Connection<User> friendsFB = facebookClient.fetchConnection("me", User.class, Parameter.with("fields", "id"));
+    	
+    	Configuracao configuracao = new Configuracao();
+    	
+    	configuracao.setIdPessoa(me.getId());
+    	configuracao.setModalidade(modalidade);
+		configuracao.setIntervaloData(definePeriodo(periodo));
+		
+		switch (defineModo(modo)) {
+			case ConstantesFitRank.VELOCIDADE_MEDIA:
+				listRankingPessoas = rankingPessoaServico.geraRankingVelocidadeMedia(configuracao);
+				break;
+			case ConstantesFitRank.DISTANCIA:
+				listRankingPessoas = rankingPessoaServico.geraRankingDistancia(configuracao);
+			default:
+				break;
+		}
     	
     	request.setAttribute("modalidade", modalidade);
 		request.setAttribute("modo", modo);
 		request.setAttribute("turno", turno);
 		request.setAttribute("periodo", periodo);
+		request.setAttribute("listaRanking", listRankingPessoas);
 		
 		RequestDispatcher rd = null;
 		
@@ -69,7 +90,66 @@ public class CarregaRanking extends HttpServlet {
     	
     }
     
-    private String calculaValorRankingFB(FacebookClient facebookClient, String idUsuario) {
+    private String defineModo(String modo) {
+		switch (modo) {
+			case "velocidade":
+				return ConstantesFitRank.VELOCIDADE_MEDIA;
+			case "distancia":
+				return ConstantesFitRank.DISTANCIA;
+			default:
+				return modo;
+		}
+	}
+    
+    
+    private String defineTurno(String turno) {
+	    switch(turno) {
+			case "dia":
+				return ConstantesFitRank.DIA;
+			case "noite":
+				return ConstantesFitRank.NOITE;
+			default:
+				return turno;
+		}
+	    
+    }
+    
+    private String definePeriodo(String periodo) {
+		switch(periodo) {
+			case "0":
+				//Dia
+				return ConstantesFitRank.DIA;
+			case "1":
+				//Semana
+
+				return ConstantesFitRank.SEMANA;
+			case "2":
+				//Mes
+				return ConstantesFitRank.MES;
+			default:
+				return periodo;
+		}
+		
+    }
+    
+    private String defineModalidade(String modalidade) {
+		switch (modalidade) {
+			case "walks":
+				return ConstantesFitRank.MODALIDADE_CAMINHADA;
+	
+			case "runs":
+				return ConstantesFitRank.MODALIDADE_CORRIDA;
+	
+			case "bikes":
+				return ConstantesFitRank.MODALIDADE_BICICLETA;
+	
+			default:
+				return modalidade;
+	
+			}
+	}
+    
+	private String calculaValorRankingFB(FacebookClient facebookClient, String idUsuario) {
     	
     	List<PostFitnessFB> postsFit = new ArrayList<PostFitnessFB>();
     	
@@ -119,22 +199,22 @@ public class CarregaRanking extends HttpServlet {
     	return "";
     }
     
-    private String defineModalidade(String parameter) {
-		switch (parameter) {
-		case ConstantesFitRank.MODALIDADE_CAMINHADA:
-			return "walks";
-			
-		case ConstantesFitRank.MODALIDADE_CORRIDA:
-			return "runs";
-
-		case ConstantesFitRank.MODALIDADE_BICICLETA:
-			return "bikes";
-
-		default:
-			return null;
-			
-		}
-	}
+//    private String defineModalidade(String parameter) {
+//		switch (parameter) {
+//		case ConstantesFitRank.MODALIDADE_CAMINHADA:
+//			return "walks";
+//			
+//		case ConstantesFitRank.MODALIDADE_CORRIDA:
+//			return "runs";
+//
+//		case ConstantesFitRank.MODALIDADE_BICICLETA:
+//			return "bikes";
+//
+//		default:
+//			return null;
+//			
+//		}
+//	}
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		inicia(request, response);

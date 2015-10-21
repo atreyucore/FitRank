@@ -63,8 +63,7 @@ public class CarregaEscolhaRanking extends HttpServlet {
 
 		String fav = (String) request.getParameter("fav");
 
-		String modalidadeFB = defineModalidade((String) request
-				.getParameter("modalidade"));
+		
 
 		String modalidade = (String) request.getParameter("modalidade");
 
@@ -78,7 +77,12 @@ public class CarregaEscolhaRanking extends HttpServlet {
 			if (ultimaAtualizacao != null) {
 
 				int limit = calculaLimiteDeBusca(ultimaAtualizacao);
-
+				
+				limit = limit == 0 ? 1 : limit;
+				
+				String modalidadeFB = defineModalidade((String) request
+						.getParameter("modalidade"));
+				
 				Connection<PostFitnessFB> fitConnection = facebookClient
 						.fetchConnection("me/fitness." + modalidadeFB,
 								PostFitnessFB.class,
@@ -134,7 +138,7 @@ public class CarregaEscolhaRanking extends HttpServlet {
 					;
 					return;
 				} else {
-					rd = request.getRequestDispatcher("/CarregaRanking");
+					rd = request.getRequestDispatcher("/escolhaRanking.jsp");
 				}
 				// TODO gvsribeiro Recuperar dados de Pessoa!
 
@@ -173,11 +177,9 @@ public class CarregaEscolhaRanking extends HttpServlet {
 
 		} else {
 
-			request.setAttribute(
-					"modalidade",
-					request.getParameter("modalidade") != null ? (String) request
-							.getParameter("modalidade") : "");
-
+			request.setAttribute("modalidade",	request.getParameter("modalidade") != null ? (String) request.getParameter("modalidade") : "");
+			request.setAttribute("modo",	request.getParameter("modo") != null ? (String) request.getParameter("modo") : "");
+			request.setAttribute("periodo",	request.getParameter("periodo") != null ? (String) request.getParameter("periodo") : "");
 		}
 
 		request.setAttribute("token", (String) request.getParameter("token"));
@@ -191,50 +193,57 @@ public class CarregaEscolhaRanking extends HttpServlet {
 
 	private Date handleUltimaAtividade(String modalidade,
 			FacebookClient facebookClient, User facebookUser) {
-
+		Pessoa pessoa = new Pessoa();
+		
 		switch (modalidade) {
-		case ConstantesFitRank.MODALIDADE_CAMINHADA:
-			Date ultimoWalk = pessoaServico.lePessoaServico(facebookUser)
-					.getData_ultima_atualizacao_walks();
-
-			if (ultimoWalk == null) {
-				// Primeira atividade desta modalidade
-				executaPrimeiraAtualizacao(
-						ConstantesFitRank.MODALIDADE_CAMINHADA, facebookClient,
-						facebookUser);
-			}
-
-			return ultimoWalk;
-		case ConstantesFitRank.MODALIDADE_CORRIDA:
-			Date ultimoRuns = pessoaServico.lePessoaServico(facebookUser)
-					.getData_ultima_atualizacao_runs();
-
-			if (ultimoRuns == null) {
-				// Primeira atividade desta modalidade
-				executaPrimeiraAtualizacao(
-						ConstantesFitRank.MODALIDADE_CORRIDA, facebookClient,
-						facebookUser);
-			}
-
-			return ultimoRuns;
-		case ConstantesFitRank.MODALIDADE_BICICLETA:
-			Date ultimoBikes = pessoaServico.lePessoaServico(facebookUser)
-					.getData_ultima_atualizacao_bikes();
-
-			if (ultimoBikes == null) {
-				// Primeira atividade desta modalidade
-				executaPrimeiraAtualizacao(
-						ConstantesFitRank.MODALIDADE_BICICLETA, facebookClient,
-						facebookUser);
-			}
-
-			return ultimoBikes;
-		default:
-			return null;
+			case ConstantesFitRank.MODALIDADE_CAMINHADA:
+				Date ultimoWalk = pessoaServico.lePessoaServico(facebookUser)
+						.getData_ultima_atualizacao_walks();
+	
+				if (ultimoWalk == null) {
+					// Primeira atividade desta modalidade
+					pessoa = executaPrimeiraAtualizacao(
+										ConstantesFitRank.MODALIDADE_CAMINHADA, facebookClient,
+										facebookUser);
+					
+					ultimoWalk = pessoa.getData_ultima_atualizacao_walks();
+				}
+	
+				return ultimoWalk;
+			case ConstantesFitRank.MODALIDADE_CORRIDA:
+				Date ultimoRuns = pessoaServico.lePessoaServico(facebookUser)
+						.getData_ultima_atualizacao_runs();
+	
+				if (ultimoRuns == null) {
+					// Primeira atividade desta modalidade
+					pessoa = executaPrimeiraAtualizacao(
+										ConstantesFitRank.MODALIDADE_CORRIDA, facebookClient,
+										facebookUser);
+					
+					ultimoRuns = pessoa.getData_ultima_atualizacao_runs();
+				}
+	
+				return ultimoRuns;
+			case ConstantesFitRank.MODALIDADE_BICICLETA:
+				Date ultimoBikes = pessoaServico.lePessoaServico(facebookUser)
+						.getData_ultima_atualizacao_bikes();
+	
+				if (ultimoBikes == null) {
+					// Primeira atividade desta modalidade
+					pessoa = executaPrimeiraAtualizacao(
+										ConstantesFitRank.MODALIDADE_BICICLETA, facebookClient,
+										facebookUser);
+					
+					ultimoBikes = pessoa.getData_ultima_atualizacao_bikes();
+				}
+	
+				return ultimoBikes;
+			default:
+				return null;
 		}
 	}
 
-	private void executaPrimeiraAtualizacao(String modalidade,
+	private Pessoa executaPrimeiraAtualizacao(String modalidade,
 			FacebookClient facebookClient, User facebookUser) {
 
 		Connection<PostFitnessFB> fitConnection = facebookClient
@@ -257,28 +266,31 @@ public class CarregaEscolhaRanking extends HttpServlet {
 			postFitness.setId_app(postFit.getApplication().getId());
 
 			switch (postFit.getApplication().getId()) {
-			case ConstantesFitRank.ID_APP_NIKE:
-				postFitness.setDistancia_percorrida(PostFitnessUtil
-						.getNikeDistance(postFit.getDataCourse().getCourse()
-								.getTitle()));
-				postFitness.setDuracao(PostFitnessUtil.getNikeDuration(
-						postFit.getStartTime(), postFit.getEndTime()));
-			case ConstantesFitRank.ID_APP_RUNTASTIC:
-				postFitness.setDistancia_percorrida(PostFitnessUtil
-						.getRuntasticDistance(postFit.getDataCourse()
-								.getCourse().getTitle()));
-				postFitness.setDuracao(PostFitnessUtil
-						.getRuntasticDuration(postFit.getDataCourse()
-								.getCourse().getTitle()));
-			case ConstantesFitRank.ID_APP_RUNKEEPER:
-				postFitness.setDistancia_percorrida(PostFitnessUtil
-						.getRunKeeperDistance(postFit.getDataCourse()
-								.getCourse().getTitle()));
-				postFitness.setDuracao(PostFitnessUtil
-						.getRunKeeperDuration(postFit.getDataCourse()
-								.getCourse().getTitle()));
-			default:
-				break;
+				case ConstantesFitRank.ID_APP_NIKE:
+					postFitness.setDistancia_percorrida(PostFitnessUtil
+							.getNikeDistance(postFit.getDataCourse().getCourse()
+									.getTitle()));
+					postFitness.setDuracao(PostFitnessUtil.getNikeDuration(
+							postFit.getStartTime(), postFit.getEndTime()));
+					break;
+				case ConstantesFitRank.ID_APP_RUNTASTIC:
+					postFitness.setDistancia_percorrida(PostFitnessUtil
+							.getRuntasticDistance(postFit.getDataCourse()
+									.getCourse().getTitle()));
+					postFitness.setDuracao(PostFitnessUtil
+							.getRuntasticDuration(postFit.getDataCourse()
+									.getCourse().getTitle()));
+					break;
+				case ConstantesFitRank.ID_APP_RUNKEEPER:
+					postFitness.setDistancia_percorrida(PostFitnessUtil
+							.getRunKeeperDistance(postFit.getDataCourse()
+									.getCourse().getTitle()));
+					postFitness.setDuracao(PostFitnessUtil
+							.getRunKeeperDuration(postFit.getDataCourse()
+									.getCourse().getTitle()));
+					break;
+				default:
+					break;
 			}
 
 			postFitness.setData_publicacao(DateConversor.DateToString(postFit
@@ -297,22 +309,23 @@ public class CarregaEscolhaRanking extends HttpServlet {
 		Pessoa pessoa = pessoaServico.lePessoaServico(facebookUser);
 
 		switch (modalidade) {
-		case ConstantesFitRank.MODALIDADE_CAMINHADA:
-			pessoa.setData_ultima_atualizacao_walks(new Date());
-
-		case ConstantesFitRank.MODALIDADE_CORRIDA:
-			pessoa.setData_ultima_atualizacao_runs(new Date());
-
-		case ConstantesFitRank.MODALIDADE_BICICLETA:
-			pessoa.setData_ultima_atualizacao_bikes(new Date());
-
-		default:
-			break;
+			case ConstantesFitRank.MODALIDADE_CAMINHADA:
+				pessoa.setData_ultima_atualizacao_walks(new Date());
+				break;
+			case ConstantesFitRank.MODALIDADE_CORRIDA:
+				pessoa.setData_ultima_atualizacao_runs(new Date());
+				break;
+			case ConstantesFitRank.MODALIDADE_BICICLETA:
+				pessoa.setData_ultima_atualizacao_bikes(new Date());
+				break;
+			default:
+				break;
 
 		}
 
-		pessoaServico.atualizaPessoaServico(pessoa);
-
+		Pessoa pessoaReturn = pessoaServico.atualizaPessoaServico(pessoa);
+		
+		return pessoaReturn;
 	}
 
 	private String defineModalidade(String parameter) {
