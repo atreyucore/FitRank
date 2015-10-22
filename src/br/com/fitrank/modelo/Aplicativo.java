@@ -3,7 +3,7 @@ package br.com.fitrank.modelo;
 /** Entity(name="aplicativo")
  *
  */
-public class Aplicativo {
+public class Aplicativo implements Comparable<Object> {
 //	Column(name="id_aplicativo", Primary Key)
 	private String id_aplicativo;
 //	Column(name="nome")
@@ -20,6 +20,18 @@ public class Aplicativo {
 	}
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+	@Override
+	public int compareTo(Object o) {
+		if(o != null && o instanceof Aplicativo){
+			Aplicativo app = (Aplicativo) o;
+			
+			if(app.id_aplicativo == this.id_aplicativo){
+				return 0;
+			}
+		}
+		
+		return 1;
 	}
 	
 }
