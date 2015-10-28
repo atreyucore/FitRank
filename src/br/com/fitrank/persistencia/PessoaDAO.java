@@ -154,8 +154,8 @@ public class PessoaDAO {
 				pessoa.setNome(rs.getString("nome"));
 				pessoa.setData_ultimo_login(DateConversor.StringToDate(rs.getString("data_ultimo_login")));
 				pessoa.setData_ultima_atualizacao_runs(DateConversor.StringToDate( rs.getString("data_ultima_atualizacao_runs") ) );
-				pessoa.setData_ultima_atualizacao_runs(DateConversor.StringToDate( rs.getString("data_ultima_atualizacao_walks") ) );
-				pessoa.setData_ultima_atualizacao_runs(DateConversor.StringToDate( rs.getString("data_ultima_atualizacao_bikes") ) );
+				pessoa.setData_ultima_atualizacao_walks(DateConversor.StringToDate( rs.getString("data_ultima_atualizacao_walks") ) );
+				pessoa.setData_ultima_atualizacao_bikes(DateConversor.StringToDate( rs.getString("data_ultima_atualizacao_bikes") ) );
 				pessoa.setRank_anual(rs.getString("rank_anual"));
 			}
 				
