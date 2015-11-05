@@ -187,7 +187,7 @@
 						 for(RankingPessoa pessoa : listaRankingPessoa){ 
 							 out.println("<tr class='rankingLine'>");
 							 out.println("<td>");
-							 out.println("<img align='middle' data-id_pessoa='" + pessoa.getId_pessoa() + "' />");
+							 out.println("<img align='middle' data-id_pessoa='" + pessoa.getId_pessoa() + "' src='imagem/default_photo.png' />");
 							 out.println("<span class='profileName' data-id_pessoa='" + pessoa.getId_pessoa() + "' ></span>");
 							 out.println("</td>");
 							 out.println("<td class='measure'><span>" + pessoa.getResultado()  + " km/h</span></td>");
