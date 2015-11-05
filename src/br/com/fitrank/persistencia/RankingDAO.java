@@ -23,11 +23,10 @@ public class RankingDAO {
 		PreparedStatement preparedStatement = null;
 
 		String insertTableSQL = "INSERT INTO ranking ("
-				+ "id_ranking, "
 				+ "titulo, "
 				+ "id_configuracao, "
 				+ "data_ranking"
-				+ ") VALUES (?, ?, ?, ?)";
+				+ ") VALUES (?, ?, ?)";
 				
 		try {
 			dbConnection = conexao;
@@ -35,12 +34,12 @@ public class RankingDAO {
 
 			int i = 0;
 			
-			preparedStatement.setInt(++i, ranking.getId_ranking());
 			preparedStatement.setString(++i, ranking.getTitulo());
 			preparedStatement.setInt(++i, ranking.getId_configuracao());
 			preparedStatement.setString(++i, ranking.getData_ranking()); 
 
 			// execute insert SQL stetement
+			//TODO gabriel: Verificar possibilidade de recuperar id do ranking após inclusao (possivelmente com o metodo getGeneratedKeys())
 			preparedStatement.executeUpdate();
 
 		} catch (SQLException e) {
