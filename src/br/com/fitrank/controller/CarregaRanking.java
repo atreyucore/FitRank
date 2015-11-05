@@ -82,6 +82,9 @@ public class CarregaRanking extends HttpServlet {
 		request.setAttribute("periodo", periodo);
 		request.setAttribute("listaRanking", listRankingPessoas);
 		
+		request.setAttribute("token", (String) request.getParameter("token"));
+		
+		
 		RequestDispatcher rd = null;
 		
 		rd = request.getRequestDispatcher("ranking.jsp");

@@ -1,15 +1,31 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+	<%@ page import="br.com.fitrank.modelo.RankingPessoa" %>
+	<%@ page import="java.util.List" %>
+	<%@ page import="java.util.ArrayList" %>
+	
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+
+
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<title>Escolher a configuração do Ranking</title>
 		<script type="text/javascript" src="js/jquery-1.11.2.js"></script>
+		<script src="http://connect.facebook.net/pt_BR/all.js"></script>
 		<script type="text/javascript">
 			$(document).ready(function(){
+				$(".rankingLine>td>img").one("load", function() {
+					buscaInformacoesPerfil(this);
+				}).each(function() {
+				  if(this.complete) $(this).load();
+				});
+				
+				
 				$(".ranking").css("display","none");
 			    preparaConfiguracao();
+			    
 			});
 			
 			function preparaConfiguracao() {
@@ -66,6 +82,43 @@
 				}
 			} 
 			
+			function buscaInformacoesPerfil(element) {
+				var idUsuario = $(element).attr("data-id_pessoa");
+				
+				FB.api(
+					  '/' + idUsuario + '/picture',
+					  'GET',
+					  { "type" : "normal", 
+						"access_token" : '<%=(String) request.getParameter("token")%>'},
+					  function(response) {
+						  $(element).attr("src",response.data.url)
+					  }
+					);
+				
+				FB.api(
+					  '/' + idUsuario ,
+					  'GET',
+					  { "fieds" : "name", 
+						"access_token" : '<%=(String) request.getParameter("token")%>'},
+					  function(response) {
+						  $($(element).next()[0]).text(response.name);
+					  }
+					);
+			}
+			
+			function buscaNomePerfil(element) {
+				var idUsuario = $(element).attr("data-id_pessoa");
+				
+				FB.api(
+					  '/' + idUsuario ,
+					  'GET',
+					  { "fieds" : "name", 
+						"access_token" : '<%=(String) request.getParameter("token")%>'},
+					  function(response) {
+						  $(element).text(response.data.name);
+					  }
+					);
+			}
 		</script>
 		<link rel="stylesheet" type="text/css" href="./style/css/FitRank.css">
 	</head>
@@ -127,36 +180,22 @@
 							<th>Perfil</th>
 							<th>Velocidade Máx.</th>
 						</tr>
-
-						<tr class="rankingLine">
-							<td>
-								<img align="middle" src="http://static.comicvine.com/uploads/square_tiny/14/149672/2868907-fake_facebook_profile_picture_funny_batman_pic_150x150.jpg">
-								<span class="profileName">Bruce Wayne</span>
-							</td>
-							<td class="measure"><span>100 km/h</span></td>
-						</tr>
-						<tr class="rankingLine">
-							<td>
-								<img align="middle" src="http://static.comicvine.com/uploads/square_tiny/13/132352/3523035-superman_avatar.jpeg">
-								<span class="profileName">Clark Kent</span>
-<!-- 								JR Cefet -->
-							</td>
-							<td class="measure">
-								<span>99 km/h</span>
-							</td>
-						</tr>
-						<tr class="rankingLine">
-							<td>
-<!-- 							<div> -->
-								<img align="middle" src="http://www.artecapas.com/images/blank_avtar.gif">
-	<!-- 							</div> -->
-								<span class="profileName">Anônimo</span>
-<!-- 								JR Cefet -->
-							</td>
-							<td class="measure">
-								<span>20 km/h</span>
-							</td>
-						</tr>						
+						
+ 						<% 
+						ArrayList<RankingPessoa> listaRankingPessoa = (ArrayList<RankingPessoa>) request.getAttribute("listaRanking");
+						
+						 for(RankingPessoa pessoa : listaRankingPessoa){ 
+							 out.println("<tr class='rankingLine'>");
+							 out.println("<td>");
+							 out.println("<img align='middle' data-id_pessoa='" + pessoa.getId_pessoa() + "' />");
+							 out.println("<span class='profileName' data-id_pessoa='" + pessoa.getId_pessoa() + "' ></span>");
+							 out.println("</td>");
+							 out.println("<td class='measure'><span>" + pessoa.getResultado()  + " km/h</span></td>");
+							 out.println("</tr>");
+						 }
+						
+ 						%>
+						
 					</table>
 				</div>
 			</div>
