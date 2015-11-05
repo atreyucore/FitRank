@@ -34,4 +34,17 @@ public class Aplicativo implements Comparable<Object> {
 		return 1;
 	}
 	
+	@Override
+	public boolean equals(Object o) {
+		if(o != null && o instanceof Aplicativo){
+			Aplicativo app = (Aplicativo) o;
+			
+			if(app.id_aplicativo.equals(this.id_aplicativo)){
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 }

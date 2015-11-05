@@ -187,13 +187,17 @@ public class CarregaEscolhaRanking extends HttpServlet {
 
 			if (aplicativosNaoInserir != null) {
 				
+				ArrayList<Aplicativo> aplicativosAux = (ArrayList<Aplicativo>) aplicativos.clone();
+				
 				for(Aplicativo app :aplicativos) {
 					for (Aplicativo appNaoInserir: aplicativosNaoInserir) {
 						if( app.getId_aplicativo().equals(appNaoInserir.getId_aplicativo()) ){
-							aplicativos.remove(app);
+							aplicativosAux.remove(app);
 						}
 					}	
 				}
+				
+				aplicativos = aplicativosAux;
 			}
 
 			if (aplicativos.size() > 1)
