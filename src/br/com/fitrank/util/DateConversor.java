@@ -103,7 +103,7 @@ public class DateConversor {
 	public static int getDaysDifference(Date date1, Date date2) {
 		
 		
-		long daysDifference = date2.getTime()/1000 - date1.getTime()/1000;
+		long daysDifference =  date1.getTime()/1000 - date2.getTime()/1000;
 		 
 		return (int) TimeUnit.DAYS.convert(daysDifference, TimeUnit.SECONDS);
 	}
