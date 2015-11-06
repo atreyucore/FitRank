@@ -178,7 +178,7 @@
 					<table class="tableRank">
 						<tr>
 							<th>Perfil</th>
-							<th>Velocidade Máx.</th>
+							<th>Velocidade Média</th>
 						</tr>
 						
  						<% 
