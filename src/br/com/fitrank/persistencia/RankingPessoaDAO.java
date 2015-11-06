@@ -185,23 +185,24 @@ public class RankingPessoaDAO {
 		}
 	
 		String selectTableSQL = "SELECT @rownum := @rownum + 1 AS colocacao,							\n"
-					+	"		consulta.id_pessoa id_pessoa,									\n"
-					+	"		consulta.resultado resultado									\n"
-				+	"  FROM (SELECT @rownum := 0) r,										\n"
-				+	"		(SELECT pf.id_pessoa,											\n"
-					+	"				SUM(pf.distancia_percorrida) resultado		\n"
-				+	"				FROM post_fitness pf,									\n"
-					+	"					 pessoa p											\n"
-				+	"		  WHERE (p.id_usuario IN (SELECT a.id_amigo						\n"
-				+	"									FROM amizade a						\n"
-				+	"								   WHERE a.id_pessoa = p.id_usuario)	\n"
-				+	"				 OR p.id_usuario = '"+configuracao.getIdPessoa()+"')									\n"
-				+   "			AND pf.modalidade = '"+configuracao.getModalidade()+"'										\n"							
-				+	"			AND (str_to_date(pf.data_publicacao, '%d/%m/%Y') 			\n"
-					+	"					BETWEEN str_to_date('"+dataInicial+"', '%d/%m/%Y') 					\n"
-  				+	"						AND str_to_date('"+DateConversor.DateToString(new Date())+"', '%d/%m/%Y'))					\n"
-				+	"		 GROUP BY pf.id_pessoa											\n"
-				+	"		 ORDER BY SUM(pf.distancia_percorrida) DESC ) consulta 			\n";
+							+	"		consulta.id_pessoa id_pessoa,									\n"
+							+	"		consulta.resultado resultado									\n"
+							+	"  FROM (SELECT @rownum := 0) r,										\n"
+							+	"		(SELECT pf.id_pessoa,											\n"
+							+	"				SUM(pf.distancia_percorrida) resultado		\n"
+							+	"				FROM post_fitness pf,									\n"
+							+	"					 pessoa p											\n"
+							+	"		  WHERE (p.id_usuario IN (SELECT a.id_amigo						\n"
+							+	"									FROM amizade a						\n"
+							+	"								   WHERE a.id_pessoa = p.id_usuario)	\n"
+							+	"				 OR p.id_usuario = '"+configuracao.getIdPessoa()+"')									\n"
+							+   "			AND pf.modalidade = '"+configuracao.getModalidade()+"'										\n"							
+							+	"			AND (str_to_date(pf.data_publicacao, '%d/%m/%Y') 			\n"
+							+	"					BETWEEN str_to_date('"+dataInicial+"', '%d/%m/%Y') 					\n"
+			  				+	"						AND str_to_date('"+DateConversor.DateToString(new Date())+"', '%d/%m/%Y'))					\n"
+							+	"		 GROUP BY pf.id_pessoa											\n"
+							+	"		 ) consulta 													\n"
+							+	" ORDER BY resultado DESC												\n";
 	
 		try {
 			dbConnection = conexao;
@@ -299,7 +300,8 @@ public class RankingPessoaDAO {
 	     					+	"					BETWEEN str_to_date('"+dataInicial+"', '%d/%m/%Y') 					\n"
 		      				+	"						AND str_to_date('"+DateConversor.DateToString(new Date())+"', '%d/%m/%Y'))					\n"
 							+	"		 GROUP BY pf.id_pessoa											\n"
-							+	"		 ORDER BY SUM(pf.distancia_percorrida) DESC ) consulta 			\n";
+							+	"		 ) consulta 													\n"
+							+	" ORDER BY velocidade_media DESC										\n";
 	
 		try {
 			dbConnection = conexao;
