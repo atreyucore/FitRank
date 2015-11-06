@@ -185,10 +185,10 @@ public class RankingPessoaDAO {
 		}
 	
 		String selectTableSQL = "SELECT @rownum := @rownum + 1 AS colocacao,							\n"
-					+	"		consulta.id_usuario id_pessoa,									\n"
+					+	"		consulta.id_pessoa id_pessoa,									\n"
 					+	"		consulta.resultado resultado									\n"
 				+	"  FROM (SELECT @rownum := 0) r,										\n"
-				+	"		(SELECT p.id_usuario,											\n"
+				+	"		(SELECT pf.id_pessoa,											\n"
 					+	"				SUM(pf.distancia_percorrida) resultado		\n"
 				+	"				FROM post_fitness pf,									\n"
 					+	"					 pessoa p											\n"
@@ -196,12 +196,11 @@ public class RankingPessoaDAO {
 				+	"									FROM amizade a						\n"
 				+	"								   WHERE a.id_pessoa = p.id_usuario)	\n"
 				+	"				 OR p.id_usuario = '"+configuracao.getIdPessoa()+"')									\n"
-				+	"			AND p.id_usuario = pf.id_pessoa								\n"
 				+   "			AND pf.modalidade = '"+configuracao.getModalidade()+"'										\n"							
 				+	"			AND (str_to_date(pf.data_publicacao, '%d/%m/%Y') 			\n"
 					+	"					BETWEEN str_to_date('"+dataInicial+"', '%d/%m/%Y') 					\n"
   				+	"						AND str_to_date('"+DateConversor.DateToString(new Date())+"', '%d/%m/%Y'))					\n"
-				+	"		 GROUP BY p.id_usuario											\n"
+				+	"		 GROUP BY pf.id_pessoa											\n"
 				+	"		 ORDER BY SUM(pf.distancia_percorrida) DESC ) consulta 			\n";
 	
 		try {
@@ -283,23 +282,23 @@ public class RankingPessoaDAO {
 		}
 	
 		String selectTableSQL = "SELECT @rownum := @rownum + 1 AS colocacao,							\n"
-		 					+	"		consulta.id_usuario id_pessoa,									\n"
-		 					+	"		consulta.resultado resultado									\n"
+		 					+	"		consulta.id_pessoa id_pessoa,									\n"
+		 					+	"		(consulta.resultado/consulta.corridas) velocidade_media			\n"
 							+	"  FROM (SELECT @rownum := 0) r,										\n"
-							+	"		(SELECT p.id_usuario,											\n"
-		 					+	"				SUM(pf.distancia_percorrida/pf.duracao) resultado		\n"
+							+	"		(SELECT pf.id_pessoa,											\n"
+		 					+	"				SUM(pf.distancia_percorrida/pf.duracao) resultado,		\n"
+		 					+	"				COUNT(pf.id_publicacao) corridas						\n"
 							+	"				FROM post_fitness pf,									\n"
   		 					+	"					 pessoa p											\n"
 							+	"		  WHERE (p.id_usuario IN (SELECT a.id_amigo						\n"
 							+	"									FROM amizade a						\n"
 							+	"								   WHERE a.id_pessoa = p.id_usuario)	\n"
 							+	"				 OR p.id_usuario = '"+configuracao.getIdPessoa()+"')									\n"
-							+	"			AND p.id_usuario = pf.id_pessoa								\n"
 							+   "			AND pf.modalidade = '"+configuracao.getModalidade()+"'										\n"							
 							+	"			AND (str_to_date(pf.data_publicacao, '%d/%m/%Y') 			\n"
 	     					+	"					BETWEEN str_to_date('"+dataInicial+"', '%d/%m/%Y') 					\n"
 		      				+	"						AND str_to_date('"+DateConversor.DateToString(new Date())+"', '%d/%m/%Y'))					\n"
-							+	"		 GROUP BY p.id_usuario											\n"
+							+	"		 GROUP BY pf.id_pessoa											\n"
 							+	"		 ORDER BY SUM(pf.distancia_percorrida) DESC ) consulta 			\n";
 	
 		try {
@@ -334,7 +333,7 @@ public class RankingPessoaDAO {
 				rankingPessoa = new RankingPessoa();
 				rankingPessoa.setId_pessoa(rs.getString("id_pessoa"));
 				rankingPessoa.setColocacao(rs.getInt("colocacao"));
-				rankingPessoa.setResultado(rs.getFloat("resultado"));
+				rankingPessoa.setResultado(rs.getFloat("velocidade_media"));
 				
 				listaRanking.add(rankingPessoa);
 			}
