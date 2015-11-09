@@ -7,7 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 
 public class PostFitnessUtil {
 	
-	public static double getNikeDistance(String courseTitle) {
+	public static double getNikeDistance(String courseTitle) throws NumberFormatException {
 		
 		String miles = courseTitle.split("miles")[0].trim();
 		
@@ -36,7 +36,7 @@ public class PostFitnessUtil {
 		
 	}
 	
-	public static double getRuntasticDistance(String courseTitle) {
+	public static double getRuntasticDistance(String courseTitle)  throws NumberFormatException {
 	
 		courseTitle = courseTitle.replace("a ", "");
 		
@@ -45,7 +45,7 @@ public class PostFitnessUtil {
 		return Double.parseDouble(kms);
 	}
 	
-	public static double getRuntasticDuration(String courseTitle) {
+	public static double getRuntasticDuration(String courseTitle)  throws NumberFormatException {
 		
 		courseTitle = courseTitle.split("in")[1].trim();
 		
@@ -65,7 +65,7 @@ public class PostFitnessUtil {
 		
 	}
 	
-	public static double getRunKeeperDistance(String courseTitle) {
+	public static double getRunKeeperDistance(String courseTitle) throws NumberFormatException {
 		
 //		courseTitle = courseTitle.replace("a ", "");
 		
@@ -74,7 +74,7 @@ public class PostFitnessUtil {
 		return Double.parseDouble(kms);
 	}
 	
-	public static double getRunKeeperDuration(String courseTitle) {
+	public static double getRunKeeperDuration(String courseTitle) throws NumberFormatException {
 		
 		int countColons = StringUtils.countMatches(courseTitle, ":");
 		

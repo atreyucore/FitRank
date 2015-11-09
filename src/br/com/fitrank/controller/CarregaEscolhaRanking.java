@@ -292,33 +292,39 @@ public class CarregaEscolhaRanking extends HttpServlet {
 			postFitness.setId_pessoa(facebookUser.getId());
 
 			postFitness.setId_app(postFit.getApplication().getId());
+			
+			try {
 
-			switch (postFit.getApplication().getId()) {
-			case ConstantesFitRank.ID_APP_NIKE:
-				postFitness.setDistancia_percorrida(PostFitnessUtil
-						.getNikeDistance(postFit.getDataCourse().getCourse()
-								.getTitle()));
-				postFitness.setDuracao(PostFitnessUtil.getNikeDuration(
-						postFit.getStartTime(), postFit.getEndTime()));
-				break;
-			case ConstantesFitRank.ID_APP_RUNTASTIC:
-				postFitness.setDistancia_percorrida(PostFitnessUtil
-						.getRuntasticDistance(postFit.getDataCourse()
-								.getCourse().getTitle()));
-				postFitness.setDuracao(PostFitnessUtil
-						.getRuntasticDuration(postFit.getDataCourse()
-								.getCourse().getTitle()));
-				break;
-			case ConstantesFitRank.ID_APP_RUNKEEPER:
-				postFitness.setDistancia_percorrida(PostFitnessUtil
-						.getRunKeeperDistance(postFit.getDataCourse()
-								.getCourse().getTitle()));
-				postFitness.setDuracao(PostFitnessUtil
-						.getRunKeeperDuration(postFit.getDataCourse()
-								.getCourse().getTitle()));
-				break;
-			default:
-				break;
+				switch (postFit.getApplication().getId()) {
+				case ConstantesFitRank.ID_APP_NIKE:
+					postFitness.setDistancia_percorrida(PostFitnessUtil
+							.getNikeDistance(postFit.getDataCourse().getCourse()
+									.getTitle()));
+					postFitness.setDuracao(PostFitnessUtil.getNikeDuration(
+							postFit.getStartTime(), postFit.getEndTime()));
+					break;
+				case ConstantesFitRank.ID_APP_RUNTASTIC:
+					postFitness.setDistancia_percorrida(PostFitnessUtil
+							.getRuntasticDistance(postFit.getDataCourse()
+									.getCourse().getTitle()));
+					postFitness.setDuracao(PostFitnessUtil
+							.getRuntasticDuration(postFit.getDataCourse()
+									.getCourse().getTitle()));
+					break;
+				case ConstantesFitRank.ID_APP_RUNKEEPER:
+					postFitness.setDistancia_percorrida(PostFitnessUtil
+							.getRunKeeperDistance(postFit.getDataCourse()
+									.getCourse().getTitle()));
+					postFitness.setDuracao(PostFitnessUtil
+							.getRunKeeperDuration(postFit.getDataCourse()
+									.getCourse().getTitle()));
+					break;
+				default:
+					break;
+				}
+				
+			} catch (NumberFormatException e) {
+				continue;
 			}
 
 			postFitness.setData_publicacao(DateConversor.DateToString(postFit
