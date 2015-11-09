@@ -3,6 +3,7 @@
 	<%@ page import="br.com.fitrank.modelo.RankingPessoa" %>
 	<%@ page import="java.util.List" %>
 	<%@ page import="java.util.ArrayList" %>
+	<%@ page import="java.text.DecimalFormat" %>
 	
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
@@ -178,11 +179,17 @@
 					<table class="tableRank">
 						<tr>
 							<th>Perfil</th>
-							<th>Velocidade Média</th>
+							<%if ( ((String) request.getParameter("modo")) == "V") { %>
+								<th>Velocidade Média</th>
+							<% } else {%>
+								<th>Distância</th>
+							<% }%>
 						</tr>
 						
  						<% 
 						ArrayList<RankingPessoa> listaRankingPessoa = (ArrayList<RankingPessoa>) request.getAttribute("listaRanking");
+ 						DecimalFormat df = new DecimalFormat();
+						df.setMaximumFractionDigits(2);
 						
 						 for(RankingPessoa pessoa : listaRankingPessoa){ 
 							 out.println("<tr class='rankingLine'>");
@@ -190,7 +197,7 @@
 							 out.println("<img align='middle' data-id_pessoa='" + pessoa.getId_pessoa() + "' src='imagem/default_photo.png' />");
 							 out.println("<span class='profileName' data-id_pessoa='" + pessoa.getId_pessoa() + "' ></span>");
 							 out.println("</td>");
-							 out.println("<td class='measure'><span>" + pessoa.getResultado()  + " km/h</span></td>");
+							 out.println("<td class='measure'><span>" + df.format(pessoa.getResultado()) + " km/h</span></td>");
 							 out.println("</tr>");
 						 }
 						

@@ -96,8 +96,10 @@ public class CarregaRanking extends HttpServlet {
     private String defineModo(String modo) {
 		switch (modo) {
 			case "velocidade":
+				this.modo = ConstantesFitRank.VELOCIDADE_MEDIA;
 				return ConstantesFitRank.VELOCIDADE_MEDIA;
 			case "distancia":
+				this.modo = ConstantesFitRank.DISTANCIA;
 				return ConstantesFitRank.DISTANCIA;
 			default:
 				return modo;
