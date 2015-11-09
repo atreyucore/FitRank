@@ -56,6 +56,9 @@
 						case "M":
 							$(".slider").slider({value: 2});
 							break;
+						case "A":
+							$(".slider").slider({value: 3});
+							break;
 						default:
 							break;
 					}
@@ -63,7 +66,7 @@
 			}
 			
 			function preparaSlider() {
-				var time = ["Dia", "Semana", "M&ecirc;s"];
+				var time = ["Dia", "Semana", "M&ecirc;s", "Ano"];
 				
 				$(".slider").slider({ 
 					min: 0, 
@@ -99,7 +102,7 @@
 			}
 			
 			
-			function handleConfiguração(botao) {
+			function handleConfiguracao(botao) {
 				
 				if ($(".selectedMode").size() != 0){
 					var modo = $(".selectedMode").attr("class").split(" ")[1];
@@ -166,13 +169,13 @@
 							<div class="fav"> 
 <!-- 								salva padrao -->
 								<img class="fav" src="imagem/tick11_big.png" style="border-radius: 50%;background-color: rgb(101,166,133);"
-									onclick = "handleConfiguração('padrao')"/>
+									onclick = "handleConfiguracao('padrao')"/>
 <!-- 								salva favorito -->
 								<img class="fav" src="imagem/star212_big.png" style="border-radius: 50%;background-color: rgb(241,239,169);" 
-									onclick = "handleConfiguração('favorito')"/>
+									onclick = "handleConfiguracao('favorito')"/>
 								<img class="fav" src="imagem/social24.png" style="border-radius: 50%;background-color: rgb(191, 230, 231);" />
 								<img class="fav" src="imagem/medal52.png" style="border-radius: 50%;background-color: rgb(193, 74, 74);" 
-									onclick="handleConfiguração('ranking')"/>
+									onclick="handleConfiguracao('ranking')"/>
 							</div>
 						</div>
 					</div>
