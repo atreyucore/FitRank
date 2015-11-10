@@ -145,7 +145,9 @@ public class PessoaDAO {
 				+ "data_ultima_atualizacao_runs, "
 				+ "data_ultima_atualizacao_walks, "
 				+ "data_ultima_atualizacao_bikes, "
-				+ "rank_anual "
+				+ "rank_anual, "
+				+ "genero, "
+				+ "data_nascimento "
 				+ "from pessoa "
 				+ "where id_usuario = ?";
 		
@@ -165,8 +167,9 @@ public class PessoaDAO {
 				pessoa.setData_ultima_atualizacao_walks(DateConversor.StringToDate( rs.getString("data_ultima_atualizacao_walks") ) );
 				pessoa.setData_ultima_atualizacao_bikes(DateConversor.StringToDate( rs.getString("data_ultima_atualizacao_bikes") ) );
 				pessoa.setRank_anual(rs.getString("rank_anual"));
+				pessoa.setGenero(rs.getString("genero"));
+				pessoa.setData_nascimento(DateConversor.StringToDate( rs.getString("data_nascimento") ) );
 			}
-				
 			
 		} catch (SQLException e) {
 			 

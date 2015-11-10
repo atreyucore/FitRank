@@ -196,12 +196,16 @@
 <!-- 								<img src="imagem/sun95.png">  -->
 <!-- 							</div> -->
 <!-- 						</div> -->
-						
-						<div class="circleWrapper rankChoose slider">
+						<div class="circleWrapper rankChoose">
+							<div class="circle distancia" >
+								<img src="imagem/races.png">
+							</div>
+						</div>
+<!-- 						<div class="circleWrapper rankChoose slider"> -->
 <!-- 							<div class="circle calendario"> -->
 <!-- 	  	 						<img src="imagem/calendar157.png"> -->
 <!-- 	  	 					</div> -->
-						</div>
+<!-- 						</div> -->
 <!-- 						<div class="circleWrapper rankChoose" style="position: relative;top: 200px;"> -->
 	<!-- 						<div class="circle bestRank"> -->
 <!-- 	  	 						<img src="imagem/game44.png"> -->
@@ -212,11 +216,9 @@
 <!-- 						</div> -->
 					</div>
 					<div class="circles">
-						<div class="circleWrapper rankChoose">
-							<div class="circle distancia" >
-								<img src="imagem/races.png">
-							</div>
+						<div class="circleWrapper rankChoose slider">
 						</div>
+						
 <!-- 						<div class="circleWrapper rankChoose"> -->
 <!-- 							<div class="circle noite" > -->
 <!-- 								<img src="imagem/camera70.png"> -->
