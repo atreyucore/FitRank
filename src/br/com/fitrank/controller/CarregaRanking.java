@@ -11,8 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import br.com.fitrank.modelo.Configuracao;
+import br.com.fitrank.modelo.Ranking;
 import br.com.fitrank.modelo.RankingPessoa;
 import br.com.fitrank.modelo.fb.PostFitness.PostFitnessFB;
+import br.com.fitrank.service.ConfiguracaoServico;
 import br.com.fitrank.service.RankingPessoaServico;
 import br.com.fitrank.util.ConstantesFitRank;
 
@@ -47,6 +49,7 @@ public class CarregaRanking extends HttpServlet {
     	FacebookClient facebookClient = new DefaultFacebookClient(request.getParameter("token"));
     	
     	List<RankingPessoa> listRankingPessoas = new ArrayList<RankingPessoa>();
+    	ConfiguracaoServico configuracaoServico = new ConfiguracaoServico();
     	
     	modalidade = request.getAttribute("modalidade") == null ? (String) request.getParameter("modalidade") : (String) request.getAttribute("modalidade") ;
     	modo = request.getAttribute("modo") == null ? (String) request.getParameter("modo") : (String) request.getAttribute("modo") ;
@@ -75,6 +78,15 @@ public class CarregaRanking extends HttpServlet {
 			default:
 				break;
 		}
+		
+		configuracao.setFavorito(false);
+		configuracao.setPadraoModalidade(false);
+		configuracao.setModo(modo);
+		configuracaoServico.adicionaConfiguracao(configuracao);
+		
+		
+		Ranking ranking = new Ranking();
+		
     	
     	request.setAttribute("modalidade", modalidade);
 		request.setAttribute("modo", modo);

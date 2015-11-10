@@ -22,19 +22,24 @@ public class RankingPessoaServico {
 			e.printStackTrace();
 			return null;
 		}
-		return retornaRankingTop(rankingDistancia, configuracao);
+		
+		List<RankingPessoa> listaRanking = retornaRankingTop(rankingDistancia, configuracao);
+		
+		return listaRanking;
 	}
 	
 	public List<RankingPessoa> geraRankingVelocidadeMedia(Configuracao configuracao){
-		ArrayList<RankingPessoa> rankingDistancia = new ArrayList<RankingPessoa>();
+		ArrayList<RankingPessoa> rankingVelocidadeMedia = new ArrayList<RankingPessoa>();
 		rankingPessoaDAO = new RankingPessoaDAO();
 		try{
-			rankingDistancia = (ArrayList<RankingPessoa>) rankingPessoaDAO.geraRankingVelocidadeMedia(configuracao);
+			rankingVelocidadeMedia = (ArrayList<RankingPessoa>) rankingPessoaDAO.geraRankingVelocidadeMedia(configuracao);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
-		return retornaRankingTop(rankingDistancia, configuracao);
+		List<RankingPessoa> listaRanking = retornaRankingTop(rankingVelocidadeMedia, configuracao);
+		
+		return listaRanking;
 	}
 	
 	private RankingPessoa recuperaUsuarioNoRanking(List<RankingPessoa> listaRankingCompleta, Configuracao configuracao){

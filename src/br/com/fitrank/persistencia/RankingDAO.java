@@ -40,7 +40,11 @@ public class RankingDAO {
 
 			// execute insert SQL stetement
 			//TODO gabriel: Verificar possibilidade de recuperar id do ranking após inclusao (possivelmente com o metodo getGeneratedKeys())
-			preparedStatement.executeUpdate();
+			ResultSet rs = preparedStatement.getGeneratedKeys();
+			
+			if(rs.next()){
+				ranking.setId_ranking(rs.getInt(1));
+			}
 
 		} catch (SQLException e) {
 
