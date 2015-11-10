@@ -45,26 +45,26 @@
 						break;
 				}
 				switch("<%=(String) request.getAttribute("modo")%>") {
-					case "velocidade":
+					case "V":
 						$(".velocidade").css("display","");
 						break;
-					case "distancia":
+					case "D":
 						$(".distancia").css("display","");
 						break;
 					default:
 						break;
 				}
 				
-				switch("<%=(String) request.getAttribute("turno")%>") {
-					case "dia":
-						$(".dia").css("display","");
-						break;
-					case "noite":
-						$(".noite").css("display","");
-						break;
-					default:
-						break;
-				}
+<%-- 				switch("<%=(String) request.getAttribute("turno")%>") { --%>
+// 					case "dia":
+// 						$(".dia").css("display","");
+// 						break;
+// 					case "noite":
+// 						$(".noite").css("display","");
+// 						break;
+// 					default:
+// 						break;
+// 				}
 				
 				$(".calendario").css("display","");
 				
@@ -77,6 +77,9 @@
 						break;
 					case "2":
 						$(".chosenPeriod").text("Mês");
+						break;
+					case "3":
+						$(".chosenPeriod").text("Ano");
 						break;
 					default:
 						break;
@@ -133,7 +136,10 @@
 						<div>
 							<span class="logo"> 
 								FitRank<sup class="supCopy">&copy;</sup>
-							</span> 
+							</span>
+							<div class="fav"> 
+								<img class="fav" src="imagem/social24.png" style="border-radius: 50%;background-color: rgb(191, 230, 231);" />
+							</div>
 						</div>
 					</div>
 					<div class="circles">
@@ -178,10 +184,19 @@
 				<div class="ranks">
 					<table class="tableRank">
 						<tr>
+<!-- 							<th></th> -->
+							<th></th>
 							<th>Perfil</th>
-							<%if ( ((String) request.getParameter("modo")) == "V") { %>
+							<%
+							String medida = "";
+							
+							if ( ((String) request.getParameter("modo")) == "V") { 
+								medida = "km/h";
+							%>
 								<th>Velocidade Média</th>
-							<% } else {%>
+							<% } else {
+								medida = "km";
+							%>
 								<th>Distância</th>
 							<% }%>
 						</tr>
@@ -193,11 +208,12 @@
 						
 						 for(RankingPessoa pessoa : listaRankingPessoa){ 
 							 out.println("<tr class='rankingLine'>");
+							 out.println("<td class='colocacao'>" + pessoa.getColocacao() + "</td>");
 							 out.println("<td>");
 							 out.println("<img align='middle' data-id_pessoa='" + pessoa.getId_pessoa() + "' src='imagem/default_photo.png' />");
 							 out.println("<span class='profileName' data-id_pessoa='" + pessoa.getId_pessoa() + "' ></span>");
 							 out.println("</td>");
-							 out.println("<td class='measure'><span>" + df.format(pessoa.getResultado()) + " km/h</span></td>");
+							 out.println("<td class='measure'><span>" + df.format(pessoa.getResultado()) + " " + medida + "</span></td>");
 							 out.println("</tr>");
 						 }
 						

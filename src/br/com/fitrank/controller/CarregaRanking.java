@@ -78,7 +78,7 @@ public class CarregaRanking extends HttpServlet {
     	
     	request.setAttribute("modalidade", modalidade);
 		request.setAttribute("modo", modo);
-		request.setAttribute("turno", turno);
+//		request.setAttribute("turno", turno);
 		request.setAttribute("periodo", periodo);
 		request.setAttribute("listaRanking", listRankingPessoas);
 		

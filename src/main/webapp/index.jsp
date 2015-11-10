@@ -21,11 +21,11 @@
 					 /*FB.login(function(response) {
 						alert(response.status);
 					 }, {scope: 'email,user_likes,user_actions.fitness'} );*/   
-					 
+					 var token = "";
 					 FB.getLoginStatus(function(response) {
 					        if (response.status === 'connected') {
 					        	
-					        	var token = response.authResponse.accessToken;
+					        	token = response.authResponse.accessToken;
 			         		    window.location="http://localhost:8080/FitRank/InitUser?token="+token;
 			
 					        }else if(response.status === 'not_authorized'){
@@ -37,14 +37,21 @@
 					        FB.login(function(response) {
 					            if(response.session)
 					            {
+					            	alert(response.session);
 					            	 alert("entrou");
 					            	 $('#fb_login_form').submit();
 					            	 if(response.authResponse){
-					            		 window.location="http://localhost:8080/truefriends/RecuperaUsuarioFacebook?token="+response.authResponse.accessToken;
+					            		 token = response.authResponse.accessToken;
+					            		 window.location="http://localhost:8080/FitRank/InitUser?token="+token;;
 					            		 
 					            	 }else{
-					            		 console.log("O usuário não aceitou o acesso aos seus Dados!");
+					            		 console.log("O usuário não permitiu acesso aos dados!");
 					            	 }
+					            } 
+					            
+					            if (response.status == "connected" && response.authResponse) {
+					            	token = response.authResponse.accessToken;
+					            	window.location="http://localhost:8080/FitRank/InitUser?token="+token;
 					            }
 					            
 					          });

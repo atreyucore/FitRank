@@ -173,7 +173,7 @@
 <!-- 								salva favorito -->
 								<img class="fav" src="imagem/star212_big.png" style="border-radius: 50%;background-color: rgb(241,239,169);" 
 									onclick = "handleConfiguracao('favorito')"/>
-								<img class="fav" src="imagem/social24.png" style="border-radius: 50%;background-color: rgb(191, 230, 231);" />
+<!-- 								<img class="fav" src="imagem/social24.png" style="border-radius: 50%;background-color: rgb(191, 230, 231);" /> -->
 								<img class="fav" src="imagem/medal52.png" style="border-radius: 50%;background-color: rgb(193, 74, 74);" 
 									onclick="handleConfiguracao('ranking')"/>
 							</div>
@@ -191,25 +191,25 @@
 							</div>
 						</div>
 						
-						<div class="circleWrapper rankChoose">
-							<div class="circle dia" >
-								<img src="imagem/sun95.png"> 
-							</div>
-						</div>
+<!-- 						<div class="circleWrapper rankChoose"> -->
+<!-- 							<div class="circle dia" > -->
+<!-- 								<img src="imagem/sun95.png">  -->
+<!-- 							</div> -->
+<!-- 						</div> -->
 						
 						<div class="circleWrapper rankChoose slider">
 <!-- 							<div class="circle calendario"> -->
 <!-- 	  	 						<img src="imagem/calendar157.png"> -->
 <!-- 	  	 					</div> -->
 						</div>
-						<div class="circleWrapper rankChoose" style="position: relative;top: 200px;">
+<!-- 						<div class="circleWrapper rankChoose" style="position: relative;top: 200px;"> -->
 	<!-- 						<div class="circle bestRank"> -->
-	  	 						<img src="imagem/game44.png">
+<!-- 	  	 						<img src="imagem/game44.png"> -->
 	<!--   	 						<div class="circle global" > -->
-									<img class="global" src="imagem/world91.png">
+<!-- 									<img class="global" src="imagem/world91.png"> -->
 	<!-- 							</div> -->
 	<!--   	 					</div> -->
-						</div>
+<!-- 						</div> -->
 					</div>
 					<div class="circles">
 						<div class="circleWrapper rankChoose">
@@ -217,11 +217,11 @@
 								<img src="imagem/races.png">
 							</div>
 						</div>
-						<div class="circleWrapper rankChoose">
-							<div class="circle noite" >
-								<img src="imagem/camera70.png">
-							</div>
-						</div>
+<!-- 						<div class="circleWrapper rankChoose"> -->
+<!-- 							<div class="circle noite" > -->
+<!-- 								<img src="imagem/camera70.png"> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
 					</div>	
 	<!-- 					<div class="periodos"> -->
 	<!-- 						<input type="radio" name="periodo" /> Semana  -->
