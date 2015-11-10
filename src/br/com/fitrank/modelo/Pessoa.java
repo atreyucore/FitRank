@@ -23,6 +23,10 @@ public class Pessoa {
 	private Date data_ultima_atualizacao_bikes;
 //	Column(name="rank_anual")	
 	private String rank_anual;
+//	Column(name="genero")
+	private String genero;
+//	Column(name="data_nascimento")
+	private Date data_nascimento;
 	
 	private Configuracao configuracaoFavorita;
 
@@ -106,6 +110,22 @@ public class Pessoa {
 
 	public void setAmigos(List<Pessoa> amigos) {
 		this.amigos = amigos;
+	}
+
+	public String getGenero() {
+		return genero;
+	}
+
+	public void setGenero(String genero) {
+		this.genero = genero;
+	}
+
+	public Date getData_nascimento() {
+		return data_nascimento;
+	}
+
+	public void setData_nascimento(Date data_nascimento) {
+		this.data_nascimento = data_nascimento;
 	}
 	
 }
