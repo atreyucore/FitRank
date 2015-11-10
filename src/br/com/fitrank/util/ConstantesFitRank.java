@@ -8,11 +8,14 @@ public final class ConstantesFitRank {
 	public static final String SEMANA = "S";
 	public static final String MES = "M";
 	public static final String ANO = "A";
+	
 	public static final String MODALIDADE_CAMINHADA = "W";
 	public static final String MODALIDADE_BICICLETA = "B";
 	public static final String MODALIDADE_CORRIDA = "R";
+	
 	public static final String CHAR_SIM = "S";
 	public static final String CHAR_NAO = "N";
+	
 	public static final int TAMANHO_PADRAO_RANKING = 10;
 	
 	public static final String ID_APP_NIKE = "84697719333";
@@ -21,4 +24,9 @@ public final class ConstantesFitRank {
 	
 	public static final String VELOCIDADE_MEDIA = "V";
 	public static final String DISTANCIA = "D";
+	
+	public static final String SEXO_FEMININO = "F";
+	public static final String SEXO_MASCULINO = "M";
+	public static final String FACEBOOK_MALE_GENDER = "male";
+	public static final String FACEBOOK_FEMALE_GENDER = "female";
 }

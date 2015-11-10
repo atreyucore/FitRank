@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import br.com.fitrank.modelo.Pessoa;
 import br.com.fitrank.service.AmizadeServico;
 import br.com.fitrank.service.PessoaServico;
+import br.com.fitrank.util.ConstantesFitRank;
 
 import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
@@ -48,9 +49,27 @@ public class InitUser extends HttpServlet {
 		   pessoa.setNome(facebookUser.getName());
 	   }
 	   
-	   if (pessoaServico.lePessoaServico(facebookUser) == null ) {
+	   if(facebookUser.getGender()!=null){
+		   if(facebookUser.getGender().equalsIgnoreCase(ConstantesFitRank.FACEBOOK_FEMALE_GENDER)){
+			   pessoa.setGenero(ConstantesFitRank.SEXO_FEMININO);
+		   } else if(facebookUser.getGender().equalsIgnoreCase(ConstantesFitRank.FACEBOOK_MALE_GENDER)){
+			   pessoa.setGenero(ConstantesFitRank.SEXO_MASCULINO);
+		   }
+	   }
+	   
+	   if(facebookUser.getBirthdayAsDate()!=null){
+		   pessoa.setData_nascimento(facebookUser.getBirthdayAsDate());
+	   }
+	   
+	   Pessoa usuarioExistente = pessoaServico.lePessoaServico(facebookUser);
+	   
+	   if (usuarioExistente == null ) {
 		   pessoa = pessoaServico.adicionaPessoaServico(pessoa);
 	   } else {
+		   pessoa.setData_ultima_atualizacao_runs(usuarioExistente.getData_ultima_atualizacao_runs());
+		   pessoa.setData_ultima_atualizacao_walks(usuarioExistente.getData_ultima_atualizacao_walks());
+		   pessoa.setData_ultima_atualizacao_bikes(usuarioExistente.getData_ultima_atualizacao_bikes());
+		   pessoa.setRank_anual(usuarioExistente.getRank_anual());
 		   pessoa = pessoaServico.atualizaPessoaServico(pessoa);
 	   }
 	   	

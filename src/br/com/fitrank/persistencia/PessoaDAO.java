@@ -32,8 +32,10 @@ public class PessoaDAO {
 				+ "data_ultima_atualizacao_runs, "
 				+ "data_ultima_atualizacao_walks, "
 				+ "data_ultima_atualizacao_bikes, "
-				+ "rank_anual "
-				+ ") VALUES (?,?,?,?,?,?,?,?)";
+				+ "rank_anual, "
+				+ "genero, "
+				+ "data_nascimento "
+				+ ") VALUES (?,?,?,?,?,?,?,?,?,?)";
 
 		try {
 			preparedStatement = conexao.prepareStatement(insertTableSQL);
@@ -49,7 +51,8 @@ public class PessoaDAO {
 			preparedStatement.setString(++i, DateConversor.DateToString(pessoa.getData_ultima_atualizacao_walks()));
 			preparedStatement.setString(++i, DateConversor.DateToString(pessoa.getData_ultima_atualizacao_bikes()));
 			preparedStatement.setString(++i, pessoa.getRank_anual());
-			
+			preparedStatement.setString(++i, pessoa.getGenero());
+			preparedStatement.setString(++i, DateConversor.DateToString(pessoa.getData_nascimento()));
 
 			// execute insert SQL statement
 			preparedStatement.executeUpdate();
@@ -80,12 +83,13 @@ public class PessoaDAO {
 	
 		String updateTableSQL  = "UPDATE pessoa set "
 				+ "nome = ?, "
-				+ "data_cadastro = ?, "
 				+ "data_ultimo_login = ?, "
 				+ "data_ultima_atualizacao_runs = ?, "
 				+ "data_ultima_atualizacao_walks = ?, "
 				+ "data_ultima_atualizacao_bikes = ?, "
-				+ "rank_anual = ? "
+				+ "rank_anual = ?, "
+				+ "genero = ?, "
+				+ "data_nascimento = ? "
 				+ "WHERE id_usuario = ? ";
 	
 		try {
@@ -94,12 +98,14 @@ public class PessoaDAO {
 			int i = 0;
 			
 			preparedStatement.setString(++i, pessoa.getNome());
-			preparedStatement.setString(++i, DateConversor.DateToString(pessoa.getData_cadastro()));
 			preparedStatement.setString(++i, DateConversor.DateToString(pessoa.getData_ultimo_login()));
 			preparedStatement.setString(++i, DateConversor.DateToString(pessoa.getData_ultima_atualizacao_runs()));
 			preparedStatement.setString(++i, DateConversor.DateToString(pessoa.getData_ultima_atualizacao_walks()));
 			preparedStatement.setString(++i, DateConversor.DateToString(pessoa.getData_ultima_atualizacao_bikes()));
 			preparedStatement.setString(++i, pessoa.getRank_anual());
+			preparedStatement.setString(++i, pessoa.getGenero());
+			preparedStatement.setString(++i, DateConversor.DateToString(pessoa.getData_nascimento()));
+			
 			preparedStatement.setString(++i, pessoa.getId_usuario());
 	
 			// execute insert SQL statement
