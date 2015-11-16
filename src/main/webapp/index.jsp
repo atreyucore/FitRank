@@ -26,7 +26,7 @@
 					        if (response.status === 'connected') {
 					        	
 					        	token = response.authResponse.accessToken;
-			         		    window.location="http://localhost:8080/FitRank/InitUser?token="+token;
+			         		    window.location = location.origin + location.pathname + "InitUser?token=" + token;
 			
 					        }else if(response.status === 'not_authorized'){
 			   		         
@@ -42,7 +42,7 @@
 					            	 $('#fb_login_form').submit();
 					            	 if(response.authResponse){
 					            		 token = response.authResponse.accessToken;
-					            		 window.location="http://localhost:8080/FitRank/InitUser?token="+token;;
+					            		 window.location = location.origin + location.pathname + "InitUser?token=" + token;
 					            		 
 					            	 }else{
 					            		 console.log("O usuário não permitiu acesso aos dados!");
@@ -51,7 +51,7 @@
 					            
 					            if (response.status == "connected" && response.authResponse) {
 					            	token = response.authResponse.accessToken;
-					            	window.location="http://localhost:8080/FitRank/InitUser?token="+token;
+					            	window.location = location.origin + location.pathname + "InitUser?token=" + token;
 					            }
 					            
 					          });
