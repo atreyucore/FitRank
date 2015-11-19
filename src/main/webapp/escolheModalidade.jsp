@@ -50,11 +50,11 @@
 						</div>
 					</div>
 					<div class="circles">
-						<div class="circleWrapper">
-							<div class="circle union" >
-								<img src="imagem/interface52.png">
-							</div>
-						</div>
+<!-- 						<div class="circleWrapper"> -->
+<!-- 							<div class="circle union" > -->
+<!-- 								<img src="imagem/interface52.png"> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
 						<div class="circleWrapper">
 							<div class="circle favorite"  onClick="goToRankingFavorito()" >
 								<img src="imagem/favourites7.png">

@@ -74,7 +74,7 @@ html, body {
 }
 
 .circleWrapper {
-	width: 50%;
+	width: 100%;
 	display: inline;
 	margin: 20px;
 }
@@ -84,7 +84,7 @@ html, body {
 }
 
 .circleWrapper.rankChoose {
-	width: auto;
+	width: 280px;
 }
 
 .circle {
@@ -163,6 +163,13 @@ html, body {
 	/* 	top: 25px;	 */
 /* 	position: relative; */
 /* 	    top: 130px; */
+	
+
+}
+
+.circle.calendario.calendarioEscolhe {
+	bottom:90px;
+	right: 40px;	
 }
 
 .circle.bestRank {
@@ -222,8 +229,8 @@ td.measure {
 	text-align: center;
 }
 
-span.profileName {
-	margin-left: 30px;
+td.profileName {
+	padding-left: 50px;
 }
 
 .chosenPeriod {
@@ -233,13 +240,14 @@ span.profileName {
 }
 
 .rankingLine {
-	line-height: 200px;
+/* 	line-height: 200px; */
 }
 
 
 /*slider*/
 .circleWrapper.rankChoose.slider {
-    margin-right: 200px;
+/*     margin-right: 200px; */
+    margin-left: 173px;
     margin-top: 91px;
 }
 
@@ -254,7 +262,7 @@ span.profileName {
 }
 
 .ui-slider-vertical.ui-slider-pips .ui-slider-pip {
-	left: 106px !important;
+	top: 106px !important;
 }
 
 .ui-slider-pip-initial:not([class*=ui-slider-pip-selected]) {

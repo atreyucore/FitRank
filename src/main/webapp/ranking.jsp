@@ -19,9 +19,16 @@
 			$(document).ready(function(){
 				$(".rankingLine>td>img").one("load", function() {
 					buscaInformacoesPerfil(this);
+					buscaNomePerfil(this);
 				}).each(function() {
 				  if(this.complete) $(this).load();
 				});
+				
+// 				$(".rankingLine>td>span").one("load", function() {
+					
+// 				}).each(function() {
+// 				  if(this.complete) $(this).load();
+// 				});
 				
 				
 				$(".ranking").css("display","none");
@@ -69,6 +76,7 @@
 				$(".calendario").css("display","");
 				
 				switch("<%=(String) request.getAttribute("periodo")%>") {
+					//Fluxo padrão
 					case "0":
 						$(".chosenPeriod").text("Dia");
 						break;
@@ -79,6 +87,19 @@
 						$(".chosenPeriod").text("Mês");
 						break;
 					case "3":
+						$(".chosenPeriod").text("Ano");
+						break;
+					//Vindo do favorito	
+					case "D":
+						$(".chosenPeriod").text("Dia");
+						break;
+					case "S":
+						$(".chosenPeriod").text("Semana");
+						break;
+					case "M":
+						$(".chosenPeriod").text("Mês");
+						break;
+					case "A":
 						$(".chosenPeriod").text("Ano");
 						break;
 					default:
@@ -99,19 +120,20 @@
 					  }
 					);
 				
-				FB.api(
-					  '/' + idUsuario ,
-					  'GET',
-					  { "fieds" : "name", 
-						"access_token" : '<%=(String) request.getParameter("token")%>'},
-					  function(response) {
-						  $($(element).next()[0]).text(response.name);
-					  }
-					);
+// 				FB.api(
+// 					  '/' + idUsuario ,
+// 					  'GET',
+// 					  { "fieds" : "name", 
+<%-- 						"access_token" : '<%=(String) request.getParameter("token")%>'}, --%>
+// 					  function(response) {
+// 						  $($(element).next("span")[0]).text(response.name);
+// 					  }
+// 					);
 			}
 			
 			function buscaNomePerfil(element) {
-				var idUsuario = $(element).attr("data-id_pessoa");
+				var elemento = $(element).parent().next().children()[0];
+				var idUsuario =  $(elemento).attr("data-id_pessoa");
 				
 				FB.api(
 					  '/' + idUsuario ,
@@ -119,7 +141,7 @@
 					  { "fieds" : "name", 
 						"access_token" : '<%=(String) request.getParameter("token")%>'},
 					  function(response) {
-						  $(element).text(response.data.name);
+						  $(elemento).text(response.name);
 					  }
 					);
 			}
@@ -137,9 +159,9 @@
 							<span class="logo"> 
 								FitRank<sup class="supCopy">&copy;</sup>
 							</span>
-							<div class="fav"> 
-								<img class="fav" src="imagem/social24.png" style="border-radius: 50%;background-color: rgb(191, 230, 231);" />
-							</div>
+<!-- 							<div class="fav">  -->
+<!-- 								<img class="fav" src="imagem/social24.png" style="border-radius: 50%;background-color: rgb(191, 230, 231);" /> -->
+<!-- 							</div> -->
 						</div>
 					</div>
 					<div class="circles">
@@ -184,7 +206,7 @@
 				<div class="ranks">
 					<table class="tableRank">
 						<tr>
-<!-- 							<th></th> -->
+							<th></th>
 							<th></th>
 							<th>Perfil</th>
 							<%
@@ -211,7 +233,9 @@
 							 out.println("<td class='colocacao'>" + pessoa.getColocacao() + "</td>");
 							 out.println("<td>");
 							 out.println("<img align='middle' data-id_pessoa='" + pessoa.getId_pessoa() + "' src='imagem/default_photo.png' />");
-							 out.println("<span class='profileName' data-id_pessoa='" + pessoa.getId_pessoa() + "' ></span>");
+							 out.println("</td>");
+							 out.println("<td class='profileName'>");
+							 out.println("<span data-id_pessoa='" + pessoa.getId_pessoa() + "' ></span>");
 							 out.println("</td>");
 							 out.println("<td class='measure'><span>" + df.format(pessoa.getResultado()) + " " + medida + "</span></td>");
 							 out.println("</tr>");

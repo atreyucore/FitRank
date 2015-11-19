@@ -70,22 +70,23 @@
 				
 				$(".slider").slider({ 
 					min: 0, 
-			        max: time.length-1, 
-			        orientation: "vertical"
+			        max: time.length-1
+// 			        , 
+// 			        orientation: "vertical"
 			    }).slider("pips", {
 			        rest: "label",
 			        labels: time
 			    });
 				
-				$(".ui-slider-handle.ui-state-default.ui-corner-all").append("<div class='circle calendario'><img src='imagem/calendar157.png'></div>");
+				$(".ui-slider-handle.ui-state-default.ui-corner-all").append("<div class='circle calendario calendarioEscolhe'><img src='imagem/calendar157.png'></div>");
 				
-				$(".ui-slider-pip").each(function() {
-					var bottomInitial = $(this).css("bottom");
-					bottomInitial.replace("%","");
-					bottomInitial = parseInt(bottomInitial) -40;
-					bottomInitial = bottomInitial + "%";
-					$(this).css("bottom", bottomInitial); 
-				});				
+// 				$(".ui-slider-pip").each(function() {
+// 					var bottomInitial = $(this).css("bottom");
+// 					bottomInitial.replace("%","");
+// 					bottomInitial = parseInt(bottomInitial) -40;
+// 					bottomInitial = bottomInitial + "%";
+// 					$(this).css("bottom", bottomInitial); 
+// 				});				
 			}
 			
 			function preparaEscolhas(classesEscolhas, classeModificadora) {
