@@ -28,9 +28,9 @@
 					        	token = response.authResponse.accessToken;
 			         		    window.location = location.origin + location.pathname + "InitUser?token=" + token;
 			
-					        }else if(response.status === 'not_authorized'){
+// 					        }else if(response.status === 'not_authorized'){
 			   		         
-					          alert("Não autorizado");
+// 					          alert("Não autorizado");
 					          
 					        }else{
 					        	
