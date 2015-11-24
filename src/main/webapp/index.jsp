@@ -54,7 +54,7 @@
 					            	window.location = location.origin + location.pathname + "InitUser?token=" + token;
 					            }
 					            
-					          });
+					          }, {scope: 'email,user_birthday,user_friends,user_actions.fitness'});
 					         }
 					 });
 				 }; 
