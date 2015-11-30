@@ -5,7 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.mysql.jdbc.Statement;
+
 import br.com.fitrank.modelo.Ranking;
+import br.com.fitrank.util.ConstantesFitRank;
 import br.com.fitrank.util.JDBCFactory;
 
 
@@ -30,7 +33,7 @@ public class RankingDAO {
 				
 		try {
 			dbConnection = conexao;
-			preparedStatement = dbConnection.prepareStatement(insertTableSQL);
+			preparedStatement = dbConnection.prepareStatement(insertTableSQL, Statement.RETURN_GENERATED_KEYS);
 
 			int i = 0;
 			
@@ -38,13 +41,15 @@ public class RankingDAO {
 			preparedStatement.setInt(++i, ranking.getId_configuracao());
 			preparedStatement.setString(++i, ranking.getData_ranking()); 
 
-			// execute insert SQL stetement
-			//TODO gabriel: Verificar possibilidade de recuperar id do ranking após inclusao (possivelmente com o metodo getGeneratedKeys())
+			// execute insert SQL statement
+			preparedStatement.executeUpdate();
 			ResultSet rs = preparedStatement.getGeneratedKeys();
 			
+			int idRanking = ConstantesFitRank.INT_RESULTADO_INVALIDO;
 			if(rs.next()){
-				ranking.setId_ranking(rs.getInt(1));
+				idRanking = rs.getInt(1);
 			}
+			ranking.setId_ranking(idRanking);
 
 		} catch (SQLException e) {
 

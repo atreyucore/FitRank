@@ -1,6 +1,7 @@
 package br.com.fitrank.controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import br.com.fitrank.modelo.RankingPessoa;
 import br.com.fitrank.modelo.fb.PostFitness.PostFitnessFB;
 import br.com.fitrank.service.ConfiguracaoServico;
 import br.com.fitrank.service.RankingPessoaServico;
+import br.com.fitrank.service.RankingServico;
 import br.com.fitrank.util.ConstantesFitRank;
 
 import com.restfb.DefaultFacebookClient;
@@ -50,6 +52,7 @@ public class CarregaRanking extends HttpServlet {
     	
     	List<RankingPessoa> listRankingPessoas = new ArrayList<RankingPessoa>();
     	ConfiguracaoServico configuracaoServico = new ConfiguracaoServico();
+    	RankingServico rankingServico = new RankingServico();
     	
     	modalidade = request.getAttribute("modalidade") == null ? (String) request.getParameter("modalidade") : (String) request.getAttribute("modalidade") ;
     	modo = request.getAttribute("modo") == null ? (String) request.getParameter("modo") : (String) request.getAttribute("modo") ;
@@ -82,11 +85,18 @@ public class CarregaRanking extends HttpServlet {
 		configuracao.setFavorito(false);
 		configuracao.setPadraoModalidade(false);
 		configuracao.setModo(modo);
-		configuracaoServico.adicionaConfiguracao(configuracao);
+		configuracao = configuracaoServico.adicionaConfiguracao(configuracao);
 		
+		if(configuracao.getIdConfiguracao() != ConstantesFitRank.INT_RESULTADO_INVALIDO){
 		
-		Ranking ranking = new Ranking();
-		
+			Ranking ranking = new Ranking();
+			ranking.setId_configuracao(configuracao.getIdConfiguracao());
+			ranking = rankingServico.adicionaRanking(ranking);
+			
+			if(ranking.getId_ranking() != ConstantesFitRank.INT_RESULTADO_INVALIDO){
+				rankingPessoaServico.gravaRankingPessoa(listRankingPessoas, ranking.getId_ranking());
+			}
+		}
     	
     	request.setAttribute("modalidade", modalidade);
 		request.setAttribute("modo", modo);

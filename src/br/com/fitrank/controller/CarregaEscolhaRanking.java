@@ -106,7 +106,6 @@ public class CarregaEscolhaRanking extends HttpServlet {
 				} else {
 					rd = request.getRequestDispatcher("/escolhaRanking.jsp");
 				}
-				// TODO gvsribeiro Recuperar dados de Pessoa!
 
 				configuracao = configuracaoServico
 						.leConfiguracaoPadraoModalidade(facebookUser.getId(),

@@ -1,5 +1,6 @@
 package br.com.fitrank.service;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,6 +80,19 @@ public class RankingPessoaServico {
 			
 		} else {
 			return listaRankingCompleta;
+		}
+	}
+	
+	public void gravaRankingPessoa(List<RankingPessoa> listaRankingPessoa, int idRanking){
+		for (RankingPessoa rankingPessoa : listaRankingPessoa) {
+			try {
+				rankingPessoaDAO = new RankingPessoaDAO();
+				rankingPessoa.setId_ranking(idRanking);
+				rankingPessoaDAO.adicionaRankingPessoa(rankingPessoa);
+			} catch (SQLException e) {
+				System.out.println("Erro ao salvar rankingPessoa.");
+				e.printStackTrace();
+			}
 		}
 	}
 

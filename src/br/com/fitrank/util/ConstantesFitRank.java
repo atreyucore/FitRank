@@ -29,4 +29,6 @@ public final class ConstantesFitRank {
 	public static final String SEXO_MASCULINO = "M";
 	public static final String FACEBOOK_MALE_GENDER = "male";
 	public static final String FACEBOOK_FEMALE_GENDER = "female";
+	
+	public static final int INT_RESULTADO_INVALIDO = -1;
 }

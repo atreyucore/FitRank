@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.mysql.jdbc.Statement;
+
 import br.com.fitrank.modelo.Configuracao;
 import br.com.fitrank.util.ConstantesFitRank;
 import br.com.fitrank.util.JDBCFactory;
@@ -35,17 +37,17 @@ public class ConfiguracaoDAO {
 
 		try {
 			dbConnection = conexao;
-			preparedStatement = dbConnection.prepareStatement(insertTableSQL);
+			preparedStatement = dbConnection.prepareStatement(insertTableSQL, Statement.RETURN_GENERATED_KEYS);
 			
-			String favorito = "N";
-			String padraoModalidade = "N";
+			String favorito = ConstantesFitRank.CHAR_NAO;
+			String padraoModalidade = ConstantesFitRank.CHAR_NAO;
 			
 			if(configuracao.isFavorito()){
-				favorito = "S";
+				favorito = ConstantesFitRank.CHAR_SIM;
 			} 
 			
 			if(configuracao.isPadraoModalidade()){
-				padraoModalidade = "S";
+				padraoModalidade = ConstantesFitRank.CHAR_SIM;
 			}			
 			
 			int i = 0;
@@ -58,8 +60,14 @@ public class ConfiguracaoDAO {
 			preparedStatement.setString(++i, padraoModalidade);
 			preparedStatement.setString(++i, configuracao.getIdPessoa());
 
-			// execute insert SQL stetement
+			int idConfiguracao = ConstantesFitRank.INT_RESULTADO_INVALIDO;
+			// execute insert SQL statement
 			preparedStatement.executeUpdate();
+			ResultSet rs = preparedStatement.getGeneratedKeys();
+			if(rs.next()){
+				idConfiguracao = rs.getInt(1);
+			}
+			configuracao.setIdConfiguracao(idConfiguracao);
 
 		} catch (SQLException e) {
 

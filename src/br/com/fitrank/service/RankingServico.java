@@ -11,11 +11,18 @@ public class RankingServico {
 	
 	private RankingDAO rankingDAO;
 	
-	public Ranking adicionaRanking(Ranking ranking) throws SQLException {
+	public Ranking adicionaRanking(Ranking ranking) {
 		rankingDAO = new RankingDAO();
 		ranking.setData_ranking(DateConversor.DateToString(new Date()));
 		
-		return rankingDAO.adicionaRanking(ranking);
+		try {
+			ranking = rankingDAO.adicionaRanking(ranking);
+		} catch (SQLException e) {
+			System.out.println("Erro ao salvar Ranking.");
+			e.printStackTrace();
+		}
+		
+		return ranking;
 	}
 
 }
