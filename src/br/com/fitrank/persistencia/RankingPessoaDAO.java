@@ -172,7 +172,7 @@ public class RankingPessoaDAO {
 		String dataInicial = "";
 		
 		if(ConstantesFitRank.DIA.equalsIgnoreCase(configuracao.getIntervaloData())){
-			dataInicial = DateConversor.getPreviousDayString();
+			dataInicial = DateConversor.DateToString(new Date());
 			
 		} else if(ConstantesFitRank.SEMANA.equalsIgnoreCase(configuracao.getIntervaloData())){
 			dataInicial =  DateConversor.getPreviousWeekString();
