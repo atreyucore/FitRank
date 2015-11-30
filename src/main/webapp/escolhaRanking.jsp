@@ -22,6 +22,17 @@
 				preparaConfiguracaoPadrao();
 			});
 			
+			
+			function validaPreenchimento() {
+				
+				if ( $(".selectedMode")[0] == undefined ) {
+					alert('Preencha o modo do Ranking (Velocidade Média ou Distância).')
+					return false;
+				}
+				
+				return true;
+			}
+			
 			function preparaConfiguracaoPadrao() {
 				if ("<%=(String) request.getAttribute("default")%>" === "S") {
 					switch("<%=(String) request.getAttribute("modo")%>") {
@@ -150,9 +161,12 @@
 			}
 			
 			function gerarRanking(modo, turno, periodo){
-				window.location = "CarregaRanking?modalidade=" + 
-					'<%=(String) request.getAttribute("modalidade")%>' + "&modo=" + modo + "&turno=" + turno + "&periodo=" + periodo + "&token="
-					+ '<%=(String) request.getAttribute("token")%>';
+				if ( validaPreenchimento() == true ) {
+					
+					window.location = "CarregaRanking?modalidade=" + 
+						'<%=(String) request.getAttribute("modalidade")%>' + "&modo=" + modo + "&turno=" + turno + "&periodo=" + periodo + "&token="
+						+ '<%=(String) request.getAttribute("token")%>';
+				}
 			}
 		</script>
 	</head>
@@ -163,7 +177,7 @@
 			<div class="content">
 				<div class="headerContent">
 					<div class="siteHeader">
-						<div>
+						<div class="fitHeader">
 							<span class="logo"> 
 								FitRank<sup class="supCopy">&copy;</sup>
 							</span> 

@@ -145,6 +145,10 @@
 					  }
 					);
 			}
+			
+			function compartilhar() {
+				window.open('https://www.facebook.com/dialog/share?app_id=749336888463283&display=popup&href=http://eic.cefet-rj.br/app/FitRank/&redirect_uri=http://eic.cefet-rj.br/app/FitRank/',"fb_share", "width=500, height=500");
+			}
 		</script>
 		<link rel="stylesheet" type="text/css" href="./style/css/FitRank.css">
 	</head>
@@ -159,9 +163,9 @@
 							<span class="logo"> 
 								FitRank<sup class="supCopy">&copy;</sup>
 							</span>
-<!-- 							<div class="fav">  -->
-<!-- 								<img class="fav" src="imagem/social24.png" style="border-radius: 50%;background-color: rgb(191, 230, 231);" /> -->
-<!-- 							</div> -->
+							<div class="fav" onclick="compartilhar()"> 
+								<img class="fav" src="imagem/social24.png" style="border-radius: 50%;background-color: rgb(191, 230, 231);" />
+							</div>
 						</div>
 					</div>
 					<div class="circles">
@@ -212,15 +216,13 @@
 							<%
 							String medida = "";
 							
-							if ( ((String) request.getParameter("modo")) == "V") { 
+							if ( ( (String) request.getAttribute("modo") ).equals("velocidade") || ( (String) request.getAttribute("modo") ).equals("V") ) { 
 								medida = "km/h";
-							%>
-								<th>Velocidade Média</th>
-							<% } else {
+								out.println("<th>Velocidade Média</th>");
+							} else {
 								medida = "km";
-							%>
-								<th>Distância</th>
-							<% }%>
+								out.println("<th>Distância</th>");
+							}%>
 						</tr>
 						
  						<% 

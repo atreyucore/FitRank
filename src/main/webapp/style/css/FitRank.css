@@ -35,6 +35,10 @@ html, body {
 	background-color: rgb(131, 102, 158);
 }
 
+.fitHeader {
+	width: 565px;
+    height: 115px; 
+}
 .headerContent {
 	padding-top: 60px;
 	margin: 0 auto;
@@ -217,7 +221,7 @@ img.fav:hover {
 .tableRank {
 	margin: 0 auto;
 	font-family: Capsuula;
-	font-size: 60px;
+	font-size: 40px;
 	border-spacing: 20px;
 }
 
