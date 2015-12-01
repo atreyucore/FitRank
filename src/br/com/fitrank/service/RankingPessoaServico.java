@@ -49,16 +49,21 @@ public class RankingPessoaServico {
 				return rankingPessoa;
 			}
 		}
-		//Não vai acontecer, usuário necessita de dados para chegar até aqui e obrigatoriamente aparece no ranking
-		return new RankingPessoa();
+		//Caso usuario nao tenha publicacoes dentro da configuracao utilizada, ele e colocado no ranking ocupando a ultima posicao 
+		RankingPessoa usuarioSemCorrida = new RankingPessoa();
+		usuarioSemCorrida.setId_pessoa(configuracao.getIdPessoa());
+		usuarioSemCorrida.setId_ranking(configuracao.getIdConfiguracao());
+		usuarioSemCorrida.setColocacao(listaRankingCompleta.size()+1);
+		listaRankingCompleta.add(usuarioSemCorrida);
+		return usuarioSemCorrida;
 	}
 	
 	private List<RankingPessoa> retornaRankingTop(List<RankingPessoa> listaRankingCompleta, Configuracao configuracao){
+		RankingPessoa rankingPessoaUsuario = recuperaUsuarioNoRanking(listaRankingCompleta, configuracao);
 		if(listaRankingCompleta.size() > ConstantesFitRank.TAMANHO_PADRAO_RANKING){
-			RankingPessoa rankingPessoaUsuario = recuperaUsuarioNoRanking(listaRankingCompleta, configuracao);
-			List<RankingPessoa> listaRankingTop = new ArrayList<RankingPessoa>();
 			
-			boolean usuarioTopoRanking = rankingPessoaUsuario.getColocacao() <= ConstantesFitRank.TAMANHO_PADRAO_RANKING;
+			List<RankingPessoa> listaRankingTop = new ArrayList<RankingPessoa>();
+			boolean usuarioTopoRanking = rankingPessoaUsuario.getColocacao() < ConstantesFitRank.TAMANHO_PADRAO_RANKING;
 					
 			if(usuarioTopoRanking){
 				for(int i=0; i<ConstantesFitRank.TAMANHO_PADRAO_RANKING; i++){
