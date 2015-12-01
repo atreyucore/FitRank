@@ -142,22 +142,27 @@
 			} 
 			
 			function salvarFavorito(modo, turno, periodo){
-				var jqxhr = $.ajax( "SalvaConfiguracao?fav=S&default=N&modalidade=" + 
-						'<%=(String) request.getAttribute("modalidade")%>' + "&modo=" + modo + "&turno=" + turno + "&periodo=" + periodo + "&token="
-						+ '<%=(String) request.getAttribute("token")%>');
-				jqxhr.done(function() {
-					alert('Favorito salvo com sucesso');
-				});
+				if(validaPreenchimento()) {
+					var jqxhr = $.ajax( "SalvaConfiguracao?fav=S&default=N&modalidade=" + 
+							'<%=(String) request.getAttribute("modalidade")%>' + "&modo=" + modo + 
+							/*"&turno=" + turno + */"&periodo=" + periodo + "&token="
+							+ '<%=(String) request.getAttribute("token")%>');
+					jqxhr.done(function() {
+						alert('Favorito salvo com sucesso');
+					});
+				}
 			}
 			
 			function salvarPadrao(modo, turno, periodo){
-				//TODO Fazer aqui a chamada do servlet com os parametros de configuracao padrao
-				var jqxhr = $.ajax("SalvaConfiguracao?fav=N&default=S&modalidade=" + 
-						'<%=(String) request.getAttribute("modalidade")%>' + "&modo=" + modo + "&turno=" + turno + "&periodo=" + periodo + "&token="
-						+ '<%=(String) request.getAttribute("token")%>');
-				jqxhr.done(function() {
-					alert('Padrao salvo com sucesso');
-				});
+				if(validaPreenchimento()) {
+					var jqxhr = $.ajax("SalvaConfiguracao?fav=N&default=S&modalidade=" + 
+							'<%=(String) request.getAttribute("modalidade")%>' + "&modo=" + modo + 
+							/*"&turno=" + turno + */"&periodo=" + periodo + "&token="
+							+ '<%=(String) request.getAttribute("token")%>');
+					jqxhr.done(function() {
+						alert('Padrao salvo com sucesso');
+					});
+				}
 			}
 			
 			function gerarRanking(modo, turno, periodo){

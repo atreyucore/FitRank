@@ -98,16 +98,16 @@ public class SalvaConfiguracao extends HttpServlet {
 				return false;
 		}
 		
-		switch(turno) {
-			case "dia":
-				this.turno = "D";
-				break;
-			case "noite":
-				this.turno = "N";
-				break;
-			default:
-				return false;
-		}
+//		switch(turno) {
+//			case "dia":
+//				this.turno = "D";
+//				break;
+//			case "noite":
+//				this.turno = "N";
+//				break;
+//			default:
+//				return false;
+//		}
 		
 		switch(periodo) {
 			case "0":

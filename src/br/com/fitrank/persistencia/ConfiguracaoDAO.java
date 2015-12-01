@@ -230,8 +230,7 @@ public Configuracao atualizaConfiguracao(Configuracao configuracao) throws SQLEx
 		
 		if(isFavorito){
 			selectTableSQL += " AND favorito = ? ";
-		}
-		if(isPadraoModalidade){
+		} else if(isPadraoModalidade) {
 			selectTableSQL += " AND padrao_modalidade = ? ";
 			selectTableSQL += " AND modalidade = ? ";
 		}
@@ -245,8 +244,7 @@ public Configuracao atualizaConfiguracao(Configuracao configuracao) throws SQLEx
 			preparedStatement.setString(i++, configuracao.getIdPessoa());
 			if(isFavorito){
 				preparedStatement.setString(i++, ConstantesFitRank.CHAR_SIM);
-			}
-			if(isPadraoModalidade){
+			} else if(isPadraoModalidade) {
 				preparedStatement.setString(i++, ConstantesFitRank.CHAR_SIM);
 				preparedStatement.setString(i++, configuracao.getModalidade());
 			}
