@@ -152,7 +152,7 @@ public Configuracao atualizaConfiguracao(Configuracao configuracao) throws SQLEx
 	}
 	
 
-	public Configuracao leConfiguracaoPorId(Configuracao configuracao) throws SQLException {
+	public Configuracao leConfiguracaoPorId(int idConfiguracao) throws SQLException {
 		
 		Connection dbConnection = null;
 		PreparedStatement preparedStatement = null;
@@ -175,20 +175,20 @@ public Configuracao atualizaConfiguracao(Configuracao configuracao) throws SQLEx
 			dbConnection = conexao;
 			preparedStatement = dbConnection.prepareStatement(selectTableSQL);
 			
-			preparedStatement.setInt(1, configuracao.getIdConfiguracao());
+			preparedStatement.setInt(1, idConfiguracao);
 			
 			ResultSet rs = preparedStatement.executeQuery();
 			
 			while (rs.next()) {
 				configRetorno = new Configuracao();
-				configuracao.setIdConfiguracao(rs.getInt("id_configuracao"));
-				configuracao.setModo(rs.getString("modo"));
-				configuracao.setModalidade(rs.getString("modalidade"));
-				configuracao.setDiaNoite(rs.getString("dia_noite"));
-				configuracao.setIntervaloData(rs.getString("intervalo_data"));
-				configuracao.setFavorito(rs.getString("favorito").equals("S") ? true : false);
-				configuracao.setPadraoModalidade(rs.getString("padrao_modalidade").equals("S") ? true : false);
-				configuracao.setIdPessoa(rs.getString("id_pessoa"));
+				configRetorno.setIdConfiguracao(rs.getInt("id_configuracao"));
+				configRetorno.setModo(rs.getString("modo"));
+				configRetorno.setModalidade(rs.getString("modalidade"));
+				configRetorno.setDiaNoite(rs.getString("dia_noite"));
+				configRetorno.setIntervaloData(rs.getString("intervalo_data"));
+				configRetorno.setFavorito(rs.getString("favorito").equals("S") ? true : false);
+				configRetorno.setPadraoModalidade(rs.getString("padrao_modalidade").equals("S") ? true : false);
+				configRetorno.setIdPessoa(rs.getString("id_pessoa"));
 
 			}
 		} catch (SQLException e) {

@@ -110,11 +110,12 @@ public class RankingPessoaDAO {
 		return rankingPessoa;
 	}
 	
-	public RankingPessoa leRankingPessoa(RankingPessoa rankingPessoa)
+	public List<RankingPessoa> listaRankingPessoaPorIdRanking(int idRanking)
 			throws SQLException {
 	
 		Connection dbConnection = null;
 		PreparedStatement preparedStatement = null;
+		List<RankingPessoa> listaRanking = new ArrayList<RankingPessoa>();
 	
 		String selectTableSQL = "SELECT "
 				+ "id_ranking, "
@@ -122,27 +123,30 @@ public class RankingPessoaDAO {
 				+ "colocacao, "
 				+ "resultado "
 				+ "FROM ranking_pessoa "
-				+ "where id_ranking = ?";
+				+ "WHERE id_ranking = ? "
+				+ "ORDER BY colocacao ";
 	
 		try {
 			dbConnection = conexao;
 			preparedStatement = dbConnection.prepareStatement(selectTableSQL);
-			
-			ResultSet rs = preparedStatement.executeQuery(selectTableSQL);
-			
 			int i = 0;
+			preparedStatement.setInt(++i, idRanking);
 			
-			preparedStatement.setInt(++i, rankingPessoa.getId_ranking());
+			ResultSet rs = preparedStatement.executeQuery();
+			
+			RankingPessoa rankingPessoa;
 
-			if ( rs.next() ) {
+			while ( rs.next() ) {
+				rankingPessoa = new RankingPessoa();
 				rankingPessoa.setId_ranking(rs.getInt("id_ranking"));
 				rankingPessoa.setId_pessoa(rs.getString("id_pessoa"));
 				rankingPessoa.setColocacao(rs.getInt("colocacao"));
 				rankingPessoa.setResultado(rs.getFloat("resultado"));
+				listaRanking.add(rankingPessoa);
 			}
 			
-			// execute insert SQL stetement
-			preparedStatement.executeUpdate();
+			// execute select SQL statement
+			preparedStatement.executeQuery();
 	
 		} catch (SQLException e) {
 	
@@ -159,7 +163,7 @@ public class RankingPessoaDAO {
 			}
 	
 		}
-		return rankingPessoa;
+		return listaRanking;
 	}
 	
 	public List<RankingPessoa> geraRankingDistancia(Configuracao configuracao)

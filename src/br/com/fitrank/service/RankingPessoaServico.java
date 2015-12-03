@@ -96,8 +96,23 @@ public class RankingPessoaServico {
 				rankingPessoaDAO.adicionaRankingPessoa(rankingPessoa);
 			} catch (SQLException e) {
 				System.out.println("Erro ao salvar rankingPessoa.");
+				System.out.println("id_ranking = " + idRanking);
+				System.out.println("id_pessoa = " + rankingPessoa.getId_pessoa());
 				e.printStackTrace();
 			}
+		}
+	}
+	
+	public List<RankingPessoa> listaRankingPessoaPorIdRanking(int idRanking){
+		try {
+			rankingPessoaDAO = new RankingPessoaDAO();
+			return rankingPessoaDAO.listaRankingPessoaPorIdRanking(idRanking);
+			
+		} catch (SQLException e) {
+			System.out.println("Erro ao consukltar rankingPessoa.");
+			System.out.println("id_ranking = " + idRanking);
+			e.printStackTrace();
+			return new ArrayList<RankingPessoa>();
 		}
 	}
 

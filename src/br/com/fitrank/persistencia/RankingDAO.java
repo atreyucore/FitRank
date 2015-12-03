@@ -113,26 +113,26 @@ public class RankingDAO {
 		return ranking;
 	}
 	
-	public Ranking leRanking(Ranking ranking) throws SQLException {
+	public Ranking leRanking(int idRanking) throws SQLException {
 		
 		Connection dbConnection = null;
 		PreparedStatement preparedStatement = null;
+		Ranking ranking = new Ranking();
 	
 		String selectTableSQL = "SELECT  "
 				+ "id_ranking, "
 				+ "titulo, "
 				+ "id_configuracao, "
-				+ "data_ranking,"
-				+ "FROM ranking"
-				+ "where id_ranking = ?";
+				+ "data_ranking "
+				+ "FROM ranking "
+				+ "where id_ranking = ? ";
 				
 		try {
 			dbConnection = conexao;
 			preparedStatement = dbConnection.prepareStatement(selectTableSQL);
+			preparedStatement.setInt(1, idRanking);
 			
-			ResultSet rs = preparedStatement.executeQuery(selectTableSQL);
-			
-			preparedStatement.setInt(1, ranking.getId_ranking());
+			ResultSet rs = preparedStatement.executeQuery();
 			
 			if ( rs.next() ) {
 				
@@ -142,9 +142,6 @@ public class RankingDAO {
 				ranking.setData_ranking(rs.getString("data_ranking"));
 				
 			}
-	
-			// execute insert SQL stetement
-			preparedStatement.executeUpdate();
 	
 		} catch (SQLException e) {
 	

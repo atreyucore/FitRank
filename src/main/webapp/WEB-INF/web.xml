@@ -57,5 +57,13 @@
     <servlet-name>CarregaRanking</servlet-name>
     <url-pattern>/CarregaRanking</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>VerRanking</servlet-name>
+    <servlet-class>br.com.fitrank.controller.VerRanking</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>VerRanking</servlet-name>
+    <url-pattern>/VerRanking</url-pattern>
+  </servlet-mapping>
   
 </web-app>

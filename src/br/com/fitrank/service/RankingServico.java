@@ -24,5 +24,21 @@ public class RankingServico {
 		
 		return ranking;
 	}
+	
+	public Ranking leRanking(int idRanking) {
+		rankingDAO = new RankingDAO();
+		Ranking ranking;
+		
+		try {
+			ranking = rankingDAO.leRanking(idRanking);
+		} catch (SQLException e) {
+			System.out.println("Erro ao ler Ranking.");
+			System.out.println("id_ranking = " + idRanking);
+			e.printStackTrace();
+			ranking = new Ranking();
+		}
+		
+		return ranking;
+	}
 
 }

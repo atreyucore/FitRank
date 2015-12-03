@@ -153,6 +153,9 @@ public class CarregaRanking extends HttpServlet {
 			case "2":
 				//Mes
 				return ConstantesFitRank.MES;
+			case "3":
+				//Mes
+				return ConstantesFitRank.ANO;
 			default:
 				return periodo;
 		}

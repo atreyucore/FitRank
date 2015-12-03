@@ -50,6 +50,20 @@ public class ConfiguracaoServico {
 		return configuracao;
 	}
 	
+	public Configuracao leConfiguracaoPorId(int idConfiguracao){
+		
+		this.configuracaoDAO = new ConfiguracaoDAO();
+		
+		try {
+			configuracao = configuracaoDAO.leConfiguracaoPorId(idConfiguracao);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			configuracao = new Configuracao();
+		}
+		
+		return configuracao;
+	}
+	
 	public Configuracao adicionaConfiguracao(Configuracao configuracao){
 		
 		this.configuracaoDAO = new ConfiguracaoDAO();
