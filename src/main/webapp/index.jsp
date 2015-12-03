@@ -6,17 +6,19 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<title>Escolha a modalidade</title>
 		<link rel="stylesheet" type="text/css" href="./style/css/FitRank.css">
+		<script src="./js/jquery-1.11.2.js"></script>
 		<script src="http://connect.facebook.net/pt_BR/all.js"></script>
 			<script>
-        
-				 function entra() {
-					 
+        	$(document).ready( function(){
 					 FB.init({
 						  appId  : '749336888463283', //Id do aplicativo ()
 						  status : true, // verifica status do login
 						  cookie : true, // habilita cookies para permitir acesso via servidor
 						  xfbml  : true  // habilita parser XFBML
 						});
+					 
+				$('#entra').on("click",function entra() {
+					 
 					 
 					 
 					 /*FB.login(function(response) {
@@ -64,8 +66,8 @@
 					 });
 					 
 					 
-				 }; 
-					        	           
+				 }); 
+        	});   
 				
 				 
 			</script>
@@ -87,7 +89,7 @@
 						<p class="text" style="text-align:center;"> At the moment we only work with Facebook fitness extracted data.</p> 
 						<p class="text" style="text-align:center;" >Facebook login is mandatory.</p>
 						<p class="text" style="text-align:center;" >We won't post to Facebook without your permission.</p>
-						<input type="button" onclick="entra();" 
+						<input type="button" id="entra"
 								style="cursor: pointer; margin: 0 auto;display: block;border:none;width:288px;height:62px;background-image: url('https://fbcdn-dragon-a.akamaihd.net/hphotos-ak-xaf1/t39.2178-6/851579_209602122530903_1060396115_n.png')" />
 <!-- 						<img style="cursor: pointer; margin: 0 auto;display: block; position: relative;top: 20px;" src="https://fbcdn-dragon-a.akamaihd.net/hphotos-ak-xaf1/t39.2178-6/851579_209602122530903_1060396115_n.png" onclick="entra()"/> -->
 					</div>
