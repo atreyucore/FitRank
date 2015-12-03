@@ -71,6 +71,11 @@ html, body {
 	color: rgb(255, 251, 255);
 }
 
+.text {
+	font-family: Arial;
+	color: rgb(255, 251, 255);
+}
+
 .capsula {
 	font-family: Capsuula;
 }
