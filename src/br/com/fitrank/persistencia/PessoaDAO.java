@@ -34,8 +34,9 @@ public class PessoaDAO {
 				+ "data_ultima_atualizacao_bikes, "
 				+ "rank_anual, "
 				+ "genero, "
-				+ "data_nascimento "
-				+ ") VALUES (?,?,?,?,?,?,?,?,?,?)";
+				+ "data_nascimento, "
+				+ "url_foto "
+				+ ") VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 
 		try {
 			preparedStatement = conexao.prepareStatement(insertTableSQL);
@@ -53,6 +54,7 @@ public class PessoaDAO {
 			preparedStatement.setString(++i, pessoa.getRank_anual());
 			preparedStatement.setString(++i, pessoa.getGenero());
 			preparedStatement.setString(++i, DateConversor.DateToString(pessoa.getData_nascimento()));
+			preparedStatement.setString(++i, pessoa.getUrl_foto());
 
 			// execute insert SQL statement
 			preparedStatement.executeUpdate();
@@ -89,7 +91,8 @@ public class PessoaDAO {
 				+ "data_ultima_atualizacao_bikes = ?, "
 				+ "rank_anual = ?, "
 				+ "genero = ?, "
-				+ "data_nascimento = ? "
+				+ "data_nascimento = ?, "
+				+ "url_foto = ? "
 				+ "WHERE id_usuario = ? ";
 	
 		try {
@@ -105,6 +108,7 @@ public class PessoaDAO {
 			preparedStatement.setString(++i, pessoa.getRank_anual());
 			preparedStatement.setString(++i, pessoa.getGenero());
 			preparedStatement.setString(++i, DateConversor.DateToString(pessoa.getData_nascimento()));
+			preparedStatement.setString(++i, pessoa.getUrl_foto());
 			
 			preparedStatement.setString(++i, pessoa.getId_usuario());
 	
@@ -147,7 +151,8 @@ public class PessoaDAO {
 				+ "data_ultima_atualizacao_bikes, "
 				+ "rank_anual, "
 				+ "genero, "
-				+ "data_nascimento "
+				+ "data_nascimento, "
+				+ "url_foto "
 				+ "from pessoa "
 				+ "where id_usuario = ?";
 		
@@ -169,6 +174,7 @@ public class PessoaDAO {
 				pessoa.setRank_anual(rs.getString("rank_anual"));
 				pessoa.setGenero(rs.getString("genero"));
 				pessoa.setData_nascimento(DateConversor.StringToDate( rs.getString("data_nascimento") ) );
+				pessoa.setUrl_foto(rs.getString("url_foto"));
 			}
 			
 		} catch (SQLException e) {

@@ -121,7 +121,10 @@ public class RankingPessoaDAO {
 				+ "id_ranking, "
 				+ "id_pessoa,"
 				+ "colocacao, "
-				+ "resultado "
+				+ "resultado, "
+				+ "distancia_percorrida, "
+				+ "velocidade_media, "
+				+ "quantidade_corridas "
 				+ "FROM ranking_pessoa "
 				+ "WHERE id_ranking = ? "
 				+ "ORDER BY colocacao ";

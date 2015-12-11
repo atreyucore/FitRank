@@ -27,6 +27,8 @@ public class Pessoa {
 	private String genero;
 //	Column(name="data_nascimento")
 	private Date data_nascimento;
+//	Column(name="url_foto")
+	private String url_foto;
 	
 	private Configuracao configuracaoFavorita;
 
@@ -126,6 +128,14 @@ public class Pessoa {
 
 	public void setData_nascimento(Date data_nascimento) {
 		this.data_nascimento = data_nascimento;
+	}
+
+	public String getUrl_foto() {
+		return url_foto;
+	}
+
+	public void setUrl_foto(String url_foto) {
+		this.url_foto = url_foto;
 	}
 	
 }
