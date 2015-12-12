@@ -17,6 +17,7 @@ import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
 import com.restfb.Parameter;
+import com.restfb.json.JsonObject;
 import com.restfb.types.User;
 
 public class InitUser extends HttpServlet {
@@ -38,6 +39,9 @@ public class InitUser extends HttpServlet {
 	   User facebookUser = facebookClient.fetchObject("me", User.class);
 	   
 	   Connection<User> friendsFB = facebookClient.fetchConnection("me/friends", User.class, Parameter.with("fields", "name, id"));
+	   
+	   JsonObject picture = facebookClient.fetchObject("me/picture", JsonObject.class, Parameter.with("type", "normal"), Parameter.with("redirect", "false"));
+//	   JsonObject picture = facebookClient.fetchObject("me/picture", JsonObject.class, Parameter.with("type", "normal"));
 	   
 	   Pessoa pessoa = new Pessoa();
 	   
@@ -61,11 +65,16 @@ public class InitUser extends HttpServlet {
 		   pessoa.setData_nascimento(facebookUser.getBirthdayAsDate());
 	   }
 	   
+	   if( picture.getJsonObject("data").getString("url") != null){
+		   pessoa.setUrl_foto( picture.getJsonObject("data").getString("url") );
+	   }
+	   
 	   Pessoa usuarioExistente = pessoaServico.lePessoaServico(facebookUser);
 	   
 	   if (usuarioExistente == null ) {
 		   pessoa = pessoaServico.adicionaPessoaServico(pessoa);
 	   } else {
+		   
 		   pessoa.setData_ultima_atualizacao_runs(usuarioExistente.getData_ultima_atualizacao_runs());
 		   pessoa.setData_ultima_atualizacao_walks(usuarioExistente.getData_ultima_atualizacao_walks());
 		   pessoa.setData_ultima_atualizacao_bikes(usuarioExistente.getData_ultima_atualizacao_bikes());

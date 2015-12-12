@@ -18,10 +18,13 @@
 		<script type="text/javascript">
 			$(document).ready(function(){
 				$(".rankingLine>td>img").one("load", function() {
-					buscaInformacoesPerfil(this);
-					buscaNomePerfil(this);
+// 					if ($(this).attr("src") == "" || $(this).attr("src") == "null" ) {
+// 						$(this).attr("src" , "imagem/default_photo.png");
+// 					}
+// 					buscaInformacoesPerfil(this);
+// 					buscaNomePerfil(this);
 				}).each(function() {
-				  if(this.complete) $(this).load();
+// 				  if(this.complete) $(this).load();
 				});
 				
 // 				$(".rankingLine>td>span").one("load", function() {
@@ -107,18 +110,18 @@
 				}
 			} 
 			
-			function buscaInformacoesPerfil(element) {
-				var idUsuario = $(element).attr("data-id_pessoa");
+// 			function buscaInformacoesPerfil(element) {
+// 				var idUsuario = $(element).attr("data-id_pessoa");
 				
-				FB.api(
-					  '/' + idUsuario + '/picture',
-					  'GET',
-					  { "type" : "normal", 
-						"access_token" : '<%=(String) request.getParameter("token")%>'},
-					  function(response) {
-						  $(element).attr("src",response.data.url)
-					  }
-					);
+// 				FB.api(
+// 					  '/' + idUsuario + '/picture',
+// 					  'GET',
+// 					  { "type" : "normal", 
+<%-- 						"access_token" : '<%=(String) request.getParameter("token")%>'}, --%>
+// 					  function(response) {
+// 						  $(element).attr("src",response.data.url)
+// 					  }
+// 					);
 				
 // 				FB.api(
 // 					  '/' + idUsuario ,
@@ -129,22 +132,22 @@
 // 						  $($(element).next("span")[0]).text(response.name);
 // 					  }
 // 					);
-			}
+// 			}
 			
-			function buscaNomePerfil(element) {
-				var elemento = $(element).parent().next().children()[0];
-				var idUsuario =  $(elemento).attr("data-id_pessoa");
+// 			function buscaNomePerfil(element) {
+// 				var elemento = $(element).parent().next().children()[0];
+// 				var idUsuario =  $(elemento).attr("data-id_pessoa");
 				
-				FB.api(
-					  '/' + idUsuario ,
-					  'GET',
-					  { "fieds" : "name", 
-						"access_token" : '<%=(String) request.getParameter("token")%>'},
-					  function(response) {
-						  $(elemento).text(response.name);
-					  }
-					);
-			}
+// 				FB.api(
+// 					  '/' + idUsuario ,
+// 					  'GET',
+// 					  { "fieds" : "name", 
+<%-- 						"access_token" : '<%=(String) request.getParameter("token")%>'}, --%>
+// 					  function(response) {
+// 						  $(elemento).text(response.name);
+// 					  }
+// 					);
+// 			}
 			
 			function compartilhar() {
 				window.open('https://www.facebook.com/dialog/share?app_id=749336888463283&display=popup&href=http://eic.cefet-rj.br/app/FitRank/&redirect_uri=http://eic.cefet-rj.br/app/FitRank/',"fb_share", "width=500, height=500");
@@ -234,10 +237,10 @@
 							 out.println("<tr class='rankingLine'>");
 							 out.println("<td class='colocacao'>" + pessoa.getColocacao() + "</td>");
 							 out.println("<td>");
-							 out.println("<img align='middle' data-id_pessoa='" + pessoa.getId_pessoa() + "' src='imagem/default_photo.png' />");
+							 out.println("<img align='middle' data-id_pessoa='" + pessoa.getId_pessoa() + "' src='" + ((pessoa.getPessoa().getUrl_foto() != null) ? pessoa.getPessoa().getUrl_foto() : "imagem/default_photo.png") + "' />");
 							 out.println("</td>");
 							 out.println("<td class='profileName'>");
-							 out.println("<span data-id_pessoa='" + pessoa.getId_pessoa() + "' ></span>");
+							 out.println("<span data-id_pessoa='" + pessoa.getId_pessoa() + "' >"+ pessoa.getPessoa().getNome() +"</span>");
 							 out.println("</td>");
 							 out.println("<td class='measure'><span>" + df.format(pessoa.getResultado()) + " " + medida + "</span></td>");
 							 out.println("</tr>");

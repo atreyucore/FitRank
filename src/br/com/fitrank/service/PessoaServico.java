@@ -74,6 +74,24 @@ public class PessoaServico {
 		}
 	}	
 	
+	public Pessoa lePessoaPorIdServico(String id_pessoa){
+		pessoa = new Pessoa();
+		this.pessoaDAO = new PessoaDAO();
+		
+		if(!StringUtil.isEmptyOrNull(id_pessoa)){
+			pessoa.setId_usuario(id_pessoa);
+		}
+		
+	    try {
+			pessoa =  pessoaDAO.lePessoa(pessoa.getId_usuario());
+			
+			return pessoa;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	private void preenchePessoa(Pessoa pessoa) throws SQLException{
 		if(pessoa != null){
 			preencheListaAmigosPessoa(pessoa);

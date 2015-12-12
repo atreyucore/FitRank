@@ -1,7 +1,6 @@
 package br.com.fitrank.controller;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,16 +13,12 @@ import javax.servlet.http.HttpServletResponse;
 import br.com.fitrank.modelo.Configuracao;
 import br.com.fitrank.modelo.Ranking;
 import br.com.fitrank.modelo.RankingPessoa;
-import br.com.fitrank.modelo.fb.PostFitness.PostFitnessFB;
+import br.com.fitrank.persistencia.PessoaDAO;
 import br.com.fitrank.service.ConfiguracaoServico;
+import br.com.fitrank.service.PessoaServico;
 import br.com.fitrank.service.RankingPessoaServico;
 import br.com.fitrank.service.RankingServico;
 import br.com.fitrank.util.ConstantesFitRank;
-
-import com.restfb.DefaultFacebookClient;
-import com.restfb.FacebookClient;
-import com.restfb.Parameter;
-import com.restfb.types.User;
 
 /**
  * Servlet implementation class VerRanking
@@ -58,6 +53,14 @@ public class VerRanking extends HttpServlet {
     	Ranking ranking = rankingServico.leRanking(idRanking);
     	Configuracao configuracao = configuracaoServico.leConfiguracaoPorId(ranking.getId_configuracao());
     	listRankingPessoas = rankingPessoaServico.listaRankingPessoaPorIdRanking(ranking.getId_ranking());
+    	
+    	//Recupera as configurações de pessoa, inclusive foto.
+    	for (RankingPessoa rankingPessoa : listRankingPessoas) {
+    		
+    		PessoaServico pessoaServico = new PessoaServico();
+    		
+    		rankingPessoa.setPessoa( pessoaServico.lePessoaPorIdServico( rankingPessoa.getId_pessoa() ) );
+		}
     	
     	modalidade = configuracao.getModalidade();
     	modo = configuracao.getModo();
