@@ -29,7 +29,7 @@
 				<div class="siteHeader">
 					<div>
 						<div class="logo">
-							FitRank<sup class="supCopy">&copy;</sup>
+							FitRank
 						</div>
 					</div>
 					<div class="circles">

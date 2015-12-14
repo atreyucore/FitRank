@@ -16,6 +16,7 @@ import br.com.fitrank.modelo.Ranking;
 import br.com.fitrank.modelo.RankingPessoa;
 import br.com.fitrank.modelo.fb.PostFitness.PostFitnessFB;
 import br.com.fitrank.service.ConfiguracaoServico;
+import br.com.fitrank.service.PessoaServico;
 import br.com.fitrank.service.RankingPessoaServico;
 import br.com.fitrank.service.RankingServico;
 import br.com.fitrank.util.ConstantesFitRank;
@@ -96,6 +97,14 @@ public class CarregaRanking extends HttpServlet {
 			if(ranking.getId_ranking() != ConstantesFitRank.INT_RESULTADO_INVALIDO){
 				rankingPessoaServico.gravaRankingPessoa(listRankingPessoas, ranking.getId_ranking());
 			}
+		}
+    	
+		//Recupera as configurações de pessoa, inclusive foto.
+    	for (RankingPessoa rankingPessoa : listRankingPessoas) {
+    		
+    		PessoaServico pessoaServico = new PessoaServico();
+    		
+    		rankingPessoa.setPessoa( pessoaServico.lePessoaPorIdServico( rankingPessoa.getId_pessoa() ) );
 		}
     	
     	request.setAttribute("modalidade", modalidade);

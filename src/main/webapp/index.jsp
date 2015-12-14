@@ -36,7 +36,7 @@
 // 					          alert("Não autorizado");
 					          
 					        }else{
-					        	var popup = 					        	
+					        						        	
 			        			FB.login(function(response) {
 						            if(response.session)
 						            {
@@ -82,7 +82,7 @@
 				<div class="siteHeader">
 					<div>
 						<div class="logo">
-							FitRank<sup class="supCopy">&copy;</sup>
+							FitRank
 						</div>
 					</div>
 					<div>

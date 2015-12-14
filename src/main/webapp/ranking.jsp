@@ -164,7 +164,7 @@
 					<div class="siteHeader">
 						<div>
 							<span class="logo"> 
-								FitRank<sup class="supCopy">&copy;</sup>
+								FitRank
 							</span>
 							<div class="fav" onclick="compartilhar()"> 
 								<img class="fav" src="imagem/social24.png" style="border-radius: 50%;background-color: rgb(191, 230, 231);" />

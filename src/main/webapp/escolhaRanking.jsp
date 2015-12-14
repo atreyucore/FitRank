@@ -184,7 +184,7 @@
 					<div class="siteHeader">
 						<div class="fitHeader">
 							<span class="logo"> 
-								FitRank<sup class="supCopy">&copy;</sup>
+								FitRank
 							</span> 
 							<div class="fav"> 
 <!-- 								salva padrao -->
