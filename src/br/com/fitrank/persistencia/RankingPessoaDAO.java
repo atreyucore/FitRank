@@ -31,8 +31,11 @@ public class RankingPessoaDAO {
 				+ "id_ranking, "
 				+ "id_pessoa, "
 				+ "colocacao, "
-				+ "resultado "
-				+ ") VALUES (?, ?, ?, ?)";
+				+ "resultado, "
+				+ "distancia_percorrida, "
+				+ "velocidade_media, "
+				+ "quantidade_corridas "
+				+ ") VALUES (?, ?, ?, ?, ?, ?, ?)";
 
 		try {
 			dbConnection = conexao;
@@ -44,8 +47,11 @@ public class RankingPessoaDAO {
 			preparedStatement.setString(++i, rankingPessoa.getId_pessoa());
 			preparedStatement.setInt(++i, rankingPessoa.getColocacao());
 			preparedStatement.setFloat(++i, rankingPessoa.getResultado());
+			preparedStatement.setFloat(++i, rankingPessoa.getDistancia_percorrida());
+			preparedStatement.setFloat(++i, rankingPessoa.getVelocidade_media());
+			preparedStatement.setInt(++i, rankingPessoa.getQuantidade_corridas());
 
-			// execute insert SQL stetement
+			// execute insert SQL statement
 			preparedStatement.executeUpdate();
 
 		} catch (SQLException e) {
@@ -145,6 +151,9 @@ public class RankingPessoaDAO {
 				rankingPessoa.setId_pessoa(rs.getString("id_pessoa"));
 				rankingPessoa.setColocacao(rs.getInt("colocacao"));
 				rankingPessoa.setResultado(rs.getFloat("resultado"));
+				rankingPessoa.setDistancia_percorrida(rs.getFloat("distancia_percorrida"));
+				rankingPessoa.setVelocidade_media(rs.getFloat("velocidade_media"));
+				rankingPessoa.setQuantidade_corridas(rs.getInt("quantidade_corridas"));
 				listaRanking.add(rankingPessoa);
 			}
 			
@@ -193,10 +202,15 @@ public class RankingPessoaDAO {
 	
 		String selectTableSQL = "SELECT @rownum := @rownum + 1 AS colocacao,							\n"
 							+	"		consulta.id_pessoa id_pessoa,									\n"
-							+	"		consulta.resultado resultado									\n"
+							+	"		(consulta.distancia/consulta.duracao) velocidade_media,			\n"
+							+	"		consulta.distancia distancia_percorrida,						\n"
+							+	"		consulta.corridas quantidade_corrida							\n"
 							+	"  FROM (SELECT @rownum := 0) r,										\n"
 							+	"		(SELECT pf.id_pessoa,											\n"
-							+	"				SUM(pf.distancia_percorrida) resultado		\n"
+							+	"				SUM(pf.distancia_percorrida) distancia,					\n"
+							+	"				SUM(pf.duracao) duracao,								\n"
+							+	"				COUNT(pf.id_publicacao) corridas,						\n"
+							+	"				SUM(pf.distancia_percorrida) resultado					\n"
 							+	"				FROM post_fitness pf,									\n"
 							+	"					 pessoa p											\n"
 							+	"		  WHERE (p.id_usuario IN (SELECT a.id_amigo						\n"
@@ -244,7 +258,10 @@ public class RankingPessoaDAO {
 				rankingPessoa = new RankingPessoa();
 				rankingPessoa.setId_pessoa(rs.getString("id_pessoa"));
 				rankingPessoa.setColocacao(rs.getInt("colocacao"));
-				rankingPessoa.setResultado(rs.getFloat("resultado"));
+				rankingPessoa.setResultado(rs.getFloat("distancia_percorrida"));
+				rankingPessoa.setDistancia_percorrida(rs.getFloat("distancia_percorrida"));
+				rankingPessoa.setVelocidade_media(rs.getFloat("velocidade_media"));
+				rankingPessoa.setQuantidade_corridas(rs.getInt("quantidade_corrida"));
 				
 				listaRanking.add(rankingPessoa);
 			}
@@ -291,11 +308,14 @@ public class RankingPessoaDAO {
 	
 		String selectTableSQL = "SELECT @rownum := @rownum + 1 AS colocacao,							\n"
 		 					+	"		consulta.id_pessoa id_pessoa,									\n"
-		 					+	"		(consulta.distancia/consulta.duracao) velocidade_media			\n"
+		 					+	"		(consulta.distancia/consulta.duracao) velocidade_media,			\n"
+		 					+	"		consulta.distancia distancia_percorrida,						\n"
+		 					+	"		consulta.corridas quantidade_corrida							\n"
 							+	"  FROM (SELECT @rownum := 0) r,										\n"
 							+	"		(SELECT pf.id_pessoa,											\n"
 		 					+	"				SUM(pf.distancia_percorrida) distancia,					\n"
-		 					+	"				SUM(pf.duracao) duracao									\n"
+		 					+	"				SUM(pf.duracao) duracao,								\n"
+		 					+	"				COUNT(pf.id_publicacao) corridas						\n"
 							+	"				FROM post_fitness pf,									\n"
   		 					+	"					 pessoa p											\n"
 							+	"		  WHERE (p.id_usuario IN (SELECT a.id_amigo						\n"
@@ -343,6 +363,9 @@ public class RankingPessoaDAO {
 				rankingPessoa.setId_pessoa(rs.getString("id_pessoa"));
 				rankingPessoa.setColocacao(rs.getInt("colocacao"));
 				rankingPessoa.setResultado(rs.getFloat("velocidade_media"));
+				rankingPessoa.setVelocidade_media(rs.getFloat("velocidade_media"));
+				rankingPessoa.setDistancia_percorrida(rs.getFloat("distancia_percorrida"));
+				rankingPessoa.setQuantidade_corridas(rs.getInt("quantidade_corrida"));
 				
 				listaRanking.add(rankingPessoa);
 			}
