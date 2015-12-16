@@ -216,15 +216,19 @@
 							<th></th>
 							<th></th>
 							<th>Perfil</th>
+							<th></th>
 							<%
 							String medida = "";
+							String atributo = "";
 							
 							if ( ( (String) request.getAttribute("modo") ).equals("velocidade") || ( (String) request.getAttribute("modo") ).equals("V") ) { 
+								atributo = "Velocidade Média";
 								medida = "km/h";
-								out.println("<th>Velocidade Média</th>");
-							} else {
+// 								out.println("<th>Velocidade Média</th>");
+							} else if ( ( (String) request.getAttribute("modo") ).equals("distancia") || ( (String) request.getAttribute("modo") ).equals("D") )  {
+								atributo = "Distância";
 								medida = "km";
-								out.println("<th>Distância</th>");
+// 								out.println("<th>Distância</th>");
 							}%>
 						</tr>
 						
@@ -233,16 +237,26 @@
  						DecimalFormat df = new DecimalFormat();
 						df.setMaximumFractionDigits(2);
 						
-						 for(RankingPessoa pessoa : listaRankingPessoa){ 
+						 for(RankingPessoa competidor : listaRankingPessoa){ 
 							 out.println("<tr class='rankingLine'>");
-							 out.println("<td class='colocacao'>" + pessoa.getColocacao() + "</td>");
+							 out.println("<td class='colocacao'>" + competidor.getColocacao() + "</td>");
 							 out.println("<td>");
-							 out.println("<img align='middle' data-id_pessoa='" + pessoa.getId_pessoa() + "' src='" + ((pessoa.getPessoa().getUrl_foto() != null) ? pessoa.getPessoa().getUrl_foto() : "imagem/default_photo.png") + "' />");
+							 out.println("<img align='middle' data-id_pessoa='" + competidor.getId_pessoa() + "' src='" + ((competidor.getPessoa().getUrl_foto() != null) ? competidor.getPessoa().getUrl_foto() : "imagem/default_photo.png") + "' />");
 							 out.println("</td>");
 							 out.println("<td class='profileName'>");
-							 out.println("<span data-id_pessoa='" + pessoa.getId_pessoa() + "' >"+ pessoa.getPessoa().getNome() +"</span>");
+							 out.println("<span data-id_pessoa='" + competidor.getId_pessoa() + "' >"+ competidor.getPessoa().getNome() +"</span>");
 							 out.println("</td>");
-							 out.println("<td class='measure'><span>" + df.format(pessoa.getResultado()) + " " + medida + "</span></td>");
+							 out.println("<td class='measure'><span>" + atributo + ": " + df.format(competidor.getResultado()) + " " + medida + "</span><br />");
+							 
+							 if ( ( (String) request.getAttribute("modo") ).equals("velocidade") || ( (String) request.getAttribute("modo") ).equals("V") ) {
+								 out.println("<span class='not_emphasized'><div class='circle distancia'><img src='imagem/races.png'></div> " + df.format( competidor.getDistancia_percorrida() ) + " km" + "</span><br />");
+							 } else if ( ( (String) request.getAttribute("modo") ).equals("distancia") || ( (String) request.getAttribute("modo") ).equals("D") )  {
+								 out.println("<span class='not_emphasized'><div class='circle velocidade'><img src='imagem/speedometer14.png'></div> " + df.format( competidor.getVelocidade_media() ) + " km/h" + "</span><br />");
+							 }
+							 
+							 out.println("<span class='not_emphasized'>Corridas: " + competidor.getQuantidade_corridas() + " " + "</span></td>");
+							 
+							 
 							 out.println("</tr>");
 						 }
 						

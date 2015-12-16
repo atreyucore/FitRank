@@ -230,7 +230,7 @@ img.fav:hover {
 .tableRank {
 	margin: 0 auto;
 	font-family: Capsuula;
-	font-size: 40px;
+	font-size: 35px;
 	border-spacing: 20px;
 }
 
@@ -287,6 +287,24 @@ td.profileName {
     color: #FF7A00 !important;
 }
 
+/* ranking */
 .colocacao {
 	width: 75px;
+}
+
+.measure>span>.circle {
+	margin: 10px !important; 
+	height: 35px !important;
+    width: 35px !important;
+    padding: 9px !important;
+    display: inline-block !important;
+}
+
+.measure>span>.circle>img {
+	width: 35px !important;
+    height: 35px !important;
+}
+
+.not_emphasized {
+	font-size: 20px;
 }
