@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import br.com.fitrank.modelo.PostFitness;
 import br.com.fitrank.util.JDBCFactory;
@@ -195,10 +196,11 @@ public class PostFitnessDAO {
 		return postFitness;
 	}
 	
-	public PostFitness lePostFitness(PostFitness postFitness) throws SQLException {
+	public List<PostFitness> lePostFitnessPorIdPessoa(int idPessoa) throws SQLException {
 		
 		Connection dbConnection = null;
 		PreparedStatement preparedStatement = null;
+		List<PostFitness> listaPostFitness = new ArrayList<PostFitness>();
 	
 		String selectTableSQL = "select "
 				+ "id_publicacao, "
@@ -210,20 +212,19 @@ public class PostFitnessDAO {
 				+ "duracao, "
 				+ "data_publicacao, "
 				+ "url, "
-				+ "modalidade, "
-				+ "from post_fitness"
-				+ "where id_publicacao = ?;";
+				+ "modalidade "
+				+ "from post_fitness "
+				+ "where id_pessoa = ?;";
 				
 		try {
 			dbConnection = conexao;
 			preparedStatement = dbConnection.prepareStatement(selectTableSQL);
+			preparedStatement.setInt(1, idPessoa);
 			
-			ResultSet rs = preparedStatement.executeQuery(selectTableSQL);
+			ResultSet rs = preparedStatement.executeQuery();
 			
-			preparedStatement.setString(1, postFitness.getId_publicacao());
-			
-			if ( rs.next() ) {
-					
+			while ( rs.next() ) {
+				PostFitness postFitness = new PostFitness();
 				postFitness.setId_publicacao(rs.getString("id_publicacao"));
 				postFitness.setId_pessoa(rs.getString("id_pessoa"));
 				postFitness.setData_inicio_corrida(rs.getString("data_inicio_corrida"));
@@ -235,6 +236,7 @@ public class PostFitnessDAO {
 				postFitness.setUrl(rs.getString("url"));
 				postFitness.setModalidade(rs.getString("modalidade"));
 				
+				listaPostFitness.add(postFitness);
 			}
 			
 			// execute insert SQL stetement
@@ -255,6 +257,6 @@ public class PostFitnessDAO {
 			}
 	
 		}
-		return postFitness;
+		return listaPostFitness;
 	}
 }

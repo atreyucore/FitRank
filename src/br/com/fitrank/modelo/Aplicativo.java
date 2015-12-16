@@ -26,7 +26,7 @@ public class Aplicativo implements Comparable<Object> {
 		if(o != null && o instanceof Aplicativo){
 			Aplicativo app = (Aplicativo) o;
 			
-			if(app.id_aplicativo == this.id_aplicativo){
+			if(app.id_aplicativo.equals(this.id_aplicativo)){
 				return 0;
 			}
 		}
