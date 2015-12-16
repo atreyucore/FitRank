@@ -3,7 +3,7 @@ package br.com.fitrank.modelo;
 /** Entity(name="post_fitness")
  *
  */
-public class PostFitness {
+public class PostFitness implements Comparable<Object> {
 	
 	private String	id_publicacao;
 	
@@ -103,6 +103,32 @@ public class PostFitness {
 
 	public void setModalidade(String modalidade) {
 		this.modalidade = modalidade;
+	}
+	
+	@Override
+	public int compareTo(Object o) {
+		if(o != null && o instanceof PostFitness){
+			PostFitness postFitness = (PostFitness) o;
+			
+			if(postFitness.id_publicacao.equals(this.id_publicacao)){
+				return 0;
+			}
+		}
+		
+		return 1;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(o != null && o instanceof PostFitness){
+			PostFitness postFitness = (PostFitness) o;
+			
+			if(postFitness.id_publicacao.equals(this.id_publicacao)){
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 }

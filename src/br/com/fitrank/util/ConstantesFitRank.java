@@ -22,6 +22,8 @@ public final class ConstantesFitRank {
 	public static final String ID_APP_RUNTASTIC = "162918433202";
 	public static final String ID_APP_RUNKEEPER = "62572192129";
 	
+	public static final String ID_APP_RUNTASTIC_MOUNTAIN_BIKE = "402248583177025";
+	
 	public static final String VELOCIDADE_MEDIA = "V";
 	public static final String DISTANCIA = "D";
 	

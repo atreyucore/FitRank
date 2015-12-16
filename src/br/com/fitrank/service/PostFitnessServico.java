@@ -2,6 +2,7 @@ package br.com.fitrank.service;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import br.com.fitrank.modelo.PostFitness;
 import br.com.fitrank.modelo.fb.PostFitness.PostFitnessFB;
@@ -34,6 +35,18 @@ public class PostFitnessServico {
 			
 			e.printStackTrace();
 			return false;
+		}
+	}
+	
+	public List<PostFitness> lePostFitnessPorIdPessoa(int idPessoa) {
+		this.postFitnessDAO = new PostFitnessDAO();
+		
+		try {
+	    	return postFitnessDAO.lePostFitnessPorIdPessoa(idPessoa);
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+			return null;
 		}
 	}
 }
