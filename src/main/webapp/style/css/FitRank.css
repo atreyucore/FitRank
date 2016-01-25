@@ -7,7 +7,7 @@
 
 html, body {
 	margin: 0;
-	background-color: rgb(131, 102, 158);
+	background-color: rgb(152, 132, 171);
 	padding: 0;
 	height: 100%;
 }
@@ -104,7 +104,7 @@ html, body {
 	border-radius: 50%;
 	width: 140px;
 	height: 140px;
-	padding: 20px;
+	padding: 15px;
 	margin: 0 auto;
 }
 
@@ -133,10 +133,85 @@ html, body {
 	width: 64px;
 }
 
+.circle.Velocidade,.circle.Distância {
+	background-color: rgb(157, 234, 200);
+	height: 128px;
+	width: 128px;
+}
+
+
 .circle.velocidade,.circle.distancia {
 	background-color: rgb(157, 234, 200);
 	height: 128px;
 	width: 128px;
+}
+
+.modalidade  {
+	background-color: rgb(212, 162, 102);
+}
+
+.modo {
+	background-color: rgb(157, 234, 200);
+}
+
+	
+.Velocidade {
+	background-image: url('../../imagem/speedometer14.png');
+}
+
+.Distância {
+	background-image: url('../../imagem/races.png');
+}
+
+.runs {
+	background-image: url('../../imagem/sprint.png');
+}
+
+.walks {
+	background-image: url('../../imagem/man-silhouette1.png');
+}
+
+.bikes {
+	background-image: url('../../imagem/bike11.png');
+}
+
+.calendario {
+	background-image: url('../../imagem/calendar157.png');
+}
+
+.periodo {
+	background-color: rgb(195, 239, 180);
+}
+
+
+.bgMedium {
+    background-size: 54px;
+    background-repeat: no-repeat;
+    margin: 0;
+    padding: 0;
+    width: 94px !important;
+    height: 94px !important;
+    background-position: center;
+}
+
+.bgSmall {
+    background-size: 35px;
+    background-repeat: no-repeat;
+    margin: 0;
+    padding: 0;
+    width: 37px;
+    height: 37px;
+    background-position: center;
+}
+
+.bgTiny {
+    background-size: 20px;
+    background-repeat: no-repeat;
+    margin: 0;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    background-position: center;
 }
 
 .selectedMode {
@@ -215,47 +290,6 @@ img.fav:hover {
 	cursor: pointer;
 }
 
-.circle.ranking {
-	margin: 10px;
-}
-
-.circle.ranking.smallTile {
-	top: 25px;
-}
-
-.ranks {
-	background-color: rgb(194, 240, 178);
-}
-
-.tableRank {
-	margin: 0 auto;
-	font-family: Capsuula;
-	font-size: 35px;
-	border-spacing: 20px;
-}
-
-th {
-	margin: 0 20px;
-}
-
-td.measure {
-	text-align: center;
-}
-
-td.profileName {
-	padding-left: 50px;
-}
-
-.chosenPeriod {
-	font-size: 23px;
-	color: white;
-	font-weight: bold;
-}
-
-.rankingLine {
-/* 	line-height: 200px; */
-}
-
 
 /*slider*/
 .circleWrapper.rankChoose.slider {
@@ -288,6 +322,55 @@ td.profileName {
 }
 
 /* ranking */
+
+.circle.ranking {
+	margin-left: 10px;
+	display: inline-block;
+}
+
+.circle.ranking.smallTile {
+/* 	top: 25px; */
+	width: 35px;
+	height: 35px;
+	position: relative;
+}
+
+.circle.ranking.smallTile>img {
+	width: 64px;
+	height: 64px;
+}
+
+.ranks {
+	background-color: rgb(194, 240, 178);
+}
+
+.tableRank {
+	margin: 0 auto;
+	font-family: Capsuula;
+	font-size: 35px;
+	border-spacing: 20px;
+}
+
+th {
+	margin: 0 20px;
+}
+
+td.measure {
+	text-align: center;
+}
+
+td.profileName {
+	padding-left: 50px;
+}
+
+.chosenPeriod {
+	font-size: 23px;
+	color: white;
+	font-weight: bold;
+	position: absolute;
+    right: -25px;
+}
+
 .colocacao {
 	width: 75px;
 }
@@ -307,4 +390,33 @@ td.profileName {
 
 .not_emphasized {
 	font-size: 20px;
+}
+
+.rankingLine {
+/* 	line-height: 200px; */
+}
+
+.rankingHeader {
+	width: 950px !important;
+	
+}
+
+.menu {
+	display: inline-block;
+	position: relative;
+}
+
+.hidden {
+	display: none !important;
+}
+
+.opcao {
+	position: absolute !important;
+	width: 20px !important;
+    height: 20px !important;
+}
+
+.descOpcao{
+	position : relative !important;
+	right: -36px !important;
 }

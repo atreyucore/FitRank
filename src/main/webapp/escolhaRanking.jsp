@@ -89,7 +89,7 @@
 			        labels: time
 			    });
 				
-				$(".ui-slider-handle.ui-state-default.ui-corner-all").append("<div class='circle calendario calendarioEscolhe'><img src='imagem/calendar157.png'></div>");
+				$(".ui-slider-handle.ui-state-default.ui-corner-all").append("<div class='circle calendario calendarioEscolhe bgMedium'></div>");
 				
 // 				$(".ui-slider-pip").each(function() {
 // 					var bottomInitial = $(this).css("bottom");

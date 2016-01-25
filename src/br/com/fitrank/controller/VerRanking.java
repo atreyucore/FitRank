@@ -71,6 +71,10 @@ public class VerRanking extends HttpServlet {
 		request.setAttribute("periodo", periodo);
 		request.setAttribute("listaRanking", listRankingPessoas);
 		
+		String json = com.cedarsoftware.util.io.JsonWriter.objectToJson(listRankingPessoas);
+		
+		response.addHeader("json", json);
+		
 		RequestDispatcher rd = request.getRequestDispatcher("ranking.jsp");
 		rd.forward(request, response);
     	

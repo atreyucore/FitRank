@@ -1,7 +1,6 @@
 package br.com.fitrank.controller;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +23,7 @@ import br.com.fitrank.util.ConstantesFitRank;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
 import com.restfb.Parameter;
+import com.restfb.json.JsonWriter;
 import com.restfb.types.User;
 
 /**
@@ -57,7 +57,7 @@ public class CarregaRanking extends HttpServlet {
     	
     	modalidade = request.getAttribute("modalidade") == null ? (String) request.getParameter("modalidade") : (String) request.getAttribute("modalidade") ;
     	modo = request.getAttribute("modo") == null ? (String) request.getParameter("modo") : (String) request.getAttribute("modo") ;
-    	turno = request.getAttribute("turno") == null ? (String) request.getParameter("turno") : (String) request.getAttribute("turno") ;
+//    	turno = request.getAttribute("turno") == null ? (String) request.getParameter("turno") : (String) request.getAttribute("turno") ;
     	periodo = request.getAttribute("periodo") == null ? (String) request.getParameter("periodo") : (String) request.getAttribute("periodo") ;
 //    	fav = (String) request.getParameter("fav");
 //    	padrao = (String) request.getParameter("default");
@@ -98,7 +98,7 @@ public class CarregaRanking extends HttpServlet {
 				rankingPessoaServico.gravaRankingPessoa(listRankingPessoas, ranking.getId_ranking());
 			}
 		}
-    	
+
 		//Recupera as configurações de pessoa, inclusive foto.
     	for (RankingPessoa rankingPessoa : listRankingPessoas) {
     		
@@ -115,8 +115,11 @@ public class CarregaRanking extends HttpServlet {
 		
 		request.setAttribute("token", (String) request.getParameter("token"));
 		
-		
 		RequestDispatcher rd = null;
+		
+		String json = com.cedarsoftware.util.io.JsonWriter.objectToJson(listRankingPessoas);
+		
+		response.addHeader("json", json);
 		
 		rd = request.getRequestDispatcher("ranking.jsp");
 		
