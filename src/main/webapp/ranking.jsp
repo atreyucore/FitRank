@@ -45,6 +45,11 @@
 			var json =  JSON.parse('<%=(String) response.getHeader("json")%>');
 			
 			$(document).ready(function(){
+			    $(document).ajaxStart(function () {
+			        $("#loading").show();
+			    }).ajaxStop(function () {
+			        $("#loading").hide();
+			    });
 
 				preparaConfiguracao();
 			    preparaRanking();
@@ -458,5 +463,6 @@
 				</div>
 			</div>
 		</div>
+		<div id="loading" style="display:none;background-image:"></div>
 	</body>
 </html>
