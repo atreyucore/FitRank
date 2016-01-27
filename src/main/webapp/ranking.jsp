@@ -32,7 +32,17 @@
 				"D" : "Distância",
 				"V" : "Velocidade"
 			};
-		
+			
+			var modoMedidas = {
+				"D" : "km",
+				"V" : "km/h"
+			};
+			
+			var modoDescrição = {
+				"D" : "Distância",
+				"V" : "Velocidade Média"
+			}
+			
 			var modalidade = {
 				"R": "runs",
 				"W": "walks",
@@ -183,7 +193,7 @@
 			   					rankingLine.append("<td class='measure'></td>");
 			   					
 			   					rankingLine.children(".measure").append("<span class='modoSpanEmphasized'></span><br>");
-			   					rankingLine.children(".measure").append("<span class='not_emphasized modoSpan'><div class='circle bgSmall'></div></span><br>");
+			   					rankingLine.children(".measure").append("<span class='not_emphasized modoSpan'><div class='circle bgTiny'></div></span><br>");
 			   					rankingLine.children(".measure").append("<span class='not_emphasized qtdSpan'></span>");
 			   					
 			   					rankingLine.children(".colocacao").text(competidor.colocacao);
@@ -193,17 +203,16 @@
 			   					//Resultado			   					
 			   					var resultadoLine = rankingLine.children(".measure").children("span");
 			   					
-			   					resultadoLine.first().text(modo[dadosAjax.modo] + " : " + competidor.resultado.toFixed(2));
-			   				
+			   					resultadoLine.first().text(modoDescrição[dadosAjax.modo] + " : " + competidor.resultado.toFixed(2) + " " + modoMedidas[dadosAjax.modo] );
 			   					
 			   					switch(dadosAjax.modo){
 			   						case "V":
 			   							$(".modoSpan>div").addClass(modo["D"]);
-					   					$( resultadoLine[1] ).after(modo["D"] + " : " + competidor.distancia_percorrida.toFixed(2) + "km");
+					   					$( resultadoLine[1] ).children("div").first().after(modoDescrição["D"] + " : " + competidor.distancia_percorrida.toFixed(2) + " " + modoMedidas["D"] );
 					   					break;
 			   						case "D" :
 			   							$(".modoSpan>div").addClass(modo["V"]);
-			   							$( resultadoLine[1] ).after(modo["V"] + " : " + competidor.velocidade_media.toFixed(2) + "km/h");
+			   							$( resultadoLine[1] ).children("div").first().after(modoDescrição["V"] + " : " + competidor.velocidade_media.toFixed(2) + " " + modoMedidas["V"] );
 					   					break;
 			   					}
 			   					
@@ -343,7 +352,7 @@
    					$( $(".rankingLine")[index] ).append("<td class='measure'></td>");
    					
    					$( $(".rankingLine")[index] ).children(".measure").append("<span class='modoSpanEmphasized'></span><br>");
-   					$( $(".rankingLine")[index] ).children(".measure").append("<span class='not_emphasized modoSpan'><div class='circle bgSmall'></div></span><br>");
+   					$( $(".rankingLine")[index] ).children(".measure").append("<span class='not_emphasized modoSpan'><div class='circle bgTiny'></div></span><br>");
    					$( $(".rankingLine")[index] ).children(".measure").append("<span class='not_emphasized qtdSpan'></span>");
    					
    					$( $(".rankingLine")[index] ).children(".colocacao").text(competidor.colocacao);
@@ -355,16 +364,16 @@
    					
    					var modoString = $(".modoWrapper").children(":not(.opcao)").children().attr('data-ref');
    					
-   					resultadoLine.first().text(modoString + " : " + competidor.resultado.toFixed(2));
+   					resultadoLine.first().text(modoString + " : " + competidor.resultado.toFixed(2) + " " + modoMedidas[modoString.substring(0,1)] );
    					
    					switch(modoString){
 						case modo["V"]:
 							$(".modoSpan>div").addClass(modo["D"]);
-	   						$( resultadoLine[1] ).after(modo["D"] + " : " + competidor.distancia_percorrida.toFixed(2)	 + "km");
+	   						$( resultadoLine[1] ).children("div").first().after(modoDescrição["D"] + " : " + competidor.distancia_percorrida.toFixed(2) + " " + modoMedidas["D"] );
 	   					break;
 						case modo["D"] :
 							$(".modoSpan>div").addClass(modo["V"]);
-							$( resultadoLine[1] ).after(modo["V"] + " : " + competidor.velocidade_media.toFixed(2) + "km/h");
+							$( resultadoLine[1] ).children("div").first().after(modoDescrição["V"] + " : " + competidor.velocidade_media.toFixed(2) + " " + modoMedidas["V"] );
 	   					break;
 					}
 					

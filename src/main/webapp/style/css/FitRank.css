@@ -356,7 +356,8 @@ th {
 }
 
 td.measure {
-	text-align: center;
+/* 	text-align: center; */
+	position: relative;
 }
 
 td.profileName {
@@ -377,8 +378,8 @@ td.profileName {
 
 .measure>span>.circle {
 	margin: 10px !important; 
-	height: 35px !important;
-    width: 35px !important;
+	height: 20px !important;
+    width: 20px !important;
     padding: 9px !important;
     display: inline-block !important;
 }
@@ -433,4 +434,22 @@ td.profileName {
                 url('../../imagem/ajax-loader.gif') 
                 50% 50% 
                 no-repeat;');	
+}
+
+.modoSpan {
+	position: relative;
+/*     right: 60px; */
+    
+    bottom: 38px;
+}
+
+.modoSpan>div {
+	position: relative;
+    top: 20px;
+}
+
+.qtdSpan {
+	position: absolute;
+    bottom: 25px;
+    left: 60px;
 }
