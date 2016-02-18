@@ -49,7 +49,7 @@ public class PostFitnessServico {
 		return postInserido > 0;
 	}
 	
-	public List<PostFitness> lePostFitnessPorIdPessoa(int idPessoa) {
+	public List<PostFitness> lePostFitnessPorIdPessoa(String idPessoa) {
 		this.postFitnessDAO = new PostFitnessDAO();
 		
 		try {

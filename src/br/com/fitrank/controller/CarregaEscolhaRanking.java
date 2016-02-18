@@ -266,6 +266,9 @@ public class CarregaEscolhaRanking extends HttpServlet {
 				.fetchConnection("me/fitness." + defineModalidade(modalidade),
 						PostFitnessFB.class, Parameter.with("limit", "99999"));
 		
+		postFitnessServico = new PostFitnessServico();
+		ArrayList<PostFitness> postsUsuarioNaoInserir = (ArrayList<PostFitness>) postFitnessServico.lePostFitnessPorIdPessoa(facebookUser.getId());
+		
 		verificaAplicativos(listaFitConnection);
 		
 		ArrayList<PostFitness> postsFit = new ArrayList<PostFitness>();
@@ -309,7 +312,15 @@ public class CarregaEscolhaRanking extends HttpServlet {
 			}
 
 		}
-
+		
+		for (PostFitness postFitness : postsFit) {
+			for (PostFitness postNaoInserir : postsUsuarioNaoInserir) {
+				if(postFitness.getId_publicacao().equals(postNaoInserir.getId_publicacao()) && postFitness.getId_pessoa().equals(postNaoInserir.getId_pessoa())){
+					postsFit.remove(postFitness);
+				}
+			}
+		}
+		
 		postFitnessServico.adicionaListaPostFitnessServico(postsFit);
 
 		Pessoa pessoa = pessoaServico.lePessoaServico(facebookUser);

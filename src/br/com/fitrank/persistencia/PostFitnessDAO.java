@@ -196,7 +196,7 @@ public class PostFitnessDAO {
 		return postFitness;
 	}
 	
-	public List<PostFitness> lePostFitnessPorIdPessoa(int idPessoa) throws SQLException {
+	public List<PostFitness> lePostFitnessPorIdPessoa(String idPessoa) throws SQLException {
 		
 		Connection dbConnection = null;
 		PreparedStatement preparedStatement = null;
@@ -219,7 +219,7 @@ public class PostFitnessDAO {
 		try {
 			dbConnection = conexao;
 			preparedStatement = dbConnection.prepareStatement(selectTableSQL);
-			preparedStatement.setInt(1, idPessoa);
+			preparedStatement.setString(1, idPessoa);
 			
 			ResultSet rs = preparedStatement.executeQuery();
 			
