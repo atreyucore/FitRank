@@ -11,11 +11,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import br.com.fitrank.modelo.Amizade;
 import br.com.fitrank.modelo.Aplicativo;
 import br.com.fitrank.modelo.Configuracao;
 import br.com.fitrank.modelo.Pessoa;
 import br.com.fitrank.modelo.PostFitness;
 import br.com.fitrank.modelo.fb.PostFitness.PostFitnessFB;
+import br.com.fitrank.service.AmizadeServico;
 import br.com.fitrank.service.AplicativoServico;
 import br.com.fitrank.service.ConfiguracaoServico;
 import br.com.fitrank.service.PessoaServico;
@@ -57,42 +59,34 @@ public class CarregaEscolhaRanking extends HttpServlet {
 		RequestDispatcher rd = null;
 
 		aplicativos.clear();
-		
 		postsFit.clear();
-
 		aplicativosNaoInserir.clear();
 
-		FacebookClient facebookClient = new DefaultFacebookClient(
-				request.getParameter("token"));
-
+		FacebookClient facebookClient = new DefaultFacebookClient(request.getParameter("token"));
 		User facebookUser = facebookClient.fetchObject("me", User.class);
 
 		String fav = (String) request.getParameter("fav");
-
 		String modalidade = (String) request.getParameter("modalidade");
-
 		Configuracao configuracao = null;
 
 		if (fav == null || !fav.equals("S")) {
 
-			Date ultimaAtualizacao = handleUltimaAtividade(modalidade,
-					facebookClient, facebookUser);
+			Date ultimaAtualizacao = handleUltimaAtividade(modalidade, facebookClient, facebookUser);
 
 			if (ultimaAtualizacao != null) {
 
 				int limit = calculaLimiteDeBusca(ultimaAtualizacao);
-
 				limit = limit == 0 ? 1 : limit;
 
-				String modalidadeFB = defineModalidade((String) request
-						.getParameter("modalidade"));
+				String modalidadeFB = defineModalidade((String) request.getParameter("modalidade"));
 
-				Connection<PostFitnessFB> fitConnection = facebookClient
-						.fetchConnection("me/fitness." + modalidadeFB,
-								PostFitnessFB.class,
-								Parameter.with("limit", String.valueOf(limit)));
+				Connection<PostFitnessFB> fitConnection = facebookClient.fetchConnection("me/fitness." + modalidadeFB,
+																						 PostFitnessFB.class,
+																						 Parameter.with("limit", String.valueOf(limit)));
 
 				verificaAplicativos(fitConnection);
+				
+				atualizaCorridasAmigos(facebookUser.getId(), modalidade, facebookClient, request);
 
 				if (postsFit.size() == 0) {
 					request.setAttribute("erro",
@@ -159,6 +153,29 @@ public class CarregaEscolhaRanking extends HttpServlet {
 		request.setAttribute("token", (String) request.getParameter("token"));
 
 		rd.forward(request, response);
+	}
+	
+	private void atualizaCorridasAmigos(String idUsuario, String modalidade, FacebookClient facebookClient, HttpServletRequest request){
+		AmizadeServico amizadeServico = new AmizadeServico();
+		String modalidadeFB = defineModalidade((String) request.getParameter("modalidade"));
+		List<Amizade> amigos = amizadeServico.listaAmizades(idUsuario);
+		
+		for(Amizade amizade : amigos){
+		
+			User facebookUser = facebookClient.fetchObject(amizade.getId_amigo(), User.class);
+			Date ultimaAtualizacao = handleUltimaAtividade(modalidade, facebookClient, facebookUser);
+	
+			if (ultimaAtualizacao != null) {
+				
+				int limit = calculaLimiteDeBusca(ultimaAtualizacao);
+				limit = limit == 0 ? 1 : limit;
+			
+				Connection<PostFitnessFB> fitConnection = facebookClient.fetchConnection(amizade.getId_amigo() + "/fitness." + modalidadeFB,
+																						 PostFitnessFB.class,
+																						 Parameter.with("limit", String.valueOf(limit)));
+				verificaAplicativos(fitConnection);
+			}
+		}
 	}
 
 	private void verificaAplicativos(Connection<PostFitnessFB> fitConnection) {
