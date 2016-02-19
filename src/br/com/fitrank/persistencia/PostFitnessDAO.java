@@ -75,7 +75,7 @@ public class PostFitnessDAO {
 		return postFitness;
 	}
 	
-	public boolean adicionaListaPostFitness(ArrayList<PostFitness> listaPostFitness) throws SQLException {
+	public boolean adicionaListaPostFitness(PostFitness postFitness) throws SQLException {
 		Connection dbConnection = null;
 		PreparedStatement preparedStatement = null;
 		boolean isSucess = true;
@@ -94,10 +94,10 @@ public class PostFitnessDAO {
 				+ ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		
-		for (int aux = 0; aux < (listaPostFitness.size() - 1); aux++) {
-			insertTableSQL +=  ", (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-			
-		}	
+//		for (int aux = 0; aux < (listaPostFitness.size() - 1); aux++) {
+//			insertTableSQL +=  ", (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+//			
+//		}	
 		
 		try {
 			dbConnection = conexao;
@@ -105,7 +105,7 @@ public class PostFitnessDAO {
 			
 			int i = 0;
 			
-			for (PostFitness postFitness : listaPostFitness) {
+//			for (PostFitness postFitness : postFitness) {
 			
 				preparedStatement.setString(++i, postFitness.getId_publicacao());
 				preparedStatement.setString(++i, postFitness.getId_pessoa());
@@ -117,7 +117,7 @@ public class PostFitnessDAO {
 				preparedStatement.setDouble(++i, postFitness.getDuracao());
 				preparedStatement.setString(++i, postFitness.getData_publicacao());
 				preparedStatement.setString(++i, postFitness.getUrl());
-			}
+//			}
 			// execute insert SQL stetement
 			preparedStatement.executeUpdate();
 
@@ -196,7 +196,7 @@ public class PostFitnessDAO {
 		return postFitness;
 	}
 	
-	public List<PostFitness> lePostFitnessPorIdPessoa(int idPessoa) throws SQLException {
+	public List<PostFitness> lePostFitnessPorIdPessoa(String idPessoa) throws SQLException {
 		
 		Connection dbConnection = null;
 		PreparedStatement preparedStatement = null;
@@ -219,7 +219,7 @@ public class PostFitnessDAO {
 		try {
 			dbConnection = conexao;
 			preparedStatement = dbConnection.prepareStatement(selectTableSQL);
-			preparedStatement.setInt(1, idPessoa);
+			preparedStatement.setString(1, idPessoa);
 			
 			ResultSet rs = preparedStatement.executeQuery();
 			

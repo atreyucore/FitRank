@@ -110,7 +110,7 @@ public class PostFitness implements Comparable<Object> {
 		if(o != null && o instanceof PostFitness){
 			PostFitness postFitness = (PostFitness) o;
 			
-			if(postFitness.id_publicacao.equals(this.id_publicacao)){
+			if(postFitness.id_publicacao.equals(this.id_publicacao) && postFitness.id_pessoa.equals(this.id_pessoa)){
 				return 0;
 			}
 		}
@@ -123,7 +123,7 @@ public class PostFitness implements Comparable<Object> {
 		if(o != null && o instanceof PostFitness){
 			PostFitness postFitness = (PostFitness) o;
 			
-			if(postFitness.id_publicacao.equals(this.id_publicacao)){
+			if(postFitness.id_publicacao.equals(this.id_publicacao) && postFitness.id_pessoa.equals(this.id_pessoa)){
 				return true;
 			}
 		}

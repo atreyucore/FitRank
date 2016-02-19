@@ -1,19 +1,14 @@
 -- --------------------------------------------------------
--- Servidor:                     eic.cefet-rj.br
--- Versão do servidor:           5.6.19-0ubuntu0.14.04.1 - (Ubuntu)
+-- Servidor:                     10.1.1.186
+-- Versão do servidor:           5.6.28-0ubuntu0.14.04.1 - (Ubuntu)
 -- OS do Servidor:               debian-linux-gnu
--- HeidiSQL Versão:              9.3.0.4984
+-- HeidiSQL Versão:              9.1.0.4920
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET NAMES utf8mb4 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-
--- Copiando estrutura do banco de dados para fitrank
-CREATE DATABASE IF NOT EXISTS `fitrank` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `fitrank`;
-
 
 -- Copiando estrutura para tabela fitrank.amizade
 CREATE TABLE IF NOT EXISTS `amizade` (
@@ -62,12 +57,15 @@ CREATE TABLE IF NOT EXISTS `configuracao` (
 CREATE TABLE IF NOT EXISTS `course` (
   `id_course` varchar(32) NOT NULL,
   `distancia` float NOT NULL,
+  `id_pessoa` varchar(50) NOT NULL,
+  `Coluna 4` varchar(50) NOT NULL,
   `calorias` float DEFAULT NULL,
   `ritmo` float DEFAULT NULL,
   `id_post` varchar(32) NOT NULL,
   PRIMARY KEY (`id_course`),
-  KEY `FK_course_post_fitness` (`id_post`),
-  CONSTRAINT `FK_COURSE_POST` FOREIGN KEY (`id_post`) REFERENCES `post_fitness` (`id_publicacao`)
+  KEY `FK_course_post_fitness` (`id_post`,`id_pessoa`),
+  KEY `FK_COURSE_POST` (`id_pessoa`,`id_post`),
+  CONSTRAINT `FK_COURSE_POST` FOREIGN KEY (`id_pessoa`, `id_post`) REFERENCES `post_fitness` (`id_publicacao`, `id_pessoa`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Exportação de dados foi desmarcado.
@@ -136,6 +134,9 @@ CREATE TABLE IF NOT EXISTS `pessoa` (
   `data_ultima_atualizacao_walks` varchar(10) DEFAULT NULL,
   `data_ultima_atualizacao_bikes` varchar(10) DEFAULT NULL,
   `rank_anual` varchar(1) DEFAULT 'N' COMMENT '''S'' ou ''N''',
+  `genero` varchar(1) DEFAULT NULL COMMENT '''F'' ou ''M''',
+  `data_nascimento` varchar(10) DEFAULT NULL,
+  `url_foto` mediumtext,
   PRIMARY KEY (`id_usuario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -153,12 +154,12 @@ CREATE TABLE IF NOT EXISTS `post_fitness` (
   `distancia_percorrida` double DEFAULT NULL,
   `duracao` double DEFAULT NULL,
   `data_publicacao` varchar(10) DEFAULT NULL,
-  `url` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`id_publicacao`),
+  `url` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id_publicacao`,`id_pessoa`),
   KEY `FK1_ID_APLICATIVO` (`id_app`),
   KEY `FK2_ID_PESSOA` (`id_pessoa`),
-  CONSTRAINT `FK_POST_PESSOA` FOREIGN KEY (`id_pessoa`) REFERENCES `pessoa` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FK_POST_APLICATIVO` FOREIGN KEY (`id_app`) REFERENCES `aplicativo` (`id_aplicativo`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `FK_POST_APLICATIVO` FOREIGN KEY (`id_app`) REFERENCES `aplicativo` (`id_aplicativo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_POST_PESSOA` FOREIGN KEY (`id_pessoa`) REFERENCES `pessoa` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Exportação de dados foi desmarcado.
@@ -169,7 +170,7 @@ CREATE TABLE IF NOT EXISTS `ranking` (
   `id_ranking` int(11) NOT NULL AUTO_INCREMENT,
   `titulo` varchar(50) DEFAULT NULL,
   `id_configuracao` int(11) NOT NULL,
-  `data_ranking` int(11) NOT NULL,
+  `data_ranking` varchar(10) NOT NULL,
   PRIMARY KEY (`id_ranking`),
   KEY `FK1_ID_CONFIGURACAO` (`id_configuracao`),
   CONSTRAINT `FK_RANKING_CONFIGURACAO` FOREIGN KEY (`id_configuracao`) REFERENCES `configuracao` (`id_configuracao`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -184,6 +185,9 @@ CREATE TABLE IF NOT EXISTS `ranking_pessoa` (
   `id_pessoa` varchar(50) NOT NULL,
   `colocacao` int(10) NOT NULL,
   `resultado` float DEFAULT NULL,
+  `distancia_percorrida` float DEFAULT NULL,
+  `velocidade_media` float DEFAULT NULL,
+  `quantidade_corridas` int(11) DEFAULT NULL,
   PRIMARY KEY (`id_ranking`,`id_pessoa`),
   KEY `FK_PESSOA_RANKING` (`id_ranking`),
   KEY `FK_RANKING_PESSOA` (`id_pessoa`),
