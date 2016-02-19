@@ -38,16 +38,22 @@
 				"V" : "km/h"
 			};
 			
-			var modoDescrição = {
+			var modoDescricao = {
 				"D" : "Distância",
 				"V" : "Velocidade Média"
-			}
+			};
 			
 			var modalidade = {
 				"R": "runs",
 				"W": "walks",
 				"B": "bikes"
-			}
+			};
+			
+			var modalidadeDescricao = {
+				"R": "Corrida",
+				"W": "Caminhada",
+				"B": "Ciclismo"
+			};
 			
 			var dadosAjax = {};
 			
@@ -71,6 +77,8 @@
 			   		
 			   		clickDisabled = true;
 			   		
+			   		var itemClicado = $(this);
+			   		
 			   		var toHide = 0; 
 			   		
 			   		$(".menu").not($(this)).children(".opcao").each(function(index, el) {
@@ -88,6 +96,7 @@
 			   		
 			   		var time = 125;
 			   		
+			   		//Esconde as opcoes que estão aparecendo
 		   			$(".menu").not($(this)).children(".opcao").each(function(index, el){
 			    		
 			    		if($(el).css("display") !== 'none') {
@@ -99,11 +108,85 @@
 			    		}
 					});
 			   		
+		   			var mainDescriptionButtons = $(".menu").children(":not(.opcao)").children("[class*='chosen']");//.not(".chosenPeriod");
+			    	
+		   			var spanDescChosen = $(this).children(":not(.opcao)").children("[class*='chosen']");//.not(".chosenPeriod");
+// 		   			var esconder = false;
+		   			
+		   			//Esconde as descricoes que estão aparecendo
+		   			$(mainDescriptionButtons).each(function(index, el){
+		   				var isElEqualChosen =  $(spanDescChosen).attr('class') === $(el).attr('class'); 
+		   				var isPeriod = $(el).hasClass("chosenPeriod");
+		   				
+		   				if ( !isElEqualChosen && $(el).css("display") !== "none" && !isPeriod) {
+		   					
+		   					$(this).toggle('slide', {direction : 'down', duration: 120});
+// 		   					esconder = true;
+		   				} else if (isElEqualChosen && isPeriod) {
+		   					$(".headerContent").animate({
+								marginBottom : "0"
+							},120);
+		   				} else if( isElEqualChosen && $(spanDescChosen).css("display") !== "none") {
+		   				
+		   					$(spanDescChosen).toggle('slide', {direction : 'down', duration: 120});
+		   					
+		   					$(".headerContent").animate({
+								marginBottom : "0"
+							},120);
+		   				} else if(isElEqualChosen && $(spanDescChosen).css("display") === "none") {
+		   					$(spanDescChosen).toggle('slide', {direction : 'down', duration: 120});
+		   					
+		   					$(".headerContent").animate({
+								marginBottom : "20px"
+							},120);
+		   				}
+						
+		   			});
+		   			
+// 		   			$(spanClassesChosen).toggle('slide', {direction : 'down', duration: 120});
+		   			
+// 		   			setTimeout(function() {
+						
+// //							if( !$(spanTextChosen).hasClass("chosenPeriod")) {
+							
+// //							}
+						
+// 						if($(".headerContent").css("margin-bottom") == 0 || $(".headerContent").css("margin-bottom") == '0px') { 
+						
+// 							$(".headerContent").animate({
+// 								marginBottom : "20px"
+// 							},120);
+							
+							
+// 						} else {
+// 							$(".headerContent").animate({
+// 								marginBottom : "0"
+// 							},120);
+// 						}
+						
+// 					}, time);
+					
+// 					time += 125;
 			   		
+// 					if(!$(this).hasClass("periodoWrapper")){
+						
+// 						var spanTextChosen = $(this).children(":not(.opcao)").children("[class*='chosen']");
+						
+// 						if (spanTextChosen.css("display") === 'none' ) {
+// 							spanTextChosen
+// 							hiddened = $(this).children(".opcao");
+							
+// 						} else {
+							
+// 							hiddened = $(this).children(".opcao").get().reverse();
+							
+// 						}
+// 					}
+					
+					//circulos de opcoes
 			   		var hiddened;
 					
 					if ($(this).children(".opcao").css("display") === 'none' ) {
-						//$(this).children(".opcao").removeClass("hidden");
 						hiddened = $(this).children(".opcao");
 					} else {
 						hiddened = $(this).children(".opcao").get().reverse();
@@ -128,26 +211,34 @@
 			   		
 			   		dadosAjax['token'] = token;
 			   		dadosAjax[element.attr('data-ref')] = element.children().attr('data-ref');
-			   		dadosAjax[element.parent().siblings(".menu").first().children(":not(.opcao)").attr('data-ref')] = element.parent().siblings(".menu").first().children(":not(.opcao)").children().attr('data-ref');
-			   		dadosAjax[element.parent().siblings(".menu").eq(1).children(":not(.opcao)").attr('data-ref')] = element.parent().siblings(".menu").eq(1).children(":not(.opcao)").children().attr('data-ref');
+			   		dadosAjax[element.parent().siblings(".menu").first().children(":not(.opcao)").attr('data-ref')] = element.parent().siblings(".menu").first().children(":not(.opcao)").children(".bgSmall").attr('data-ref');
+			   		dadosAjax[element.parent().siblings(".menu").eq(1).children(":not(.opcao)").attr('data-ref')] = element.parent().siblings(".menu").eq(1).children(":not(.opcao)").children(".bgSmall").attr('data-ref');
 			   		
-			   		var menu = element.siblings(":not(.opcao)").children();
+			   		var menu = element.siblings(":not(.opcao)").children(".bgSmall");
 			   		
 			   		var opcao = element.children();
 			   		
 			   		var menuDataRef = menu.attr("data-ref");
 			   		
+			   		var menuText = menu.siblings(".capsula").text();
+			   		
 			   		var opcaoDataRef = opcao.attr("data-ref");
 			   		
+			   		var opcaoText= opcao.children(".capsula").text();
+// 			   		var opcaoText= opcao.text();
 			   		menu.removeClass(menuDataRef);
 			   		
 			   		opcao.removeClass(opcaoDataRef);
 			   		
 			   		menu.addClass(opcaoDataRef);
 			   		
+			   		menu.siblings(".capsula").text(opcaoText);
+			   		
 			   		menu.attr("data-ref", opcaoDataRef);
 			   		
 			   		opcao.addClass(menuDataRef);
+			   		
+			   		opcao.children(".capsula").text(menuText);
 			   		
 			   		opcao.attr("data-ref", menuDataRef);
 
@@ -203,16 +294,16 @@
 			   					//Resultado			   					
 			   					var resultadoLine = rankingLine.children(".measure").children("span");
 			   					
-			   					resultadoLine.first().text(modoDescrição[dadosAjax.modo] + " : " + competidor.resultado.toFixed(2) + " " + modoMedidas[dadosAjax.modo] );
+			   					resultadoLine.first().text(modoDescricao[dadosAjax.modo] + " : " + competidor.resultado.toFixed(2) + " " + modoMedidas[dadosAjax.modo] );
 			   					
 			   					switch(dadosAjax.modo){
 			   						case "V":
 			   							$(".modoSpan>div").addClass(modo["D"]);
-					   					$( resultadoLine[1] ).children("div").first().after(modoDescrição["D"] + " : " + competidor.distancia_percorrida.toFixed(2) + " " + modoMedidas["D"] );
+					   					$( resultadoLine[1] ).children("div").first().after(modoDescricao["D"] + " : " + competidor.distancia_percorrida.toFixed(2) + " " + modoMedidas["D"] );
 					   					break;
 			   						case "D" :
 			   							$(".modoSpan>div").addClass(modo["V"]);
-			   							$( resultadoLine[1] ).children("div").first().after(modoDescrição["V"] + " : " + competidor.velocidade_media.toFixed(2) + " " + modoMedidas["V"] );
+			   							$( resultadoLine[1] ).children("div").first().after(modoDescricao["V"] + " : " + competidor.velocidade_media.toFixed(2) + " " + modoMedidas["V"] );
 					   					break;
 			   					}
 			   					
@@ -269,15 +360,23 @@
 									.addClass("bgSmall")
 									.attr("data-ref", modalidade["<%=(String) request.getAttribute("modalidade")%>"].valueOf());
 				
-				var alturaModalidade = $(".modalidade").height() * 2 - 10;	
+				var alturaModalidade = $(".modalidade").height() * 2 - 10;
 				
 				$.map(modalidade, function(value, index) { 
 					if( value != modalidade['<%=(String) request.getAttribute("modalidade")%>']) {
-						$("<div></div>").addClass(value).addClass('bgTiny').attr('data-ref', value).appendTo( 
+						var currModalidadeDescricao = modalidadeDescricao[index];
+						
+						//Adiciona as opcoes
+						$("<span class='capsula descOpcaoModalidade'></span>").text(currModalidadeDescricao).appendTo(
+								$("<div></div>").addClass(value).addClass('bgTiny').attr('data-ref', value).appendTo( 
 									$("<div></div>").appendTo(".modalidadeWrapper").addClass("circle modalidade ranking smallTile opcao").attr('data-ref', 'modalidade').css("display", "none").css("bottom" , alturaModalidade).css("left", $(".modalidade").height())
-								);
+								)
+						);
 						
 						alturaModalidade += $(".opcao").height() * 2 + 15; 
+					
+					} else {
+						$(".chosenModalidade").text(modalidadeDescricao['<%=(String) request.getAttribute("modalidade")%>']);
 					}
 				});
 				
@@ -290,12 +389,17 @@
 				
 				$.map(modo, function(value, index) { 
 					if( value != modo['<%=(String) request.getAttribute("modo")%>']) {
-				
-						$("<div></div>").addClass(value).addClass('bgTiny').attr('data-ref', value).appendTo( 
+						var currModoDescricao = modoDescricao[index]; 
+						//Adiciona as opcoes
+						$("<span class='capsula descOpcaoModo'></span>").text(currModoDescricao).appendTo(
+							$("<div></div>").addClass(value).addClass('bgTiny').attr('data-ref', value).appendTo( 
 								$("<div></div>").appendTo(".modoWrapper").addClass("circle modo ranking smallTile opcao").attr('data-ref', 'modo').css("display", "none").css("bottom" , alturaModo).css("left", $(".modo").height())
-							);
+							)
+						);
 					
 						alturaModo += $(".opcao").height() * 2 + 15;
+					} else {
+						$(".chosenModo").text(modoDescricao['<%=(String) request.getAttribute("modo")%>']);
 					}
 				});
 				
@@ -313,12 +417,13 @@
 		   			$(".chosenPeriod").css("right", "-25px");
 		   		}
 				
+				
 				$.map(periodo, function(value, index) { 
 					var currPeriodo = periodo[index];	
 				
 					if(isNaN(index) && value !== periodo['<%=(String) request.getAttribute("periodo")%>'] ) {
 						
-						
+						//Adiciona as opcoes
 						$("<span class='capsula chosenPeriod descOpcao'></span>").text(currPeriodo).appendTo(
 								$("<div></div>").addClass(value).addClass('calendario bgTiny').attr('data-ref', value).appendTo( 
 									$("<div></div>").appendTo(".periodoWrapper").addClass("circle periodo ranking smallTile opcao").attr('data-ref', 'periodo').css("display", "none").css("bottom" , alturaPeriodo).css("left", $(".periodo").height())
@@ -362,18 +467,19 @@
    					//Resultado			   					
    					var resultadoLine = $( $(".rankingLine")[index] ).children(".measure").children("span");
    					
-   					var modoString = $(".modoWrapper").children(":not(.opcao)").children().attr('data-ref');
+//    					var modoString = $(".modoWrapper").children(":not(.opcao)").children().attr('data-ref');
+   					var modoString = $(".modoWrapper").children(":not(.opcao)").children(".bgSmall").attr('data-ref');
    					
    					resultadoLine.first().text(modoString + " : " + competidor.resultado.toFixed(2) + " " + modoMedidas[modoString.substring(0,1)] );
    					
    					switch(modoString){
 						case modo["V"]:
 							$(".modoSpan>div").addClass(modo["D"]);
-	   						$( resultadoLine[1] ).children("div").first().after(modoDescrição["D"] + " : " + competidor.distancia_percorrida.toFixed(2) + " " + modoMedidas["D"] );
+	   						$( resultadoLine[1] ).children("div").first().after(modoDescricao["D"] + " : " + competidor.distancia_percorrida.toFixed(2) + " " + modoMedidas["D"] );
 	   					break;
 						case modo["D"] :
 							$(".modoSpan>div").addClass(modo["V"]);
-							$( resultadoLine[1] ).children("div").first().after(modoDescrição["V"] + " : " + competidor.velocidade_media.toFixed(2) + " " + modoMedidas["V"] );
+							$( resultadoLine[1] ).children("div").first().after(modoDescricao["V"] + " : " + competidor.velocidade_media.toFixed(2) + " " + modoMedidas["V"] );
 	   					break;
 					}
 					
@@ -443,11 +549,13 @@
 							</div>
 						<div class="modalidadeWrapper menu">
 							<div class="circle modalidade ranking smallTile" data-ref="modalidade">
+								<span class="capsula chosenModalidade"></span>
 							</div>
 						</div>
 						
 						<div class="modoWrapper menu">
 							<div class="circle modo ranking smallTile " data-ref="modo">
+								<span class="capsula chosenModo"></span>
 							</div>
 						</div>
 	

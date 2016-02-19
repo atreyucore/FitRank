@@ -43,11 +43,14 @@ html, body {
     height: 115px;
     max-height: 115px; 
 }
+
 .headerContent {
 	padding-top: 60px;
 	margin: 0 auto;
 	width: 60%;
+	
 }
+
 
 .content {
 	padding-bottom: 70px;
@@ -372,6 +375,54 @@ td.profileName {
     right: -25px;
 }
 
+.chosenModo {
+	font-size: 23px;
+	color: white;
+	font-weight: bold;
+	position: absolute;
+	width: 90px;
+   	top: 65px;
+    left: -10px;
+    word-wrap: break-word;
+    text-align: center;
+    display: none;
+}
+
+.descOpcaoModo{
+	font-size: 23px;
+	color: white;
+	font-weight: bold;
+	position : relative !important;
+	right: -36px !important;
+	width: 150px;
+    display: inline-block;
+}
+
+.descOpcao{
+	position : relative !important;
+	right: -36px !important;
+}
+
+.chosenModalidade {
+	font-size: 23px;
+	color: white;
+	font-weight: bold;
+	position: absolute;
+	width: 90px;
+   	top: 65px;
+    left: -10px;
+    word-wrap: break-word;
+    text-align: center;
+    display: none;
+}
+
+.descOpcaoModalidade{
+	font-size: 23px;
+	color: white;
+	font-weight: bold;
+	position : relative !important;
+	right: -36px !important;
+}
 .colocacao {
 	width: 75px;
 }
@@ -394,7 +445,7 @@ td.profileName {
 }
 
 .rankingLine {
-/* 	line-height: 200px; */
+	height: 125px;
 }
 
 .rankingHeader {
@@ -415,11 +466,6 @@ td.profileName {
 	position: absolute !important;
 	width: 20px !important;
     height: 20px !important;
-}
-
-.descOpcao{
-	position : relative !important;
-	right: -36px !important;
 }
 
 #loading {
