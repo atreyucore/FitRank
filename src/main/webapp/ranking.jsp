@@ -225,7 +225,7 @@
 			   		var opcaoDataRef = opcao.attr("data-ref");
 			   		
 			   		var opcaoText= opcao.children(".capsula").text();
-// 			   		var opcaoText= opcao.text();
+
 			   		menu.removeClass(menuDataRef);
 			   		
 			   		opcao.removeClass(opcaoDataRef);
