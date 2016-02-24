@@ -267,48 +267,8 @@
 			   				json = JSON.parse(jqXHR.getResponseHeader('json'));
 			   				
 			   				competidores = json["@items"];
-							
-			   				for(index in competidores){
-			   					var competidor = competidores[index];
-			   					
-			   					$(".tableRank>tbody").append("<tr class='rankingLine'></tr>");
-
-			   					var rankingLine = $( $(".rankingLine")[index] );
-			   					
-			   					rankingLine.append("<td class='colocacao'></td>");
-			   					rankingLine.append("<td class='profileImg'><img align='middle' ></td>");
-			   					
-			   					rankingLine.append("<td class='profileName'></td>");
-			   					rankingLine.children(".profileName").append("<span></span>");
-			   					
-			   					rankingLine.append("<td class='measure'></td>");
-			   					
-			   					rankingLine.children(".measure").append("<span class='modoSpanEmphasized'></span><br>");
-			   					rankingLine.children(".measure").append("<span class='not_emphasized modoSpan'><div class='circle bgTiny'></div></span><br>");
-			   					rankingLine.children(".measure").append("<span class='not_emphasized qtdSpan'></span>");
-			   					
-			   					rankingLine.children(".colocacao").text(competidor.colocacao);
-			   					rankingLine.children(".profileImg").children("img").attr("data-id_pessoa", competidor.id_pessoa).attr("src", competidor.pessoa.url_foto === null ? 'imagem/default_photo.png' : competidor.pessoa.url_foto );
-			   					rankingLine.children(".profileName").children("span").attr("data-id_pessoa", competidor.id_pessoa).text(competidor.pessoa.nome);
-			   					
-			   					//Resultado			   					
-			   					var resultadoLine = rankingLine.children(".measure").children("span");
-			   					
-			   					resultadoLine.first().text(modoDescricao[dadosAjax.modo] + " : " + competidor.resultado.toFixed(2) + " " + modoMedidas[dadosAjax.modo] );
-			   					
-			   					switch(dadosAjax.modo){
-			   						case "V":
-			   							$(".modoSpan>div").addClass(modo["D"]);
-					   					$( resultadoLine[1] ).children("div").first().after(modoDescricao["D"] + " : " + competidor.distancia_percorrida.toFixed(2) + " " + modoMedidas["D"] );
-					   					break;
-			   						case "D" :
-			   							$(".modoSpan>div").addClass(modo["V"]);
-			   							$( resultadoLine[1] ).children("div").first().after(modoDescricao["V"] + " : " + competidor.velocidade_media.toFixed(2) + " " + modoMedidas["V"] );
-					   					break;
-			   					}
-			   					
-			   					$( resultadoLine[2] ).text("Corridas : " + competidor.quantidade_corridas);
-			   				}	
+			   				
+			   				geraRanking(competidores, dadosAjax.modo);
 			   			}
 			   				
 			   		});
@@ -317,6 +277,65 @@
 			    
 			    
 			});
+			
+			//primeira execucao
+			function preparaRanking() {		
+				
+				competidores = json["@items"];
+				
+				var modo = $(".modoWrapper").children(":not(.opcao)").children(".bgSmall").attr('data-ref').substring(0,1);
+				
+				geraRanking(competidores, modo);
+				
+			}
+			
+			function geraRanking(competidores, modoParam) {
+				for(index in competidores){
+   					var competidor = competidores[index];
+   					
+   					$(".tableRank>tbody").append("<tr class='rankingLine'></tr>");
+
+   					var rankingLine = $( $(".rankingLine")[index] );
+   					
+   					rankingLine.append("<td class='colocacao'></td>");
+   					rankingLine.append("<td class='profileImg'><a><img align='middle' ></a></td>");
+   					
+   					rankingLine.append("<td class='profileName'><a><span></span></a></td>");
+//    					rankingLine.children(".profileName").append("");
+   					
+   					rankingLine.append("<td class='measure'></td>");
+   					
+   					rankingLine.children(".measure").append("<span class='modoSpanEmphasized'></span><br>");
+   					rankingLine.children(".measure").append("<span class='not_emphasized modoSpan'><div class='circle bgTiny'></div></span><br>");
+   					rankingLine.children(".measure").append("<span class='not_emphasized qtdSpan'></span>");
+   					
+   					rankingLine.children(".colocacao").text(competidor.colocacao);
+   					rankingLine.children(".profileImg").children("a").attr("href", "http://www.facebook.com/" + competidor.id_pessoa).attr("target", "_blank").children("img").attr("data-id_pessoa", competidor.id_pessoa).attr("src", competidor.pessoa.url_foto === null ? 'imagem/default_photo.png' : competidor.pessoa.url_foto );
+   					rankingLine.children(".profileName").children("a").attr("href", "http://www.facebook.com/" + competidor.id_pessoa).attr("target", "_blank").children("span").attr("data-id_pessoa", competidor.id_pessoa).text(competidor.pessoa.nome);
+   					
+   					//Resultado			   					
+   					var resultadoLine = rankingLine.children(".measure").children("span");
+   					
+   					$(".modoTableHeader").text(modoDescricao[modoParam]);
+   					
+   					resultadoLine.first().text(competidor.resultado.toFixed(2) + " " + modoMedidas[modoParam] );
+   					
+   					switch(modoParam){
+   						case "V":
+   							$(".modoSpan>div").addClass(modo["D"]);
+   							
+		   					$( resultadoLine[1] ).children("div").first().after(modoDescricao["D"] + " : " + competidor.distancia_percorrida.toFixed(2) + " " + modoMedidas["D"] );
+		   					break;
+   						case "D" :
+   							$(".modoSpan>div").addClass(modo["V"]);
+   							$( resultadoLine[1] ).children("div").first().after(modoDescricao["V"] + " : " + competidor.velocidade_media.toFixed(2) + " " + modoMedidas["V"] );
+		   					break;
+   					}
+   					
+   					$( resultadoLine[2] ).text("Atividades : " + competidor.quantidade_corridas);
+   				}	
+   			
+			}
 			
 			function prepareProperties(obj) {
 
@@ -436,57 +455,7 @@
 				
 			} 
 			
-			//primeira execucao
-			function preparaRanking() {		
-				
-				competidores = json["@items"];
-				
-   				for(index in competidores) {
-   					
-   					var competidor = competidores[index];
-   					
-   					
-   					$(".tableRank>tbody").append("<tr class='rankingLine'></tr>");
-   					
-   					$( $(".rankingLine")[index] ).append("<td class='colocacao'></td>");
-   					$( $(".rankingLine")[index] ).append("<td class='profileImg'><img align='middle' ></td>");
-   					
-   					$( $(".rankingLine")[index] ).append("<td class='profileName'></td>");
-   					$( $(".rankingLine")[index] ).children(".profileName").append("<span></span>");
-   					
-   					$( $(".rankingLine")[index] ).append("<td class='measure'></td>");
-   					
-   					$( $(".rankingLine")[index] ).children(".measure").append("<span class='modoSpanEmphasized'></span><br>");
-   					$( $(".rankingLine")[index] ).children(".measure").append("<span class='not_emphasized modoSpan'><div class='circle bgTiny'></div></span><br>");
-   					$( $(".rankingLine")[index] ).children(".measure").append("<span class='not_emphasized qtdSpan'></span>");
-   					
-   					$( $(".rankingLine")[index] ).children(".colocacao").text(competidor.colocacao);
-   					$( $(".rankingLine")[index] ).children(".profileImg").children("img").attr("data-id_pessoa", competidor.id_pessoa).attr("src", competidor.pessoa.url_foto === null ? 'imagem/default_photo.png' : competidor.pessoa.url_foto );
-   					$( $(".rankingLine")[index] ).children(".profileName").children("span").attr("data-id_pessoa", competidor.id_pessoa).text(competidor.pessoa.nome);
-   					
-   					//Resultado			   					
-   					var resultadoLine = $( $(".rankingLine")[index] ).children(".measure").children("span");
-   					
-//    					var modoString = $(".modoWrapper").children(":not(.opcao)").children().attr('data-ref');
-   					var modoString = $(".modoWrapper").children(":not(.opcao)").children(".bgSmall").attr('data-ref');
-   					
-   					resultadoLine.first().text(modoString + " : " + competidor.resultado.toFixed(2) + " " + modoMedidas[modoString.substring(0,1)] );
-   					
-   					switch(modoString){
-						case modo["V"]:
-							$(".modoSpan>div").addClass(modo["D"]);
-	   						$( resultadoLine[1] ).children("div").first().after(modoDescricao["D"] + " : " + competidor.distancia_percorrida.toFixed(2) + " " + modoMedidas["D"] );
-	   					break;
-						case modo["D"] :
-							$(".modoSpan>div").addClass(modo["V"]);
-							$( resultadoLine[1] ).children("div").first().after(modoDescricao["V"] + " : " + competidor.velocidade_media.toFixed(2) + " " + modoMedidas["V"] );
-	   					break;
-					}
-					
-					$( resultadoLine[2] ).text("Corridas : " + competidor.quantidade_corridas);
-   					
-   				}
-			}
+			
 			
 // 			function buscaInformacoesPerfil(element) {
 // 				var idUsuario = $(element).attr("data-id_pessoa");
@@ -528,7 +497,8 @@
 // 			}
 			
 			function compartilhar() {
-				window.open('https://www.facebook.com/dialog/share?app_id=749336888463283&display=popup&href=http://eic.cefet-rj.br/app/FitRank/&redirect_uri=http://eic.cefet-rj.br/app/FitRank/',"fb_share", "width=500, height=500");
+				
+				window.open("https://www.facebook.com/dialog/share?app_id=749336888463283&display=popup&href=http://eic.cefet-rj.br/app/FitRank/&redirect_uri=http://eic.cefet-rj.br/app/FitRank/","fb_share", "width=500, height=500");
 			}
 		</script>
 		<link rel="stylesheet" type="text/css" href="./style/css/FitRank.css">
@@ -574,8 +544,8 @@
 						<tr>
 							<th></th>
 							<th></th>
-							<th>Perfil</th>
 							<th></th>
+							<th class="modoTableHeader"></th>
 					</table>
 				</div>
 			</div>

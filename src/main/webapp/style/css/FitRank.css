@@ -12,6 +12,17 @@ html, body {
 	height: 100%;
 }
 
+a {
+	text-decoration: initial;
+    color: black;
+}
+
+a:hover {
+	color: #6F3D94;
+	font-weight: bold;
+/* 	rgb(111, 61, 148);	 */
+}
+
 .wrapper {
 	min-height: 100%;
 	position: relative;
@@ -359,12 +370,14 @@ th {
 }
 
 td.measure {
-/* 	text-align: center; */
+	text-align: center;
 	position: relative;
 }
 
 td.profileName {
-	padding-left: 50px;
+/* 	padding-left: 50px; */
+	    max-width: 250px;
+    min-width: 250px;
 }
 
 .chosenPeriod {
@@ -494,7 +507,8 @@ td.profileName {
 }
 
 .qtdSpan {
-	position: absolute;
-    bottom: 25px;
-    left: 60px;
+	
+	position: relative;
+    bottom: 38px;
+/*     left: 60px; */
 }
