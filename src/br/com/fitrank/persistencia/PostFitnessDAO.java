@@ -75,7 +75,7 @@ public class PostFitnessDAO {
 		return postFitness;
 	}
 	
-	public boolean adicionaListaPostFitness(PostFitness postFitness) throws SQLException {
+	public boolean adicionaListaPostFitness(List<PostFitness> listaPostFitness) throws SQLException {
 		Connection dbConnection = null;
 		PreparedStatement preparedStatement = null;
 		boolean isSucess = true;
@@ -94,10 +94,10 @@ public class PostFitnessDAO {
 				+ ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		
-//		for (int aux = 0; aux < (listaPostFitness.size() - 1); aux++) {
-//			insertTableSQL +=  ", (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-//			
-//		}	
+		for (int aux = 0; aux < (listaPostFitness.size() - 1); aux++) {
+			insertTableSQL +=  ", (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			
+		}	
 		
 		try {
 			dbConnection = conexao;
@@ -105,7 +105,7 @@ public class PostFitnessDAO {
 			
 			int i = 0;
 			
-//			for (PostFitness postFitness : postFitness) {
+			for (PostFitness postFitness : listaPostFitness) {
 			
 				preparedStatement.setString(++i, postFitness.getId_publicacao());
 				preparedStatement.setString(++i, postFitness.getId_pessoa());
@@ -117,8 +117,8 @@ public class PostFitnessDAO {
 				preparedStatement.setDouble(++i, postFitness.getDuracao());
 				preparedStatement.setString(++i, postFitness.getData_publicacao());
 				preparedStatement.setString(++i, postFitness.getUrl());
-//			}
-			// execute insert SQL stetement
+			}
+			// execute insert SQL statement
 			preparedStatement.executeUpdate();
 
 		} catch (SQLException e) {
@@ -240,7 +240,7 @@ public class PostFitnessDAO {
 			}
 			
 			// execute insert SQL stetement
-			preparedStatement.executeUpdate();
+			preparedStatement.executeQuery();
 	
 		} catch (SQLException e) {
 	
