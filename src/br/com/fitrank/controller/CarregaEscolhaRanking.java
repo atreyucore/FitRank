@@ -340,7 +340,7 @@ public class CarregaEscolhaRanking extends HttpServlet {
 
 		}
 
-		Pessoa pessoaReturn = pessoaServico.atualizaPessoaServico(pessoa);
+		Pessoa pessoaReturn = pessoaServico.atualizaPessoaServico(pessoa, false);
 
 		return pessoaReturn;
 	}

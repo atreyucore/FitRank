@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.fitrank.modelo.PostFitness;
-import br.com.fitrank.modelo.fb.PostFitness.PostFitnessFB;
 import br.com.fitrank.persistencia.PostFitnessDAO;
 
 public class PostFitnessServico {

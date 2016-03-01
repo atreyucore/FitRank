@@ -36,14 +36,14 @@ public class PessoaServico {
 	    
 	}
 	
-	public Pessoa atualizaPessoaServico(Pessoa pessoa){
+	public Pessoa atualizaPessoaServico(Pessoa pessoa, boolean proprioUsuario){
 		
 		this.pessoaDAO = new PessoaDAO();
 				
 		pessoa.setData_ultimo_login(new Date());
 		
 	    try {
-			pessoa = pessoaDAO.atualizaPessoa(pessoa);
+			pessoa = pessoaDAO.atualizaPessoa(pessoa, proprioUsuario);
 			preenchePessoa(pessoa);
 			
 			return pessoa;

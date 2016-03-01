@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import br.com.fitrank.modelo.Configuracao;
 import br.com.fitrank.modelo.Ranking;
 import br.com.fitrank.modelo.RankingPessoa;
-import br.com.fitrank.persistencia.PessoaDAO;
 import br.com.fitrank.service.ConfiguracaoServico;
 import br.com.fitrank.service.PessoaServico;
 import br.com.fitrank.service.RankingPessoaServico;

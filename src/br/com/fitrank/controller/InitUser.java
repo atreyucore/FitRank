@@ -79,7 +79,7 @@ public class InitUser extends HttpServlet {
 		   pessoa.setData_ultima_atualizacao_walks(usuarioExistente.getData_ultima_atualizacao_walks());
 		   pessoa.setData_ultima_atualizacao_bikes(usuarioExistente.getData_ultima_atualizacao_bikes());
 		   pessoa.setRank_anual(usuarioExistente.getRank_anual());
-		   pessoa = pessoaServico.atualizaPessoaServico(pessoa);
+		   pessoa = pessoaServico.atualizaPessoaServico(pessoa, true);
 	   }
 	   	
 //	   String[] profPicUrls = new String[friendsFB.getData().size()];

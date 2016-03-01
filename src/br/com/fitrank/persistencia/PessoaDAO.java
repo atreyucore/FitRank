@@ -77,23 +77,25 @@ public class PessoaDAO {
 		return pessoa;
 	}
 	
-	public Pessoa atualizaPessoa(Pessoa pessoa) throws SQLException {
+	public Pessoa atualizaPessoa(Pessoa pessoa, boolean proprioUsuario) throws SQLException {
 	
 		
 		conexao = new JDBCFactory().getConnection();
 		PreparedStatement preparedStatement = null;
 	
-		String updateTableSQL  = "UPDATE pessoa set "
-				+ "nome = ?, "
-				+ "data_ultimo_login = ?, "
-				+ "data_ultima_atualizacao_runs = ?, "
-				+ "data_ultima_atualizacao_walks = ?, "
-				+ "data_ultima_atualizacao_bikes = ?, "
-				+ "rank_anual = ?, "
-				+ "genero = ?, "
-				+ "data_nascimento = ?, "
-				+ "url_foto = ? "
-				+ "WHERE id_usuario = ? ";
+		String updateTableSQL  	= "UPDATE pessoa set "
+								+ "nome = ?, ";
+			if(proprioUsuario){
+				updateTableSQL += "data_ultimo_login = ?, ";
+			}
+		updateTableSQL 		   += "data_ultima_atualizacao_runs = ?, "
+								+ "data_ultima_atualizacao_walks = ?, "
+								+ "data_ultima_atualizacao_bikes = ?, "
+								+ "rank_anual = ?, "
+								+ "genero = ?, "
+								+ "data_nascimento = ?, "
+								+ "url_foto = ? "
+								+ "WHERE id_usuario = ? ";
 	
 		try {
 			preparedStatement = conexao.prepareStatement(updateTableSQL);
@@ -101,7 +103,9 @@ public class PessoaDAO {
 			int i = 0;
 			
 			preparedStatement.setString(++i, pessoa.getNome());
-			preparedStatement.setString(++i, DateConversor.DateToString(pessoa.getData_ultimo_login()));
+			if(proprioUsuario){
+				preparedStatement.setString(++i, DateConversor.DateToString(pessoa.getData_ultimo_login()));
+			}
 			preparedStatement.setString(++i, DateConversor.DateToString(pessoa.getData_ultima_atualizacao_runs()));
 			preparedStatement.setString(++i, DateConversor.DateToString(pessoa.getData_ultima_atualizacao_walks()));
 			preparedStatement.setString(++i, DateConversor.DateToString(pessoa.getData_ultima_atualizacao_bikes()));

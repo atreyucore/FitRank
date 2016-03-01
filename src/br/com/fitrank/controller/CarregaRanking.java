@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import br.com.fitrank.modelo.Configuracao;
 import br.com.fitrank.modelo.Ranking;
 import br.com.fitrank.modelo.RankingPessoa;
-import br.com.fitrank.modelo.fb.PostFitness.PostFitnessFB;
 import br.com.fitrank.service.ConfiguracaoServico;
 import br.com.fitrank.service.PessoaServico;
 import br.com.fitrank.service.RankingPessoaServico;
@@ -23,7 +22,6 @@ import br.com.fitrank.util.ConstantesFitRank;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
 import com.restfb.Parameter;
-import com.restfb.json.JsonWriter;
 import com.restfb.types.User;
 
 /**
@@ -191,9 +189,9 @@ public class CarregaRanking extends HttpServlet {
 			}
 	}
     
-	private String calculaValorRankingFB(FacebookClient facebookClient, String idUsuario) {
-    	
-    	List<PostFitnessFB> postsFit = new ArrayList<PostFitnessFB>();
+//	private String calculaValorRankingFB(FacebookClient facebookClient, String idUsuario) {
+//    	
+//    	List<PostFitnessFB> postsFit = new ArrayList<PostFitnessFB>();
     	
 //    	Connection<PostFitnessFB> fitConnection = facebookClient.fetchConnection(idUsuario + "/fitness." + defineModalidade(modalidade), PostFitnessFB.class, Parameter.with("limit", "30"));
     	
@@ -238,8 +236,8 @@ public class CarregaRanking extends HttpServlet {
     		
 //		}
     	
-    	return "";
-    }
+//    	return "";
+//    }
     
 //    private String defineModalidade(String parameter) {
 //		switch (parameter) {
