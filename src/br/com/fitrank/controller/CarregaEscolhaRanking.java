@@ -263,7 +263,7 @@ public class CarregaEscolhaRanking extends HttpServlet {
 	private Pessoa executaAtualizacao(String modalidade, FacebookClient facebookClient, User facebookUser, Date dataUltimaAtualizacao) {
 
 		Connection<PostFitnessFB> listaFitConnection = facebookClient
-				.fetchConnection("me/fitness." + defineModalidade(modalidade),
+				.fetchConnection(facebookUser.getId()+"/fitness." + defineModalidade(modalidade),
 						PostFitnessFB.class, Parameter.with("limit", "99999"));
 		
 		postFitnessServico = new PostFitnessServico();
