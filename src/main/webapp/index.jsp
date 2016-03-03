@@ -86,9 +86,12 @@
 						</div>
 					</div>
 					<div>
-						<p class="text" style="text-align:center;"> At the moment we only work with Facebook fitness extracted data.</p> 
-						<p class="text" style="text-align:center;" >Facebook login is mandatory.</p>
-						<p class="text" style="text-align:center;" >We won't post to Facebook without your permission.</p>
+<!-- 						<p class="text" style="text-align:center;"> At the moment we only work with Facebook fitness extracted data.</p>  -->
+<!-- 						<p class="text" style="text-align:center;" >Facebook login is mandatory.</p> -->
+<!-- 						<p class="text" style="text-align:center;" >We won't post to Facebook without your permission.</p> -->
+						<p class="text" style="text-align:center;"> No momento só trabalhamos com dados extraídos do Facebook.</p> 
+						<p class="text" style="text-align:center;" >Portanto, o login pelo Facebook é obrigatório.</p>
+						<p class="text" style="text-align:center;" >Nós não vamos publicar no Facebook sem a sua prévia autorização.</p>
 						<input type="button" id="entra"
 								style="cursor: pointer; margin: 0 auto;display: block;border:none;width:288px;height:62px;background-image: url('https://fbcdn-dragon-a.akamaihd.net/hphotos-ak-xaf1/t39.2178-6/851579_209602122530903_1060396115_n.png')" />
 <!-- 						<img style="cursor: pointer; margin: 0 auto;display: block; position: relative;top: 20px;" src="https://fbcdn-dragon-a.akamaihd.net/hphotos-ak-xaf1/t39.2178-6/851579_209602122530903_1060396115_n.png" onclick="entra()"/> -->

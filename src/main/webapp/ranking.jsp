@@ -14,6 +14,7 @@
 		<script type="text/javascript" src="js/jquery-1.11.2.js"></script>
 		<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 		<script src="http://connect.facebook.net/pt_BR/all.js"></script>
+		<script src="js/introjs/intro.js" type="text/javascript"></script>		
 		<script type="text/javascript">
 		
 			var periodo = {
@@ -60,7 +61,42 @@
 			var token = '<%=(String) request.getParameter("token")%>';
 			var json =  JSON.parse('<%=(String) response.getHeader("json")%>');
 			
+			function startTutorial() {
+				var intro = introJs();
+	 	          intro.setOptions({
+	 	            steps: [
+	 	              { 
+	 	                intro: "Olá! Vimos que este é o seu primeiro login. Vamos à algumas instruções."
+	 	              },
+	 	              {
+	 	                element: document.querySelector('.siteHeader'),
+	 	                intro: "Aqui é o centro de configurações do FitRank. Vamos aos detalhes..."
+	 	              },
+	 	              {
+	 	                element: document.querySelector('img.fav'),
+	 	                intro: "Clique aqui quando quiser compartilhar com seus amigos do Facebook o ranking que você gerou."
+		 	          },
+	 	              {
+	 	                element: document.querySelector(".modalidade:not(.opcao)"),
+	 	                intro: "Aqui você escolhe entre as opções de modalidade que são Corrida, Caminhada e Ciclismo."
+		 	          },
+		 	          {
+		 	            element: document.querySelector(".modo:not(.opcao)"),
+		 	            intro: "Aqui você escolhe entre os modos que são Distância Percorida, Velocidade média e Quantidade de Atividades."
+			 	      },
+			 	      {
+			 	      	element: document.querySelector(".periodo:not(.opcao)"),
+			 	        intro: "Aqui você escolhe o período período desejado para o ranking até 1 ano."
+				 	  }	
+	 	              
+	 	            ]
+	 	          });
+	 	          intro.start();
+// 				introJs().start();
+			}
+			
 			$(document).ready(function(){
+				startTutorial();
 			    $(document).ajaxStart(function () {
 			        $("#loading").show();
 			    }).ajaxStop(function () {
@@ -275,7 +311,7 @@
 			   		
 			   	});
 			    
-			    
+			   	
 			});
 			
 			//primeira execucao
@@ -502,6 +538,7 @@
 			}
 		</script>
 		<link rel="stylesheet" type="text/css" href="./style/css/FitRank.css">
+		<link rel="stylesheet" type="text/css" href="./js/introjs/introjs.css">
 	</head>
 
 	<body>
@@ -509,7 +546,7 @@
 			<div class="preheader"></div>
 			<div class="content">
 				<div class="headerContent rankingHeader">
-					<div class="siteHeader">
+					<div class="siteHeader" data-step="1" data-intro="ola">
 						<div>
 							<span class="logo"> 
 								FitRank
