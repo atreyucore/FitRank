@@ -55,7 +55,7 @@ public class CarregaEscolhaRanking extends HttpServlet {
 
 	protected void inicia(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-
+		Date horainicio = new Date();
 		RequestDispatcher rd = null;
 
 		aplicativos.clear();
@@ -74,17 +74,6 @@ public class CarregaEscolhaRanking extends HttpServlet {
 			Date ultimaAtualizacao = handleUltimaAtividade(modalidade, facebookClient, facebookUser);
 
 			if (ultimaAtualizacao != null) {
-
-				int limit = calculaLimiteDeBusca(ultimaAtualizacao);
-				limit = limit == 0 ? 1 : limit;
-
-				String modalidadeFB = defineModalidade((String) request.getParameter("modalidade"));
-
-				Connection<PostFitnessFB> fitConnection = facebookClient.fetchConnection("me/fitness." + modalidadeFB,
-																						 PostFitnessFB.class,
-																						 Parameter.with("limit", String.valueOf(limit)));
-
-				verificaAplicativos(fitConnection);
 				
 				atualizaCorridasAmigos(facebookUser.getId(), modalidade, facebookClient, request);
 
@@ -151,30 +140,21 @@ public class CarregaEscolhaRanking extends HttpServlet {
 		}
 
 		request.setAttribute("token", (String) request.getParameter("token"));
+		
+		Date horaFim = new Date();
+		System.out.println("\n\nTempo de processamento CarregaEscolhaRanking: " + (horainicio.getTime() - horaFim.getTime())/1000 + " segundos.\n");
 
 		rd.forward(request, response);
 	}
 	
 	private void atualizaCorridasAmigos(String idUsuario, String modalidade, FacebookClient facebookClient, HttpServletRequest request){
 		AmizadeServico amizadeServico = new AmizadeServico();
-		String modalidadeFB = defineModalidade((String) request.getParameter("modalidade"));
 		List<Amizade> amigos = amizadeServico.listaAmizades(idUsuario);
 		
 		for(Amizade amizade : amigos){
 		
 			User facebookUser = facebookClient.fetchObject(amizade.getId_amigo(), User.class);
-			Date ultimaAtualizacao = handleUltimaAtividade(modalidade, facebookClient, facebookUser);
-	
-			if (ultimaAtualizacao != null) {
-				
-				int limit = calculaLimiteDeBusca(ultimaAtualizacao);
-				limit = limit == 0 ? 1 : limit;
-			
-				Connection<PostFitnessFB> fitConnection = facebookClient.fetchConnection(amizade.getId_amigo() + "/fitness." + modalidadeFB,
-																						 PostFitnessFB.class,
-																						 Parameter.with("limit", String.valueOf(limit)));
-				verificaAplicativos(fitConnection);
-			}
+			handleUltimaAtividade(modalidade, facebookClient, facebookUser);
 		}
 	}
 
@@ -229,8 +209,15 @@ public class CarregaEscolhaRanking extends HttpServlet {
 
 	}
 
-	private int calculaLimiteDeBusca(Date ultimaAtualizacao) {
-		return DateConversor.getDaysDifference(new Date(), ultimaAtualizacao) * 2;
+	private String calculaLimiteDeBusca(Date ultimaAtualizacao) {
+		Integer limit;
+		if(null != ultimaAtualizacao){
+			limit = DateConversor.getDaysDifference(new Date(), ultimaAtualizacao) * 2;
+			limit = limit == 0 ? 1 : limit;
+		} else {
+			limit = 1;
+		}
+		return limit.toString();
 	}
 
 	private Date handleUltimaAtividade(String modalidade, FacebookClient facebookClient, User facebookUser) {
@@ -261,10 +248,10 @@ public class CarregaEscolhaRanking extends HttpServlet {
 	}
 
 	private Pessoa executaAtualizacao(String modalidade, FacebookClient facebookClient, User facebookUser, Date dataUltimaAtualizacao) {
-
+		
 		Connection<PostFitnessFB> listaFitConnection = facebookClient
 				.fetchConnection(facebookUser.getId()+"/fitness." + defineModalidade(modalidade),
-						PostFitnessFB.class, Parameter.with("limit", "99999"));
+						PostFitnessFB.class, Parameter.with("limit", calculaLimiteDeBusca(dataUltimaAtualizacao)));
 		
 		postFitnessServico = new PostFitnessServico();
 		ArrayList<PostFitness> postsUsuarioNaoInserir = (ArrayList<PostFitness>) postFitnessServico.lePostFitnessPorIdPessoa(facebookUser.getId());
@@ -320,10 +307,9 @@ public class CarregaEscolhaRanking extends HttpServlet {
 				}
 			}
 		}
+		Pessoa pessoa = pessoaServico.lePessoaServico(facebookUser);
 		
 		postFitnessServico.adicionaListaPostFitnessServico(postsFit);
-
-		Pessoa pessoa = pessoaServico.lePessoaServico(facebookUser);
 
 		switch (modalidade) {
 		case ConstantesFitRank.MODALIDADE_CAMINHADA:
