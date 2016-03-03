@@ -215,7 +215,7 @@ public class CarregaEscolhaRanking extends HttpServlet {
 			limit = DateConversor.getDaysDifference(new Date(), ultimaAtualizacao) * 2;
 			limit = limit == 0 ? 1 : limit;
 		} else {
-			limit = 1;
+			limit = 99999;
 		}
 		return limit.toString();
 	}
