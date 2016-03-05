@@ -212,10 +212,10 @@ public class CarregaEscolhaRanking extends HttpServlet {
 	private String calculaLimiteDeBusca(Date ultimaAtualizacao) {
 		Integer limit;
 		if(null != ultimaAtualizacao){
-			limit = DateConversor.getDaysDifference(new Date(), ultimaAtualizacao) * 2;
+			limit = DateConversor.getDaysDifference(new Date(), ultimaAtualizacao) * ConstantesFitRank.LIMITE_CORRIDAS_REALIZADAS_POR_DIA;
 			limit = limit == 0 ? 1 : limit;
 		} else {
-			limit = 99999;
+			limit = ConstantesFitRank.LIMITE_MAX_RECUPERA_FB;
 		}
 		return limit.toString();
 	}

@@ -33,4 +33,6 @@ public final class ConstantesFitRank {
 	public static final String FACEBOOK_FEMALE_GENDER = "female";
 	
 	public static final int INT_RESULTADO_INVALIDO = -1;
+	public static final int LIMITE_CORRIDAS_REALIZADAS_POR_DIA = 2;
+	public static final int LIMITE_MAX_RECUPERA_FB = 99999;
 }
