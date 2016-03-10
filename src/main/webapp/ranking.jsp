@@ -61,42 +61,47 @@
 			var token = '<%=(String) request.getParameter("token")%>';
 			var json =  JSON.parse('<%=(String) response.getHeader("json")%>');
 			
-			function startTutorial() {
-				var intro = introJs();
-	 	          intro.setOptions({
-	 	            steps: [
-	 	              { 
-	 	                intro: "Olá! Vimos que este é o seu primeiro login. Vamos à algumas instruções."
-	 	              },
-	 	              {
-	 	                element: document.querySelector('.siteHeader'),
-	 	                intro: "Aqui é o centro de configurações do FitRank. Vamos aos detalhes..."
-	 	              },
-	 	              {
-	 	                element: document.querySelector('img.fav'),
-	 	                intro: "Clique aqui quando quiser compartilhar com seus amigos do Facebook o ranking que você gerou."
-		 	          },
-	 	              {
-	 	                element: document.querySelector(".modalidade:not(.opcao)"),
-	 	                intro: "Aqui você escolhe entre as opções de modalidade que são Corrida, Caminhada e Ciclismo."
-		 	          },
-		 	          {
-		 	            element: document.querySelector(".modo:not(.opcao)"),
-		 	            intro: "Aqui você escolhe entre os modos que são Distância Percorida, Velocidade média e Quantidade de Atividades."
-			 	      },
-			 	      {
-			 	      	element: document.querySelector(".periodo:not(.opcao)"),
-			 	        intro: "Aqui você escolhe o período período desejado para o ranking até 1 ano."
-				 	  }	
+// 			function startTutorial() {
+// 				var intro = introJs();
+// 	 	          intro.setOptions({
+// 	 	            steps: [
+// 	 	              { 
+// 	 	                intro: "Olá! Vimos que este é o seu primeiro login. Vamos à algumas instruções."
+// 	 	              },
+// 	 	              {
+// 	 	                element: document.querySelector('.siteHeader'),
+// 	 	                intro: "Aqui é o centro de configurações do FitRank. Vamos aos detalhes..."
+// 	 	              },
+// 	 	              {
+// 	 	                element: document.querySelector('img.fav'),
+// 	 	                intro: "Clique aqui quando quiser compartilhar com seus amigos do Facebook o ranking que você gerou."
+// 		 	          },
+// 	 	              {
+// 	 	                element: document.querySelector(".modalidade:not(.opcao)"),
+// 	 	                intro: "Aqui você escolhe entre as opções de modalidade que são Corrida, Caminhada e Ciclismo."
+// 		 	          },
+// 		 	          {
+// 		 	            element: document.querySelector(".modo:not(.opcao)"),
+// 		 	            intro: "Aqui você escolhe entre os modos que são Distância Percorida, Velocidade média e Quantidade de Atividades."
+// 			 	      },
+// 			 	      {
+// 			 	      	element: document.querySelector(".periodo:not(.opcao)"),
+// 			 	        intro: "Aqui você escolhe o período período desejado para o ranking até 1 ano."
+// 				 	  }	
 	 	              
-	 	            ]
-	 	          });
-	 	          intro.start();
-// 				introJs().start();
-			}
+// 	 	            ]
+// 	 	          });
+// 	 	          intro.start();
+// 	 	          intro.onafterchange(function(targetElement) {
+// 	 	        	  //alert("after new step");
+// 	 	        	});
+	 	        	  
+	 	          
+// // 				introJs().start();
+// 			}
 			
 			$(document).ready(function(){
-				startTutorial();
+// 				startTutorial();
 			    $(document).ajaxStart(function () {
 			        $("#loading").show();
 			    }).ajaxStop(function () {
