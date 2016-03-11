@@ -12,6 +12,7 @@ public final class ConstantesFitRank {
 	public static final String MODALIDADE_CAMINHADA = "W";
 	public static final String MODALIDADE_BICICLETA = "B";
 	public static final String MODALIDADE_CORRIDA = "R";
+	public static final String MODALIDADE_TUDO = "A";
 	
 	public static final String CHAR_SIM = "S";
 	public static final String CHAR_NAO = "N";
