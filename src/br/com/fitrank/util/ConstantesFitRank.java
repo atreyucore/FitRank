@@ -27,6 +27,7 @@ public final class ConstantesFitRank {
 	
 	public static final String VELOCIDADE_MEDIA = "V";
 	public static final String DISTANCIA = "D";
+	public static final String QUANTIDADE = "Q";
 	
 	public static final String SEXO_FEMININO = "F";
 	public static final String SEXO_MASCULINO = "M";
