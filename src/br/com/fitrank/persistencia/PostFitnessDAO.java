@@ -259,4 +259,71 @@ public class PostFitnessDAO {
 		}
 		return listaPostFitness;
 	}
+	
+	public String leModalidadeComMaisAtividades(String idPessoa) throws SQLException {
+		
+		Connection dbConnection = null;
+		PreparedStatement preparedStatement = null;
+		
+		String retorno = "";
+		
+		String selectTableSQL = 
+		"select * from "
+		+ "(select count(*) as R from post_fitness where id_pessoa = ? and modalidade = 'R') runs,"
+		+ "(select count(*) as W from post_fitness where id_pessoa = ? and modalidade = 'W') walks,"
+		+ "(select count(*) as B from post_fitness where id_pessoa = ? and modalidade = 'B') bikes";
+				
+		try {
+			dbConnection = conexao;
+			preparedStatement = dbConnection.prepareStatement(selectTableSQL);
+			preparedStatement.setString(1, idPessoa);
+			preparedStatement.setString(2, idPessoa);
+			preparedStatement.setString(3, idPessoa);
+			
+			ResultSet rs = preparedStatement.executeQuery();
+			
+			while ( rs.next() ) {
+				
+				String strRuns = rs.getString("R");
+				String strWalks = rs.getString("W");
+				String strBikes = rs.getString("B");
+				
+				int runs = Integer.parseInt(strRuns);
+				int walks = Integer.parseInt(strWalks);
+				int bikes = Integer.parseInt(strBikes);
+				
+				int max = Math.max(runs, Math.max(walks, bikes));
+					
+				if (runs == max) {
+					retorno = "runs";
+				} else if (walks == max) {
+					retorno = "walks";
+				} else if (bikes == max) {
+					retorno = "bikes";
+				}
+				
+			}
+			
+			// execute insert SQL stetement
+			preparedStatement.executeQuery();
+	
+		} catch (SQLException e) {
+	
+			System.out.println(e.getMessage());
+	
+		} finally {
+	
+			if (preparedStatement != null) {
+				preparedStatement.close();
+			}
+	
+			if (dbConnection != null) {
+				dbConnection.close();
+			}
+	
+		}
+		
+		return retorno;
+	}
 }
+

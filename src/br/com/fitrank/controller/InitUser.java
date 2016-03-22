@@ -8,8 +8,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import br.com.fitrank.modelo.Configuracao;
 import br.com.fitrank.modelo.Pessoa;
 import br.com.fitrank.service.AmizadeServico;
+import br.com.fitrank.service.ConfiguracaoServico;
 import br.com.fitrank.service.PessoaServico;
 import br.com.fitrank.util.ConstantesFitRank;
 
@@ -26,6 +28,7 @@ public class InitUser extends HttpServlet {
 
 	PessoaServico pessoaServico = new PessoaServico();
 	AmizadeServico amizadeServico = new AmizadeServico();
+	ConfiguracaoServico configuracaoServico = new ConfiguracaoServico();
 
 	public InitUser() {
 
@@ -95,9 +98,30 @@ public class InitUser extends HttpServlet {
 		 
 	   }
 	   
+	   Configuracao configuracao = null;
+		configuracao = configuracaoServico
+				.leConfiguracaoFavorita(facebookUser.getId());
+		
+		//Caso o usuário clique no botão de favorito ou seja o primeiro login
+		if (configuracao != null && configuracao.isFavorito() ) {
+			
+			request.setAttribute("modalidade", configuracao.getModalidade());
+			request.setAttribute("modo", configuracao.getModo());
+			request.setAttribute("favorito", configuracao.isFavorito() ? "S"
+					: "N");
+			request.setAttribute("periodo", configuracao.getIntervaloData());
+
+		} else {
+			request.setAttribute("modalidade", ConstantesFitRank.MODALIDADE_PADRAO);
+			request.setAttribute("modo", ConstantesFitRank.MODO_PADRAO);
+			request.setAttribute("periodo", ConstantesFitRank.PERIODO_PADRAO);
+			request.setAttribute("favorito", configuracao.isFavorito() ? "S"
+					: "N");
+		}
+	   
 	   request.setAttribute("token", request.getParameter("token"));
 	   
-	   RequestDispatcher rd = request.getRequestDispatcher("/escolheModalidade.jsp");  
+	   RequestDispatcher rd = request.getRequestDispatcher("/CarregaRanking");  
 	   rd.forward(request,response);  
    }
 

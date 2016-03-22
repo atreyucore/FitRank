@@ -16,12 +16,16 @@ import br.com.fitrank.modelo.Aplicativo;
 import br.com.fitrank.modelo.Configuracao;
 import br.com.fitrank.modelo.Pessoa;
 import br.com.fitrank.modelo.PostFitness;
+import br.com.fitrank.modelo.Ranking;
+import br.com.fitrank.modelo.RankingPessoa;
 import br.com.fitrank.modelo.fb.PostFitness.PostFitnessFB;
 import br.com.fitrank.service.AmizadeServico;
 import br.com.fitrank.service.AplicativoServico;
 import br.com.fitrank.service.ConfiguracaoServico;
 import br.com.fitrank.service.PessoaServico;
 import br.com.fitrank.service.PostFitnessServico;
+import br.com.fitrank.service.RankingPessoaServico;
+import br.com.fitrank.service.RankingServico;
 import br.com.fitrank.util.ConstantesFitRank;
 import br.com.fitrank.util.DateConversor;
 import br.com.fitrank.util.PostFitnessUtil;
@@ -30,6 +34,7 @@ import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
 import com.restfb.Parameter;
+import com.restfb.json.JsonObject;
 import com.restfb.types.User;
 
 public class CarregaEscolhaRanking extends HttpServlet {
@@ -49,81 +54,74 @@ public class CarregaEscolhaRanking extends HttpServlet {
 	
 	ArrayList<Aplicativo> aplicativosNaoInserir = new ArrayList<Aplicativo>();
 	
+	AmizadeServico amizadeServico = new AmizadeServico();
+	
+	RankingPessoaServico rankingPessoaServico = new RankingPessoaServico();
+	
+	RankingServico rankingServico = new RankingServico();
+	
 	public CarregaEscolhaRanking() {
 
 	}
 
 	protected void inicia(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		
 		Date horainicio = new Date();
 		RequestDispatcher rd = null;
 
 		aplicativos.clear();
 		postsFit.clear();
 		aplicativosNaoInserir.clear();
-
-		FacebookClient facebookClient = new DefaultFacebookClient(request.getParameter("token"));
-		User facebookUser = facebookClient.fetchObject("me", User.class);
-
-		String fav = (String) request.getParameter("fav");
-		String modalidade = (String) request.getParameter("modalidade");
-		Configuracao configuracao = null;
-
-		if (fav == null || !fav.equals("S")) {
-
-			Date ultimaAtualizacao = handleUltimaAtividade(modalidade, facebookClient, facebookUser);
-
-			if (ultimaAtualizacao != null) {
-				
-				atualizaCorridasAmigos(facebookUser.getId(), modalidade, facebookClient, request);
-
-				if (postsFit.size() == 0) {
-					request.setAttribute("erro",
-							"Você não tem nenhum registro nesta categoria.");
-					request.setAttribute("token",
-							(String) request.getParameter("token"));
-					request.getRequestDispatcher("/escolheModalidade.jsp")
-							.forward(request, response);
-
-					return;
-				} else {
-					rd = request.getRequestDispatcher("/escolhaRanking.jsp");
-				}
-
-				configuracao = configuracaoServico
-						.leConfiguracaoPadraoModalidade(facebookUser.getId(),
-								modalidade);
-			}
-
-		} else if (fav.equals("S")) {
-
-			configuracao = configuracaoServico
-					.leConfiguracaoFavorita(facebookUser.getId());
-
-			if (configuracao == null) {
-				request.setAttribute("erro",
-						"Você ainda não cadastrou configuração favorita.");
-				request.setAttribute("token",
-						(String) request.getParameter("token"));
-				request.getRequestDispatcher("/escolheModalidade.jsp").forward(
-						request, response);
-				return;
-			} else {
-				rd = request.getRequestDispatcher("/CarregaRanking");
+		
+		List<RankingPessoa> listRankingPessoas = new ArrayList<RankingPessoa>();
+		
+		String modalidade = request.getAttribute("modalidade") == null ? (String) request.getParameter("modalidade") : (String) request.getAttribute("modalidade");
+		String modo = request.getAttribute("modo") == null ? (String) request.getParameter("modo") : (String) request.getAttribute("modo");
+    	String periodo = request.getAttribute("periodo") == null ? (String) request.getParameter("periodo") : (String) request.getAttribute("periodo");
+//    	turno = request.getAttribute("turno") == null ? (String) request.getParameter("turno") : (String) request.getAttribute("turno") ;
+		   
+    	FacebookClient facebookClient = new DefaultFacebookClient(request.getParameter("token"));
+    	User facebookUser = facebookClient.fetchObject("me", User.class);
+		
+		Configuracao configuracaoRanking = new Configuracao();
+    	
+    	configuracaoRanking.setIdPessoa(facebookUser.getId());
+    	configuracaoRanking.setModalidade(modalidade);
+		configuracaoRanking.setIntervaloData(periodo);
+		configuracaoRanking.setFavorito(false);
+		configuracaoRanking.setPadraoModalidade(false);
+		configuracaoRanking.setModo(modo);
+		
+		switch (modo) {
+			case ConstantesFitRank.VELOCIDADE_MEDIA:
+				listRankingPessoas = rankingPessoaServico.geraRankingVelocidadeMedia(configuracaoRanking);
+				break;
+			case ConstantesFitRank.DISTANCIA:
+				listRankingPessoas = rankingPessoaServico.geraRankingDistancia(configuracaoRanking);
+			default:
+				break;
+		}
+		
+		configuracaoRanking = configuracaoServico.adicionaConfiguracao(configuracaoRanking);
+		
+		if(configuracaoRanking.getIdConfiguracao() != ConstantesFitRank.INT_RESULTADO_INVALIDO){
+		
+			Ranking ranking = new Ranking();
+			ranking.setId_configuracao(configuracaoRanking.getIdConfiguracao());
+			ranking = rankingServico.adicionaRanking(ranking);
+			
+			if(ranking.getId_ranking() != ConstantesFitRank.INT_RESULTADO_INVALIDO){
+				rankingPessoaServico.gravaRankingPessoa(listRankingPessoas, ranking.getId_ranking());
 			}
 		}
+		
+		//Atualizações feitas em toda e qualquer chamada de ranking
+		Date ultimaAtualizacao = handleUltimaAtividade(modalidade, facebookClient, facebookUser);
 
-		if (configuracao != null) {
-			request.setAttribute("modalidade", configuracao.getModalidade());
-			request.setAttribute("modo", configuracao.getModo());
-			request.setAttribute("turno", configuracao.getDiaNoite());
-			request.setAttribute("favorito", configuracao.isFavorito() ? "S"
-					: "N");
-			request.setAttribute("default",
-					configuracao.isPadraoModalidade() ? "S" : "N");
-			request.setAttribute("periodo", configuracao.getIntervaloData());
-
-		} else {
+		if (ultimaAtualizacao != null) {
+			
+			atualizaCorridasAmigos(facebookUser.getId(), modalidade, facebookClient, request);
 
 			request.setAttribute(
 					"modalidade",
@@ -145,6 +143,15 @@ public class CarregaEscolhaRanking extends HttpServlet {
 		System.out.println("\n\nTempo de processamento CarregaEscolhaRanking: " + (horainicio.getTime() - horaFim.getTime())/1000 + " segundos.\n");
 
 		rd.forward(request, response);
+	}
+	
+	private void atualizaAmizadeUsuario(User facebookUser, User friendFB) {
+		
+		String idAmigo = friendFB.getId();
+		
+		if (amizadeServico.leAmizadeServico(facebookUser.getId(), idAmigo) == null) {
+			amizadeServico.adicionaAmizadeServico(facebookUser.getId(), idAmigo);
+		}
 	}
 	
 	private void atualizaCorridasAmigos(String idUsuario, String modalidade, FacebookClient facebookClient, HttpServletRequest request){

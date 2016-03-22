@@ -69,4 +69,15 @@ public class PostFitnessServico {
 			return null;
 		}
 	}
+	
+	public String leModalidadeComMaisAtividades(String idPessoa) {
+		
+		try {
+	    	return postFitnessDAO.leModalidadeComMaisAtividades(idPessoa);
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+			return null;
+		}
+	}
 }
