@@ -107,16 +107,14 @@ public class InitUser extends HttpServlet {
 			
 			request.setAttribute("modalidade", configuracao.getModalidade());
 			request.setAttribute("modo", configuracao.getModo());
-			request.setAttribute("favorito", configuracao.isFavorito() ? "S"
-					: "N");
+//			request.setAttribute("favorito", configuracao.isFavorito() ? "S"
+//					: "N");
 			request.setAttribute("periodo", configuracao.getIntervaloData());
 
 		} else {
 			request.setAttribute("modalidade", ConstantesFitRank.MODALIDADE_PADRAO);
 			request.setAttribute("modo", ConstantesFitRank.MODO_PADRAO);
 			request.setAttribute("periodo", ConstantesFitRank.PERIODO_PADRAO);
-			request.setAttribute("favorito", configuracao.isFavorito() ? "S"
-					: "N");
 		}
 	   
 	   request.setAttribute("token", request.getParameter("token"));
