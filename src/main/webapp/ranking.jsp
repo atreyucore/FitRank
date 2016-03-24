@@ -31,29 +31,34 @@
 			
 			var modo = {
 				"D" : "Distância",
-				"V" : "Velocidade"
+				"V" : "Velocidade",
+				"Q" : "Quantidade"
 			};
 			
 			var modoMedidas = {
 				"D" : "km",
-				"V" : "km/h"
+				"V" : "km/h",
+				"Q" : "Percursos"
 			};
 			
 			var modoDescricao = {
 				"D" : "Distância",
-				"V" : "Velocidade Média"
+				"V" : "Velocidade Média",
+				"Q" : "Quantidade"
 			};
 			
 			var modalidade = {
 				"R": "runs",
 				"W": "walks",
-				"B": "bikes"
+				"B": "bikes",
+				"A": "all"
 			};
 			
 			var modalidadeDescricao = {
 				"R": "Corrida",
 				"W": "Caminhada",
-				"B": "Ciclismo"
+				"B": "Ciclismo",
+				"A": "Misto"
 			};
 			
 			var dadosAjax = {};
