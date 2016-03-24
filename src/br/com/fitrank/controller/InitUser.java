@@ -44,7 +44,6 @@ public class InitUser extends HttpServlet {
 	   Connection<User> friendsFB = facebookClient.fetchConnection("me/friends", User.class, Parameter.with("fields", "name, id"));
 	   
 	   JsonObject picture = facebookClient.fetchObject("me/picture", JsonObject.class, Parameter.with("type", "normal"), Parameter.with("redirect", "false"));
-//	   JsonObject picture = facebookClient.fetchObject("me/picture", JsonObject.class, Parameter.with("type", "normal"));
 	   
 	   Pessoa pessoa = new Pessoa();
 	   
@@ -85,16 +84,9 @@ public class InitUser extends HttpServlet {
 		   pessoa = pessoaServico.atualizaPessoaServico(pessoa, true);
 	   }
 	   	
-//	   String[] profPicUrls = new String[friendsFB.getData().size()];
-//	   String[] ids = new String[friendsFB.getData().size()];
-//	   for (int i=0;i < friendsFB.getData().size(); i++) {
 	   for ( User friendFB : friendsFB.getData()) {
-//		  String idAmigo = friendsFB.getData().get(i).getId();
 		   
 		  atualizaAmizadeUsuario(facebookUser, friendFB);
-
-//		  ids[i] = id;
-//		  profPicUrls[i] = friendsFB.getData().get(i).getPicture() != null ? friendsFB.getData().get(i).getPicture().getUrl() : "imagem/401.png" ;
 		 
 	   }
 	   
@@ -102,13 +94,11 @@ public class InitUser extends HttpServlet {
 		configuracao = configuracaoServico
 				.leConfiguracaoFavorita(facebookUser.getId());
 		
-		//Caso o usuário clique no botão de favorito ou seja o primeiro login
+		//Caso o usuário tenha um favorito cadastrado ou seja o primeiro login
 		if (configuracao != null && configuracao.isFavorito() ) {
 			
 			request.setAttribute("modalidade", configuracao.getModalidade());
 			request.setAttribute("modo", configuracao.getModo());
-//			request.setAttribute("favorito", configuracao.isFavorito() ? "S"
-//					: "N");
 			request.setAttribute("periodo", configuracao.getIntervaloData());
 
 		} else {

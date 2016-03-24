@@ -177,6 +177,10 @@ a:hover {
 	background-image: url('../../imagem/races.png');
 }
 
+.Quantidade {
+ 	background-image: url('../../imagem/qtd.png');
+}
+
 .runs {
 	background-image: url('../../imagem/sprint.png');
 }
@@ -187,6 +191,11 @@ a:hover {
 
 .bikes {
 	background-image: url('../../imagem/bike11.png');
+}
+
+
+.all {
+ 	background-image: url('../../imagem/interface52.png');
 }
 
 .calendario {
