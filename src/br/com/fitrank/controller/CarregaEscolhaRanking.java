@@ -93,15 +93,21 @@ public class CarregaEscolhaRanking extends HttpServlet {
 		configuracaoRanking.setPadraoModalidade(false);
 		configuracaoRanking.setModo(modo);
 		
-		switch (modo) {
-			case ConstantesFitRank.VELOCIDADE_MEDIA:
-				listRankingPessoas = rankingPessoaServico.geraRankingVelocidadeMedia(configuracaoRanking);
-				break;
-			case ConstantesFitRank.DISTANCIA:
-				listRankingPessoas = rankingPessoaServico.geraRankingDistancia(configuracaoRanking);
-			default:
-				break;
-		}
+		listRankingPessoas = rankingPessoaServico.geraRanking(configuracaoRanking);
+		
+//		switch (modo) {
+//			case ConstantesFitRank.VELOCIDADE_MEDIA:
+//				listRankingPessoas = rankingPessoaServico.geraRankingVelocidadeMedia(configuracaoRanking);
+//				break;
+//			case ConstantesFitRank.DISTANCIA:
+//				listRankingPessoas = rankingPessoaServico.geraRankingDistancia(configuracaoRanking);
+//				
+//			case ConstantesFitRank.QUANTIDADE:
+//				listRankingPessoas = rankingPessoaServico.geraRankingDistancia(configuracaoRanking);
+//				
+//			default:
+//				break;
+//		}
 		
 		configuracaoRanking = configuracaoServico.adicionaConfiguracao(configuracaoRanking);
 		
@@ -287,6 +293,7 @@ public class CarregaEscolhaRanking extends HttpServlet {
 						postFitness.setDuracao(PostFitnessUtil.getNikeDuration(postFit.getStartTime(), postFit.getEndTime()));
 						break;
 					case ConstantesFitRank.ID_APP_RUNTASTIC:
+					case ConstantesFitRank.ID_APP_RUNTASTIC_MOUNTAIN_BIKE:
 						postFitness.setDistancia_percorrida(PostFitnessUtil.getRuntasticDistance(postFit.getDataCourse().getCourse().getTitle()));
 						postFitness.setDuracao(PostFitnessUtil.getRuntasticDuration(postFit.getDataCourse().getCourse().getTitle()));
 						break;
@@ -328,6 +335,11 @@ public class CarregaEscolhaRanking extends HttpServlet {
 		case ConstantesFitRank.MODALIDADE_BICICLETA:
 			pessoa.setData_ultima_atualizacao_bikes(new Date());
 			break;
+		case ConstantesFitRank.MODALIDADE_TUDO:
+			pessoa.setData_ultima_atualizacao_walks(new Date());
+			pessoa.setData_ultima_atualizacao_runs(new Date());
+			pessoa.setData_ultima_atualizacao_bikes(new Date());
+			break;
 		default:
 			break;
 
@@ -348,6 +360,9 @@ public class CarregaEscolhaRanking extends HttpServlet {
 
 		case ConstantesFitRank.MODALIDADE_BICICLETA:
 			return "bikes";
+		
+		case ConstantesFitRank.MODALIDADE_TUDO:
+			return "all";
 
 		default:
 			return parameter;

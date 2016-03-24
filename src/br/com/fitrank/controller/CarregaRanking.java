@@ -103,15 +103,17 @@ public class CarregaRanking extends HttpServlet {
 		configuracaoRanking.setPadraoModalidade(false);
 		configuracaoRanking.setModo(modo);
 		
-		switch (modo) {
-			case ConstantesFitRank.VELOCIDADE_MEDIA:
-				listRankingPessoas = rankingPessoaServico.geraRankingVelocidadeMedia(configuracaoRanking);
-				break;
-			case ConstantesFitRank.DISTANCIA:
-				listRankingPessoas = rankingPessoaServico.geraRankingDistancia(configuracaoRanking);
-			default:
-				break;
-		}
+		listRankingPessoas = rankingPessoaServico.geraRanking(configuracaoRanking);
+		
+//		switch (modo) {
+//			case ConstantesFitRank.VELOCIDADE_MEDIA:
+//				listRankingPessoas = rankingPessoaServico.geraRankingVelocidadeMedia(configuracaoRanking);
+//				break;
+//			case ConstantesFitRank.DISTANCIA:
+//				listRankingPessoas = rankingPessoaServico.geraRankingDistancia(configuracaoRanking);
+//			default:
+//				break;
+//		}
 		
 		configuracaoRanking = configuracaoServico.adicionaConfiguracao(configuracaoRanking);
 		
@@ -139,25 +141,12 @@ public class CarregaRanking extends HttpServlet {
 		if (ultimaAtualizacao != null) {
 			
 			atualizaCorridasAmigos(facebookUser.getId(), modalidade, facebookClient, request);
-
-			request.setAttribute(
-					"modalidade",
-					request.getParameter("modalidade") != null ? (String) request
-							.getParameter("modalidade") : "");
-			request.setAttribute(
-					"modo",
-					request.getParameter("modo") != null ? (String) request
-							.getParameter("modo") : "");
-			request.setAttribute(
-					"periodo",
-					request.getParameter("periodo") != null ? (String) request
-							.getParameter("periodo") : "");
 		}
 
 		request.setAttribute("token", (String) request.getParameter("token"));
 		
 		Date horaFim = new Date();
-		System.out.println("\n\nTempo de processamento CarregaEscolhaRanking: " + (horainicio.getTime() - horaFim.getTime())/1000 + " segundos.\n");
+		System.out.println("\n\nTempo de processamento CarregaRanking: " + (horainicio.getTime() - horaFim.getTime())/1000 + " segundos.\n");
 
 		
     	request.setAttribute("modalidade", modalidade);
@@ -180,53 +169,6 @@ public class CarregaRanking extends HttpServlet {
     	
     }
     
-    private String defineModo(String modo) {
-		switch (modo) {
-			case "velocidade":
-				this.modo = ConstantesFitRank.VELOCIDADE_MEDIA;
-				return ConstantesFitRank.VELOCIDADE_MEDIA;
-			case "distancia":
-				this.modo = ConstantesFitRank.DISTANCIA;
-				return ConstantesFitRank.DISTANCIA;
-			default:
-				return modo;
-		}
-	}
-    
-    
-    private String defineTurno(String turno) {
-	    switch(turno) {
-			case "dia":
-				return ConstantesFitRank.DIA;
-			case "noite":
-				return ConstantesFitRank.NOITE;
-			default:
-				return turno;
-		}
-	    
-    }
-    
-    private String definePeriodo(String periodo) {
-		switch(periodo) {
-			case "0":
-				//Dia
-				return ConstantesFitRank.DIA;
-			case "1":
-				//Semana
-
-				return ConstantesFitRank.SEMANA;
-			case "2":
-				//Mes
-				return ConstantesFitRank.MES;
-			case "3":
-				//Mes
-				return ConstantesFitRank.ANO;
-			default:
-				return periodo;
-		}
-		
-    }
-    
     private String defineModalidade(String modalidade) {
 		switch (modalidade) {
 			case ConstantesFitRank.MODALIDADE_CAMINHADA:
@@ -237,6 +179,9 @@ public class CarregaRanking extends HttpServlet {
 	
 			case ConstantesFitRank.MODALIDADE_BICICLETA:
 				return "bikes";
+				
+			case ConstantesFitRank.MODALIDADE_TUDO:
+				return "all";
 	
 			default:
 				return modalidade;
@@ -265,6 +210,13 @@ public class CarregaRanking extends HttpServlet {
 			pessoa = executaAtualizacao(ConstantesFitRank.MODALIDADE_BICICLETA, facebookClient, facebookUser, ultimoBikes);
 			ultimoBikes = pessoa.getData_ultima_atualizacao_bikes();
 			return ultimoBikes;
+			
+		case ConstantesFitRank.MODALIDADE_TUDO:
+			pessoa = pessoaServico.lePessoaServico(facebookUser);
+			pessoa = executaAtualizacao(ConstantesFitRank.MODALIDADE_CAMINHADA, facebookClient, facebookUser, pessoa.getData_ultima_atualizacao_walks());
+			pessoa = executaAtualizacao(ConstantesFitRank.MODALIDADE_CORRIDA, facebookClient, facebookUser, pessoa.getData_ultima_atualizacao_runs());
+			pessoa = executaAtualizacao(ConstantesFitRank.MODALIDADE_BICICLETA, facebookClient, facebookUser, pessoa.getData_ultima_atualizacao_bikes());
+			return new Date();
 			
 		default:
 			return null;
@@ -316,6 +268,7 @@ public class CarregaRanking extends HttpServlet {
 						postFitness.setDuracao(PostFitnessUtil.getNikeDuration(postFit.getStartTime(), postFit.getEndTime()));
 						break;
 					case ConstantesFitRank.ID_APP_RUNTASTIC:
+					case ConstantesFitRank.ID_APP_RUNTASTIC_MOUNTAIN_BIKE:
 						postFitness.setDistancia_percorrida(PostFitnessUtil.getRuntasticDistance(postFit.getDataCourse().getCourse().getTitle()));
 						postFitness.setDuracao(PostFitnessUtil.getRuntasticDuration(postFit.getDataCourse().getCourse().getTitle()));
 						break;
@@ -403,6 +356,7 @@ public class CarregaRanking extends HttpServlet {
 
 			if (aplicativosNaoInserir != null) {
 				
+				@SuppressWarnings("unchecked")
 				ArrayList<Aplicativo> aplicativosAux = (ArrayList<Aplicativo>) aplicativos.clone();
 				
 				for(Aplicativo app :aplicativos) {
@@ -428,72 +382,6 @@ public class CarregaRanking extends HttpServlet {
 		}
 
 	}
-//	private String calculaValorRankingFB(FacebookClient facebookClient, String idUsuario) {
-//    	
-//    	List<PostFitnessFB> postsFit = new ArrayList<PostFitnessFB>();
-    	
-//    	Connection<PostFitnessFB> fitConnection = facebookClient.fetchConnection(idUsuario + "/fitness." + defineModalidade(modalidade), PostFitnessFB.class, Parameter.with("limit", "30"));
-    	
-//    	for (PostFitnessFB postFit : fitConnection.getData()) {
-    		
-//    		switch (periodo) {
-//	    		case "0":
-//	    			//TODO É isso mesmo? Dia anterior?
-//	    			if ( postFit.getStartTime().after(DateConversor.getPreviousDay()) ) {
-//	    				postsFit.add(postFit);
-//	    			}
-//	    			break;
-//	    		case "1":
-//	    			if ( postFit.getStartTime().after(DateConversor.getPreviousWeek()) ) {
-//	    				postsFit.add(postFit);
-//	    			}
-//	    			break;
-//	    		case "2":
-//	    			if ( postFit.getStartTime().after(DateConversor.getPreviousMonth()) ) {
-//	    				postsFit.add(postFit);
-//	    			}
-//	    			break;
-//	    		default:
-//	    			break;
-//	    		}
-//    		
-//    		switch (turno) {
-//				case "dia":
-//					int hora = DateConversor.getHourFromDate(postFit.getStartTime());
-//					if ( hora >= 18 && hora < 5 ) { //das 18 as 5 da manha é considerado noite.
-//						postsFit.remove(postFit);
-//					}
-//					break;
-//				case "noite":
-//					if ( DateConversor.getHourFromDate(postFit.getStartTime()) < 18 ) {
-//						postsFit.remove(postFit);
-//					}
-//					break;
-//			    default:
-//			    	break;
-//			}
-    		
-//		}
-    	
-//    	return "";
-//    }
-    
-//    private String defineModalidade(String parameter) {
-//		switch (parameter) {
-//		case ConstantesFitRank.MODALIDADE_CAMINHADA:
-//			return "walks";
-//			
-//		case ConstantesFitRank.MODALIDADE_CORRIDA:
-//			return "runs";
-//
-//		case ConstantesFitRank.MODALIDADE_BICICLETA:
-//			return "bikes";
-//
-//		default:
-//			return null;
-//			
-//		}
-//	}
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		inicia(request, response);

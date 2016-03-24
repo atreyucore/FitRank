@@ -13,6 +13,22 @@ public class RankingPessoaServico {
 	
 	private RankingPessoaDAO rankingPessoaDAO;
 	
+	public List<RankingPessoa> geraRanking(Configuracao configuracao){
+		ArrayList<RankingPessoa> rankingDistancia = new ArrayList<RankingPessoa>();
+		rankingPessoaDAO = new RankingPessoaDAO();
+		
+		try{
+			rankingDistancia = (ArrayList<RankingPessoa>) rankingPessoaDAO.geraRanking(configuracao);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+		List<RankingPessoa> listaRanking = retornaRankingTop(rankingDistancia, configuracao);
+		
+		return listaRanking;
+	}
+	
 	public List<RankingPessoa> geraRankingDistancia(Configuracao configuracao){
 		ArrayList<RankingPessoa> rankingDistancia = new ArrayList<RankingPessoa>();
 		rankingPessoaDAO = new RankingPessoaDAO();
