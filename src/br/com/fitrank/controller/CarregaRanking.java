@@ -19,6 +19,7 @@ import br.com.fitrank.modelo.PostFitness;
 import br.com.fitrank.modelo.Ranking;
 import br.com.fitrank.modelo.RankingPessoa;
 import br.com.fitrank.modelo.fb.PostFitness.PostFitnessFB;
+import br.com.fitrank.persistencia.PessoaDAO;
 import br.com.fitrank.service.AmizadeServico;
 import br.com.fitrank.service.AplicativoServico;
 import br.com.fitrank.service.ConfiguracaoServico;
@@ -34,6 +35,7 @@ import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
 import com.restfb.Parameter;
+import com.restfb.exception.FacebookGraphException;
 import com.restfb.types.User;
 
 /**
@@ -228,9 +230,12 @@ public class CarregaRanking extends HttpServlet {
 		List<Amizade> amigos = amizadeServico.listaAmizades(idUsuario);
 		
 		for(Amizade amizade : amigos){
-		
-			User facebookUser = facebookClient.fetchObject(amizade.getId_amigo(), User.class);
-			handleUltimaAtividade(modalidade, facebookClient, facebookUser);
+			try {
+				User facebookUser = facebookClient.fetchObject(amizade.getId_amigo(), User.class);
+				handleUltimaAtividade(modalidade, facebookClient, facebookUser);
+			} catch (FacebookGraphException e) {
+				pessoaServico.removePessoaFromIdServico(amizade.getId_amigo());
+			}
 		}
 	}
     
@@ -242,7 +247,8 @@ public class CarregaRanking extends HttpServlet {
 						PostFitnessFB.class, Parameter.with("limit", calculaLimiteDeBusca(dataUltimaAtualizacao)));
 		
 		postFitnessServico = new PostFitnessServico();
-		ArrayList<PostFitness> postsUsuarioNaoInserir = (ArrayList<PostFitness>) postFitnessServico.lePostFitnessPorIdPessoa(facebookUser.getId());
+		ArrayList<PostFitness> postsSalvosNoBanco = (ArrayList<PostFitness>) postFitnessServico.lePostFitnessPorIdPessoa(facebookUser.getId());
+		ArrayList<PostFitness> postsNaoInserir = new ArrayList<PostFitness>();
 		
 		verificaAplicativos(listaFitConnection);
 		
@@ -290,12 +296,17 @@ public class CarregaRanking extends HttpServlet {
 		}
 		
 		for (PostFitness postFitness : postsFit) {
-			for (PostFitness postNaoInserir : postsUsuarioNaoInserir) {
-				if(postFitness.getId_publicacao().equals(postNaoInserir.getId_publicacao()) && postFitness.getId_pessoa().equals(postNaoInserir.getId_pessoa())){
-					postsFit.remove(postFitness);
+			for (PostFitness postSalvoNoBanco : postsSalvosNoBanco) {
+				if(postFitness.getId_publicacao().equals(postSalvoNoBanco.getId_publicacao()) && postFitness.getId_pessoa().equals(postSalvoNoBanco.getId_pessoa())){
+					postsNaoInserir.add(postFitness);
 				}
 			}
 		}
+		
+		for(PostFitness postNaoInserir : postsNaoInserir) {
+			postsFit.remove(postNaoInserir);
+		}
+		
 		Pessoa pessoa = pessoaServico.lePessoaServico(facebookUser);
 		
 		postFitnessServico.adicionaListaPostFitnessServico(postsFit);

@@ -38,7 +38,7 @@
 			var modoMedidas = {
 				"D" : "km",
 				"V" : "km/h",
-				"Q" : "Percursos"
+				"Q" : "Atividades"
 			};
 			
 			var modoDescricao = {
@@ -59,6 +59,12 @@
 				"W": "Caminhada",
 				"B": "Ciclismo",
 				"A": "Misto"
+			};
+			
+			var configs = {
+				"C": "Configuracoes",
+				"F": "Favorito",
+				"R": "Recarregar atividades"
 			};
 			
 			var dadosAjax = {};
@@ -364,21 +370,27 @@
    					
    					$(".modoTableHeader").text(modoDescricao[modoParam]);
    					
-   					resultadoLine.first().text(competidor.resultado.toFixed(2) + " " + modoMedidas[modoParam] );
-   					
    					switch(modoParam){
    						case "V":
    							$(".modoSpan>div").addClass(modo["D"]);
-   							
+   							resultadoLine.first().text(competidor.resultado.toFixed(2) + " " + modoMedidas[modoParam] );
 		   					$( resultadoLine[1] ).children("div").first().after(modoDescricao["D"] + " : " + competidor.distancia_percorrida.toFixed(2) + " " + modoMedidas["D"] );
+		   					$( resultadoLine[2] ).text(modoDescricao["Q"] + " : " + competidor.quantidade_corridas + " " + modoMedidas["Q"] );
 		   					break;
    						case "D" :
    							$(".modoSpan>div").addClass(modo["V"]);
+   							resultadoLine.first().text(competidor.resultado.toFixed(2) + " " + modoMedidas[modoParam] );
    							$( resultadoLine[1] ).children("div").first().after(modoDescricao["V"] + " : " + competidor.velocidade_media.toFixed(2) + " " + modoMedidas["V"] );
+   							$( resultadoLine[2] ).text(modoDescricao["Q"] + " : " + competidor.quantidade_corridas + " " + modoMedidas["Q"] );
 		   					break;
+   						case "Q":
+   							$(".modoSpan>div").addClass(modo["V"]);
+   							resultadoLine.first().text(competidor.resultado + " " + modoMedidas[modoParam] );
+   							$( resultadoLine[1] ).children("div").first().after(modoDescricao["V"] + " : " + competidor.velocidade_media.toFixed(2) + " " + modoMedidas["V"] );
+   							$( resultadoLine[2] ).text(modoDescricao["D"] + " : " + competidor.distancia_percorrida.toFixed(2) + " " + modoMedidas["D"] );
+   							break;
    					}
    					
-   					$( resultadoLine[2] ).text("Atividades : " + competidor.quantidade_corridas);
    				}	
    			
 			}
@@ -497,7 +509,30 @@
 						
 						alturaPeriodo += $(".opcao").height() * 2 + 15;
 					}
-				});				
+				});
+				
+				//Configuracao
+// 				$("<div></div>").appendTo(".config").addClass("bgSmall gearIcon").attr("data-ref", "config");
+				
+// 				var alturaConfig = $(".config").height() * 2 - 10;
+				
+// 				$.map(configs, function(value, index) { 
+// 					if( value != configs['C']) {
+// 						var currConfigDescricao = configs[index];
+						
+// 						//Adiciona as opcoes
+// 						$("<span class='capsula descOpcaoConfig'></span>").text(currConfigDescricao).appendTo(
+// 								$("<div></div>").addClass(value).addClass('bgTiny').attr('data-ref', value).appendTo( 
+// 									$("<div></div>").appendTo(".configWrapper").addClass("circle config ranking smallTile opcao").attr('data-ref', 'config').css("display", "none").css("bottom" , alturaConfig).css("left", $(".config").height())
+// 								)
+// 						);
+						
+// 						alturaModalidade += $(".opcao").height() * 2 + 15; 
+					
+// 					} else {
+// 						$(".mainConfig").text(configs['C']);
+// 					}
+// 				});
 				
 			} 
 			
@@ -543,7 +578,6 @@
 // 			}
 			
 			function compartilhar() {
-				
 				window.open("https://www.facebook.com/dialog/share?app_id=749336888463283&display=popup&href=http://eic.cefet-rj.br/app/FitRank/&redirect_uri=http://eic.cefet-rj.br/app/FitRank/","fb_share", "width=500, height=500");
 			}
 		</script>
@@ -561,9 +595,9 @@
 							<span class="logo"> 
 								FitRank
 							</span>
-							<div class="fav" onclick="compartilhar()"> 
-								<img class="fav" src="imagem/social24.png" style="border-radius: 50%;background-color: rgb(191, 230, 231);" />
-							</div>
+<!-- 							<div class="fav" onclick="compartilhar()">  -->
+<!-- 								<img class="fav" src="imagem/social24.png" style="border-radius: 50%;background-color: rgb(191, 230, 231);" /> -->
+<!-- 							</div> -->
 						<div class="modalidadeWrapper menu">
 							<div class="circle modalidade ranking smallTile" data-ref="modalidade">
 								<span class="capsula chosenModalidade"></span>
@@ -580,7 +614,12 @@
 							<div class="circle periodo ranking smallTile" data-ref="periodo">
 	  	 						<span class="capsula chosenPeriod"></span>
 	  	 					</div>
-						</div>		
+						</div>
+<!-- 						<div class="configWrapper menu"> -->
+<!-- 							<div class="circle config ranking smallTile" data-ref="config"> -->
+<!-- 								<span class="capsula mainConfig"></span> -->
+<!-- 	  	 					</div> -->
+<!-- 						</div> -->
 					</div>
 					</div>
 					    

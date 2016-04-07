@@ -402,7 +402,7 @@ td.profileName {
 	color: white;
 	font-weight: bold;
 	position: absolute;
-	width: 90px;
+	width: 93px;
    	top: 65px;
     left: -10px;
     word-wrap: break-word;
@@ -520,4 +520,33 @@ td.profileName {
 	position: relative;
     bottom: 38px;
 /*     left: 60px; */
+}
+
+.configWrapper{
+    position: absolute;
+    top: 176px;
+    right: 20px;
+}
+
+.circle.config {
+    background-color: rgb(207, 207, 207);
+    
+}
+
+.gearIcon {
+	
+	background-image: url('../../imagem/settings.png');
+}
+
+.mainConfig {
+	font-size: 23px;
+    color: white;
+    font-weight: bold;
+    position: absolute;
+    width: 90px;
+    top: 65px;
+    left: -10px;
+    word-wrap: break-word;
+    text-align: center;
+    display: none;
 }

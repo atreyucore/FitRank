@@ -200,39 +200,39 @@ public class PessoaDAO {
 		return pessoa;
 	}
 	
-//	public boolean removePessoaFromId(Pessoa pessoa) throws SQLException {
-//
-//		Connection dbConnection = null;
-//		PreparedStatement preparedStatement = null;
-// 
-//		String deleteSQL = "DELETE from pessoa WHERE id_usuario = ?";
-// 
-//		try {
-//			dbConnection = conexao;
-//			preparedStatement = dbConnection.prepareStatement(deleteSQL);
-//			
-//			int i = 0;
-//			
-//			preparedStatement.setString(++i, pessoa.getId_usuario());
-// 
-//			// execute delete SQL stetement
-//			preparedStatement.executeUpdate();
-//			return true;
-//		} catch (SQLException e) {
-// 
-//			System.out.println(e.getMessage());
-//			return false;
-//		} finally {
-// 
-//			if (preparedStatement != null) {
-//				preparedStatement.close();
-//			}
-// 
-//			if (dbConnection != null) {
-//				dbConnection.close();
-//			}
-// 
-//		}
-//	}
+	public boolean removePessoaFromId(String userId) throws SQLException {
+		conexao = new JDBCFactory().getConnection();
+
+		PreparedStatement preparedStatement = null;
+ 
+		String deleteSQL = "DELETE from pessoa WHERE id_usuario = ?";
+ 
+		try {
+
+			preparedStatement = conexao.prepareStatement(deleteSQL);
+			
+			int i = 0;
+			
+			preparedStatement.setString(++i, userId);
+ 
+			// execute delete SQL stetement
+			preparedStatement.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+ 
+			System.out.println(e.getMessage());
+			return false;
+		} finally {
+ 
+			if (preparedStatement != null) {
+				preparedStatement.close();
+			}
+ 
+			if (conexao != null) {
+				conexao.close();
+			}
+ 
+		}
+	}
 
 }
