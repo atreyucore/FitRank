@@ -57,7 +57,7 @@
 						            	window.location = location.origin + location.pathname + "InitUser?token=" + token;
 						            }
 						            
-						          }, {scope: 'email,user_birthday,user_friends,user_actions.fitness'});
+						          }, {scope: 'email,user_friends,user_actions.fitness'});//user_birthday
 // 					        	if(!popup) { 
 // 									   //an alert in this example
 // 									   alert('Parece que seu navegador está bloqueando o popup para autorizar a nossa conexão com o Facebook. \nPara continuar será necessário desabilitar o bloqueio.');
