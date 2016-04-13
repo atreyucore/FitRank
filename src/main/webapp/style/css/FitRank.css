@@ -550,3 +550,19 @@ td.profileName {
     text-align: center;
     display: none;
 }
+
+.Recarregar {
+	background-image: url('../../imagem/reload.png');
+}
+
+.Favorito {
+	background-image: url('../../imagem/favourites7.png');
+}
+
+.descOpcaoConfig {
+	font-size: 23px;
+    color: white;
+    font-weight: bold;
+    position: relative !important;
+    right: -43px;
+}

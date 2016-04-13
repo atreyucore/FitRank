@@ -25,10 +25,8 @@ public class DateConversor {
 		try {
 			return FORMATTER.parse(data);
 		} catch (ParseException e ) {
-			System.out.println("DateConveror.StringToDate(String data) recebendo String inválida.");
 			return null;
 		} catch (NullPointerException e) {
-			System.out.println("DateConveror.StringToDate(String data) recebendo String nula.");
 			return null;
 		}
 	}

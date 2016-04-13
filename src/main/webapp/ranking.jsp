@@ -62,6 +62,12 @@
 			};
 			
 			var configs = {
+				//"C": "Configuracoes",
+				"F": "Favorito",
+				"R": "Recarregar"
+			};
+			
+			var configsDesc = {
 				"C": "Configuracoes",
 				"F": "Favorito",
 				"R": "Recarregar atividades"
@@ -512,27 +518,27 @@
 				});
 				
 				//Configuracao
-// 				$("<div></div>").appendTo(".config").addClass("bgSmall gearIcon").attr("data-ref", "config");
+				$("<div></div>").appendTo(".config").addClass("bgSmall gearIcon").attr("data-ref", "config");
 				
-// 				var alturaConfig = $(".config").height() * 2 - 10;
+				var alturaConfig = $(".config").height() * 2 - 10;
 				
-// 				$.map(configs, function(value, index) { 
-// 					if( value != configs['C']) {
-// 						var currConfigDescricao = configs[index];
+				$.map(configs, function(value, index) { 
+					if( value != configsDesc['C']) {
+						var currConfigDescricao = configsDesc[index];
 						
-// 						//Adiciona as opcoes
-// 						$("<span class='capsula descOpcaoConfig'></span>").text(currConfigDescricao).appendTo(
-// 								$("<div></div>").addClass(value).addClass('bgTiny').attr('data-ref', value).appendTo( 
-// 									$("<div></div>").appendTo(".configWrapper").addClass("circle config ranking smallTile opcao").attr('data-ref', 'config').css("display", "none").css("bottom" , alturaConfig).css("left", $(".config").height())
-// 								)
-// 						);
+						//Adiciona as opcoes
+						$("<span class='capsula descOpcaoConfig'></span>").text(currConfigDescricao).appendTo(
+								$("<div></div>").addClass(value).addClass('bgTiny').attr('data-ref', value).appendTo( 
+									$("<div></div>").appendTo(".configWrapper").addClass("circle config ranking smallTile opcao").attr('data-ref', 'config').css("display", "none").css("bottom" , alturaConfig).css("left", $(".config").height())
+								)
+						);
 						
-// 						alturaModalidade += $(".opcao").height() * 2 + 15; 
+						alturaConfig += $(".opcao").height() * 2 + 15; 
 					
-// 					} else {
-// 						$(".mainConfig").text(configs['C']);
-// 					}
-// 				});
+					} else {
+						$(".mainConfig").text(configsDesc['C']);
+					}
+				});
 				
 			} 
 			
@@ -615,11 +621,11 @@
 	  	 						<span class="capsula chosenPeriod"></span>
 	  	 					</div>
 						</div>
-<!-- 						<div class="configWrapper menu"> -->
-<!-- 							<div class="circle config ranking smallTile" data-ref="config"> -->
-<!-- 								<span class="capsula mainConfig"></span> -->
-<!-- 	  	 					</div> -->
-<!-- 						</div> -->
+						<div class="configWrapper menu">
+							<div class="circle config ranking smallTile" data-ref="config">
+								<span class="capsula chosen mainConfig"></span>
+	  	 					</div>
+						</div>
 					</div>
 					</div>
 					    
