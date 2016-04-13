@@ -29,36 +29,6 @@ public class RankingPessoaServico {
 		return listaRanking;
 	}
 	
-	public List<RankingPessoa> geraRankingDistancia(Configuracao configuracao){
-		ArrayList<RankingPessoa> rankingDistancia = new ArrayList<RankingPessoa>();
-		rankingPessoaDAO = new RankingPessoaDAO();
-		
-		try{
-			rankingDistancia = (ArrayList<RankingPessoa>) rankingPessoaDAO.geraRankingDistancia(configuracao);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		
-		List<RankingPessoa> listaRanking = retornaRankingTop(rankingDistancia, configuracao);
-		
-		return listaRanking;
-	}
-	
-	public List<RankingPessoa> geraRankingVelocidadeMedia(Configuracao configuracao){
-		ArrayList<RankingPessoa> rankingVelocidadeMedia = new ArrayList<RankingPessoa>();
-		rankingPessoaDAO = new RankingPessoaDAO();
-		try{
-			rankingVelocidadeMedia = (ArrayList<RankingPessoa>) rankingPessoaDAO.geraRankingVelocidadeMedia(configuracao);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		List<RankingPessoa> listaRanking = retornaRankingTop(rankingVelocidadeMedia, configuracao);
-		
-		return listaRanking;
-	}
-	
 	private RankingPessoa recuperaUsuarioNoRanking(List<RankingPessoa> listaRankingCompleta, Configuracao configuracao){
 		for(RankingPessoa rankingPessoa : listaRankingCompleta){
 			if(rankingPessoa.getId_pessoa().equalsIgnoreCase(configuracao.getIdPessoa())){

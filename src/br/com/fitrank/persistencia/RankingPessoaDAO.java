@@ -178,8 +178,7 @@ public class RankingPessoaDAO {
 		return listaRanking;
 	}
 	
-	public List<RankingPessoa> geraRankingDistancia(Configuracao configuracao)
-			throws SQLException {
+	public List<RankingPessoa> geraRanking(Configuracao configuracao) throws SQLException {
 	
 		Connection dbConnection = null;
 		PreparedStatement preparedStatement = null;
@@ -200,220 +199,7 @@ public class RankingPessoaDAO {
 			dataInicial = DateConversor.getPreviousYearString();
 		}
 	
-		String selectTableSQL = "SELECT @rownum := @rownum + 1 AS colocacao,							\n"
-							+	"		consulta.id_pessoa id_pessoa,									\n"
-							+	"		(consulta.distancia/consulta.duracao) velocidade_media,			\n"
-							+	"		consulta.distancia distancia_percorrida,						\n"
-							+	"		consulta.corridas quantidade_corrida							\n"
-							+	"  FROM (SELECT @rownum := 0) r,										\n"
-							+	"		(SELECT pf.id_pessoa,											\n"
-							+	"				SUM(pf.distancia_percorrida) distancia,					\n"
-							+	"				SUM(pf.duracao) duracao,								\n"
-							+	"				COUNT(pf.id_publicacao) corridas,						\n"
-							+	"				SUM(pf.distancia_percorrida) resultado					\n"
-							+	"				FROM post_fitness pf,									\n"
-							+	"					 pessoa p											\n"
-							+	"		  WHERE (p.id_usuario IN (SELECT a.id_amigo						\n"
-							+	"									FROM amizade a						\n"
-							+	"								   WHERE a.id_pessoa = p.id_usuario)	\n"
-							+	"				 OR p.id_usuario = '"+configuracao.getIdPessoa()+"')									\n";
-							if(!ConstantesFitRank.MODALIDADE_TUDO.equals(configuracao.getModalidade())){
-								selectTableSQL +=   "			AND pf.modalidade = '"+configuracao.getModalidade()+"'										\n";
-							}
-			selectTableSQL  +=	"			AND (str_to_date(pf.data_publicacao, '%d/%m/%Y') 			\n"
-							+	"					BETWEEN str_to_date('"+dataInicial+"', '%d/%m/%Y') 					\n"
-			  				+	"						AND str_to_date('"+DateConversor.DateToString(new Date())+"', '%d/%m/%Y'))					\n"
-							+	"		 GROUP BY pf.id_pessoa											\n"
-							+	"		 ) consulta 													\n"
-							+	" ORDER BY resultado DESC												\n";
-	
-		try {
-			dbConnection = conexao;
-			selectTableSQL = selectTableSQL.replace("\t", "");
-			preparedStatement = dbConnection.prepareStatement(selectTableSQL);
-//			int i = 1;
-//			
-//			preparedStatement.setString(i++, configuracao.getIdPessoa());
-//			preparedStatement.setString(i++, configuracao.getModalidade());
-//			
-//			
-//			if(ConstantesFitRank.DIA.equalsIgnoreCase(configuracao.getIntervaloData())){
-//				preparedStatement.setString(i++, DateConversor.getPreviousDayString());
-//				
-//			} else if(ConstantesFitRank.SEMANA.equalsIgnoreCase(configuracao.getIntervaloData())){
-//				preparedStatement.setString(i++, DateConversor.getPreviousWeekString());
-//				
-//			} else if(ConstantesFitRank.MES.equalsIgnoreCase(configuracao.getIntervaloData())){
-//				preparedStatement.setString(i++, DateConversor.getPreviousMonthString());
-//				
-//			} else if(ConstantesFitRank.ANO.equalsIgnoreCase(configuracao.getIntervaloData())){
-//				preparedStatement.setString(i++, DateConversor.getPreviousYearString());
-//			}
-//			
-//			preparedStatement.setString(i++, DateConversor.DateToString(new Date()));
-			
-			ResultSet rs = preparedStatement.executeQuery(selectTableSQL);
-			
-			RankingPessoa rankingPessoa;
-
-			while ( rs.next() ) {
-				rankingPessoa = new RankingPessoa();
-				rankingPessoa.setId_pessoa(rs.getString("id_pessoa"));
-				rankingPessoa.setColocacao(rs.getInt("colocacao"));
-				rankingPessoa.setResultado(rs.getFloat("distancia_percorrida"));
-				rankingPessoa.setDistancia_percorrida(rs.getFloat("distancia_percorrida"));
-				rankingPessoa.setVelocidade_media(rs.getFloat("velocidade_media"));
-				rankingPessoa.setQuantidade_corridas(rs.getInt("quantidade_corrida"));
-				
-				listaRanking.add(rankingPessoa);
-			}
-	
-		} catch (SQLException e) {
-	
-			System.out.println(e.getMessage());
-	
-		} finally {
-	
-			if (preparedStatement != null) {
-				preparedStatement.close();
-			}
-	
-			if (dbConnection != null) {
-				dbConnection.close();
-			}
-	
-		}
-		return listaRanking;
-	}
-	
-	public List<RankingPessoa> geraRankingVelocidadeMedia(Configuracao configuracao)
-			throws SQLException {
-	
-		Connection dbConnection = null;
-		PreparedStatement preparedStatement = null;
-		List<RankingPessoa> listaRanking = new ArrayList<RankingPessoa>();
-		
-		String dataInicial = "";
-		
-		if(ConstantesFitRank.DIA.equalsIgnoreCase(configuracao.getIntervaloData())){
-			dataInicial = DateConversor.getPreviousDayString();
-			
-		} else if(ConstantesFitRank.SEMANA.equalsIgnoreCase(configuracao.getIntervaloData())){
-			dataInicial =  DateConversor.getPreviousWeekString();
-			
-		} else if(ConstantesFitRank.MES.equalsIgnoreCase(configuracao.getIntervaloData())){
-			dataInicial = DateConversor.getPreviousMonthString();
-			
-		} else if(ConstantesFitRank.ANO.equalsIgnoreCase(configuracao.getIntervaloData())){
-			dataInicial = DateConversor.getPreviousYearString();
-		}
-	
-		String selectTableSQL = "SELECT @rownum := @rownum + 1 AS colocacao,							\n"
-		 					+	"		consulta.id_pessoa id_pessoa,									\n"
-		 					+	"		(consulta.distancia/consulta.duracao) velocidade_media,			\n"
-		 					+	"		consulta.distancia distancia_percorrida,						\n"
-		 					+	"		consulta.corridas quantidade_corrida							\n"
-							+	"  FROM (SELECT @rownum := 0) r,										\n"
-							+	"		(SELECT pf.id_pessoa,											\n"
-		 					+	"				SUM(pf.distancia_percorrida) distancia,					\n"
-		 					+	"				SUM(pf.duracao) duracao,								\n"
-		 					+	"				COUNT(pf.id_publicacao) corridas						\n"
-							+	"				FROM post_fitness pf,									\n"
-  		 					+	"					 pessoa p											\n"
-							+	"		  WHERE (p.id_usuario IN (SELECT a.id_amigo						\n"
-							+	"									FROM amizade a						\n"
-							+	"								   WHERE a.id_pessoa = p.id_usuario)	\n"
-							+	"				 OR p.id_usuario = '"+configuracao.getIdPessoa()+"')	\n";
-							if(!ConstantesFitRank.MODALIDADE_TUDO.equals(configuracao.getModalidade())){
-								selectTableSQL += "		AND pf.modalidade = '"+configuracao.getModalidade()+"' \n";
-							}
-			selectTableSQL  +=  "			AND (str_to_date(pf.data_publicacao, '%d/%m/%Y') 			\n"
-	     					+	"					BETWEEN str_to_date('"+dataInicial+"', '%d/%m/%Y') 					\n"
-		      				+	"						AND str_to_date('"+DateConversor.DateToString(new Date())+"', '%d/%m/%Y'))					\n"
-							+	"		 GROUP BY pf.id_pessoa											\n"
-							+	"		 ) consulta 													\n"
-							+	" ORDER BY velocidade_media DESC										\n";
-	
-		try {
-			dbConnection = conexao;
-			selectTableSQL = selectTableSQL.replace("\t", "");
-			preparedStatement = dbConnection.prepareStatement(selectTableSQL);
-//			int i = 1;
-			
-//			preparedStatement.setString(i++, configuracao.getIdPessoa());
-//			preparedStatement.setString(i++, configuracao.getModalidade());
-			
-//			if(ConstantesFitRank.DIA.equalsIgnoreCase(configuracao.getIntervaloData())){
-//				preparedStatement.setString(i++, DateConversor.getPreviousDayString());
-//				
-//			} else if(ConstantesFitRank.SEMANA.equalsIgnoreCase(configuracao.getIntervaloData())){
-//				preparedStatement.setString(i++, DateConversor.getPreviousWeekString());
-//				
-//			} else if(ConstantesFitRank.MES.equalsIgnoreCase(configuracao.getIntervaloData())){
-//				preparedStatement.setString(i++, DateConversor.getPreviousMonthString());
-//				
-//			} else if(ConstantesFitRank.ANO.equalsIgnoreCase(configuracao.getIntervaloData())){
-//				preparedStatement.setString(i++, DateConversor.getPreviousYearString());
-//			}
-			
-//			preparedStatement.setString(i++, DateConversor.DateToString(new Date()));
-			
-			ResultSet rs = preparedStatement.executeQuery(selectTableSQL);
-			
-			RankingPessoa rankingPessoa;
-
-			while ( rs.next() ) {
-				rankingPessoa = new RankingPessoa();
-				rankingPessoa.setId_pessoa(rs.getString("id_pessoa"));
-				rankingPessoa.setColocacao(rs.getInt("colocacao"));
-				rankingPessoa.setResultado(rs.getFloat("velocidade_media"));
-				rankingPessoa.setVelocidade_media(rs.getFloat("velocidade_media"));
-				rankingPessoa.setDistancia_percorrida(rs.getFloat("distancia_percorrida"));
-				rankingPessoa.setQuantidade_corridas(rs.getInt("quantidade_corrida"));
-				
-				listaRanking.add(rankingPessoa);
-			}
-	
-		} catch (SQLException e) {
-	
-			System.out.println(e.getMessage());
-	
-		} finally {
-	
-			if (preparedStatement != null) {
-				preparedStatement.close();
-			}
-	
-			if (dbConnection != null) {
-				dbConnection.close();
-			}
-	
-		}
-		return listaRanking;
-	}
-	
-	public List<RankingPessoa> geraRanking(Configuracao configuracao)
-			throws SQLException {
-	
-		Connection dbConnection = null;
-		PreparedStatement preparedStatement = null;
-		List<RankingPessoa> listaRanking = new ArrayList<RankingPessoa>();
-		
-		String dataInicial = "";
-		
-		if(ConstantesFitRank.DIA.equalsIgnoreCase(configuracao.getIntervaloData())){
-			dataInicial = DateConversor.DateToString(new Date());
-			
-		} else if(ConstantesFitRank.SEMANA.equalsIgnoreCase(configuracao.getIntervaloData())){
-			dataInicial =  DateConversor.getPreviousWeekString();
-			
-		} else if(ConstantesFitRank.MES.equalsIgnoreCase(configuracao.getIntervaloData())){
-			dataInicial = DateConversor.getPreviousMonthString();
-			
-		} else if(ConstantesFitRank.ANO.equalsIgnoreCase(configuracao.getIntervaloData())){
-			dataInicial = DateConversor.getPreviousYearString();
-		}
-	
+		//Nao foi possivel utilizar parametros do preparedStatement nesta consulta!!!
 		String selectTableSQL = "SELECT @rownum := @rownum + 1 AS colocacao,							\n"
 							+	"		consulta.id_pessoa id_pessoa,									\n"
 							+	"		(consulta.distancia/consulta.duracao) velocidade_media,			\n"
@@ -428,14 +214,15 @@ public class RankingPessoaDAO {
 							+	"					 pessoa p											\n"
 							+	"		  WHERE (p.id_usuario IN (SELECT a.id_amigo						\n"
 							+	"									FROM amizade a						\n"
-							+	"								   WHERE a.id_pessoa = p.id_usuario)	\n"
-							+	"				 OR p.id_usuario = '"+configuracao.getIdPessoa()+"')									\n";
+							+	"								   WHERE a.id_pessoa = '"+configuracao.getIdPessoa()+"')			\n"
+							+	"				 OR p.id_usuario = '"+configuracao.getIdPessoa()+"')								\n"
+							+	"			AND p.id_usuario = pf.id_pessoa															\n";
 		if(!ConstantesFitRank.MODALIDADE_TUDO.equals(configuracao.getModalidade())){
-			selectTableSQL  +=  "			AND pf.modalidade = '"+configuracao.getModalidade()+"'										\n";
+			selectTableSQL  +=  "			AND pf.modalidade = '"+configuracao.getModalidade()+"'									\n";
 		}
-			selectTableSQL  +=	"			AND (str_to_date(pf.data_publicacao, '%d/%m/%Y') 			\n"
-							+	"					BETWEEN str_to_date('"+dataInicial+"', '%d/%m/%Y') 					\n"
-			  				+	"						AND str_to_date('"+DateConversor.DateToString(new Date())+"', '%d/%m/%Y'))					\n"
+			selectTableSQL  +=	"			AND (str_to_date(pf.data_publicacao, '%d/%m/%Y') 										\n"
+							+	"					BETWEEN str_to_date('"+dataInicial+"', '%d/%m/%Y') 								\n"
+			  				+	"						AND str_to_date('"+DateConversor.DateToString(new Date())+"', '%d/%m/%Y'))	\n"
 							+	"		 GROUP BY pf.id_pessoa											\n"
 							+	"		 ) consulta 													\n";
 		if(ConstantesFitRank.DISTANCIA.equals(configuracao.getModo())){
