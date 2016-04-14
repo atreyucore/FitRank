@@ -220,10 +220,12 @@ public class RankingPessoaDAO {
 		if(!ConstantesFitRank.MODALIDADE_TUDO.equals(configuracao.getModalidade())){
 			selectTableSQL  +=  "			AND pf.modalidade = '"+configuracao.getModalidade()+"'									\n";
 		}
+		if(!ConstantesFitRank.SEMPRE.equalsIgnoreCase(configuracao.getIntervaloData())){
 			selectTableSQL  +=	"			AND (str_to_date(pf.data_publicacao, '%d/%m/%Y') 										\n"
 							+	"					BETWEEN str_to_date('"+dataInicial+"', '%d/%m/%Y') 								\n"
-			  				+	"						AND str_to_date('"+DateConversor.DateToString(new Date())+"', '%d/%m/%Y'))	\n"
-							+	"		 GROUP BY pf.id_pessoa											\n"
+			  				+	"						AND str_to_date('"+DateConversor.DateToString(new Date())+"', '%d/%m/%Y'))	\n";
+		}
+			selectTableSQL  +=	"		 GROUP BY pf.id_pessoa											\n"
 							+	"		 ) consulta 													\n";
 		if(ConstantesFitRank.DISTANCIA.equals(configuracao.getModo())){
 			selectTableSQL  +=	" ORDER BY distancia_percorrida DESC									\n";

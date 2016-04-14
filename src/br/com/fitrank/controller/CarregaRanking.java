@@ -91,13 +91,18 @@ public class CarregaRanking extends HttpServlet {
 		String modalidade = request.getAttribute("modalidade") == null ? (String) request.getParameter("modalidade") : (String) request.getAttribute("modalidade");
 		String modo = request.getAttribute("modo") == null ? (String) request.getParameter("modo") : (String) request.getAttribute("modo");
     	String periodo = request.getAttribute("periodo") == null ? (String) request.getParameter("periodo") : (String) request.getAttribute("periodo");
-//    	turno = request.getAttribute("turno") == null ? (String) request.getParameter("turno") : (String) request.getAttribute("turno") ;
 		   
     	FacebookClient facebookClient = new DefaultFacebookClient(request.getParameter("token"));
     	User facebookUser = facebookClient.fetchObject("me", User.class);
+    	
+    	//Atualizações feitas em toda e qualquer chamada de ranking
+		Date ultimaAtualizacao = handleUltimaAtividade(modalidade, facebookClient, facebookUser);
+		if (ultimaAtualizacao != null) {
+			
+			atualizaCorridasAmigos(facebookUser.getId(), modalidade, facebookClient, request);
+		}
 		
 		Configuracao configuracaoRanking = new Configuracao();
-    	
     	configuracaoRanking.setIdPessoa(facebookUser.getId());
     	configuracaoRanking.setModalidade(modalidade);
 		configuracaoRanking.setIntervaloData(periodo);
@@ -106,16 +111,6 @@ public class CarregaRanking extends HttpServlet {
 		configuracaoRanking.setModo(modo);
 		
 		listRankingPessoas = rankingPessoaServico.geraRanking(configuracaoRanking);
-		
-//		switch (modo) {
-//			case ConstantesFitRank.VELOCIDADE_MEDIA:
-//				listRankingPessoas = rankingPessoaServico.geraRankingVelocidadeMedia(configuracaoRanking);
-//				break;
-//			case ConstantesFitRank.DISTANCIA:
-//				listRankingPessoas = rankingPessoaServico.geraRankingDistancia(configuracaoRanking);
-//			default:
-//				break;
-//		}
 		
 		configuracaoRanking = configuracaoServico.adicionaConfiguracao(configuracaoRanking);
 		
@@ -137,13 +132,6 @@ public class CarregaRanking extends HttpServlet {
     		
     		rankingPessoa.setPessoa( pessoaServico.lePessoaPorIdServico( rankingPessoa.getId_pessoa() ) );
 		}
-		//Atualizações feitas em toda e qualquer chamada de ranking
-		Date ultimaAtualizacao = handleUltimaAtividade(modalidade, facebookClient, facebookUser);
-
-		if (ultimaAtualizacao != null) {
-			
-			atualizaCorridasAmigos(facebookUser.getId(), modalidade, facebookClient, request);
-		}
 
 		request.setAttribute("token", (String) request.getParameter("token"));
 		
@@ -153,13 +141,10 @@ public class CarregaRanking extends HttpServlet {
 		
     	request.setAttribute("modalidade", modalidade);
 		request.setAttribute("modo", modo);
-//		request.setAttribute("turno", turno);
 		request.setAttribute("periodo", periodo);
 		request.setAttribute("listaRanking", listRankingPessoas);
 		
 		request.setAttribute("token", (String) request.getParameter("token"));
-		
-//		RequestDispatcher rd = null;
 		
 		String json = com.cedarsoftware.util.io.JsonWriter.objectToJson(listRankingPessoas);
 		
