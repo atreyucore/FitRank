@@ -183,7 +183,7 @@
 		   				} else if (isElEqualChosen && isPeriod) {
 // 		   					$(".headerContent").animate({
 // 								marginBottom : "0"
-// 							},120);
+// 							},120); 
 							var marginTop =  $(".headerContent").css("margin-top");
 							
 							if(marginTop == "0px"){
