@@ -19,10 +19,10 @@
 		
 			var periodo = {
 					//normalizar para ter somente 4 opcoes
-				"0":"Dia", 
-				"1":"Semana", 
-				"2":"Mês", 
-				"3":"Ano",
+// 				"0":"Dia", 
+// 				"1":"Semana", 
+// 				"2":"Mês", 
+// 				"3":"Ano",
 				"D":"Dia", 
 				"S":"Semana",
 				"M":"Mês", 
@@ -181,9 +181,20 @@
 		   					$(this).toggle('slide', {direction : 'down', duration: 120});
 // 		   					esconder = true;
 		   				} else if (isElEqualChosen && isPeriod) {
-		   					$(".headerContent").animate({
-								marginBottom : "0"
-							},120);
+// 		   					$(".headerContent").animate({
+// 								marginBottom : "0"
+// 							},120);
+							var marginTop =  $(".headerContent").css("margin-top");
+							
+							if(marginTop == "0px"){
+			   					$(".headerContent, .configWrapper").animate({
+									marginTop : "50px"
+								},120);
+							} else {
+								$(".headerContent, .configWrapper").animate({
+									marginTop : "0px"
+								},120);
+							}
 		   				} else if( isElEqualChosen && $(spanDescChosen).css("display") !== "none") {
 		   				
 		   					$(spanDescChosen).toggle('slide', {direction : 'down', duration: 120});
@@ -194,9 +205,15 @@
 		   				} else if(isElEqualChosen && $(spanDescChosen).css("display") === "none") {
 		   					$(spanDescChosen).toggle('slide', {direction : 'down', duration: 120});
 		   					
-		   					$(".headerContent").animate({
-								marginBottom : "20px"
-							},120);
+		   					if(!$(spanDescChosen).hasClass("mainConfig")) {
+			   					$(".headerContent").animate({
+									marginBottom : "20px"
+								},120);
+		   					}
+		   					
+		   					if(isPeriod) {
+		   						
+		   					}
 		   				}
 						
 		   			});
@@ -522,7 +539,7 @@
 				
 				var alturaConfig = $(".config").height() * 2 - 10;
 				
-				$.map(configs, function(value, index) { 
+				$.map(configsDesc, function(value, index) { 
 					if( value != configsDesc['C']) {
 						var currConfigDescricao = configsDesc[index];
 						

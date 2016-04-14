@@ -26,6 +26,7 @@ a:hover {
 .wrapper {
 	min-height: 100%;
 	position: relative;
+	overflow-x: hidden;
 }
 
 .preheader {
@@ -525,7 +526,7 @@ td.profileName {
 .configWrapper{
     position: absolute;
     top: 176px;
-    right: 20px;
+    right: 30px;
 }
 
 .circle.config {
@@ -543,9 +544,9 @@ td.profileName {
     color: white;
     font-weight: bold;
     position: absolute;
-    width: 90px;
-    top: 65px;
-    left: -10px;
+    width: 110px;
+   	top: 18px;
+    left: -115px;
     word-wrap: break-word;
     text-align: center;
     display: none;
@@ -553,6 +554,14 @@ td.profileName {
 
 .Recarregar {
 	background-image: url('../../imagem/reload.png');
+}
+
+.Recarregar>.descOpcaoConfig {
+	width: 170px;
+}
+
+.Favorito>.descOpcaoConfig {
+    width: 63px;
 }
 
 .Favorito {
@@ -564,5 +573,7 @@ td.profileName {
     color: white;
     font-weight: bold;
     position: relative !important;
-    right: -43px;
+    right: 40px;
+    float: right;
+    bottom: 5px;
 }
