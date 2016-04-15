@@ -26,7 +26,8 @@
 				"D":"Dia", 
 				"S":"Semana",
 				"M":"Mês", 
-				"A":"Ano"
+				"A":"Ano",
+				"T":"Sempre"
 			};
 			
 			var modo = {
@@ -186,13 +187,13 @@
 // 							},120); 
 							var marginTop =  $(".headerContent").css("margin-top");
 							
-							if(marginTop == "0px"){
+							if(marginTop == "0px" || marginTop == "0"){
 			   					$(".headerContent, .configWrapper").animate({
 									marginTop : "50px"
 								},120);
 							} else {
 								$(".headerContent, .configWrapper").animate({
-									marginTop : "0px"
+									marginTop : "0"
 								},120);
 							}
 		   				} else if( isElEqualChosen && $(spanDescChosen).css("display") !== "none") {
@@ -323,11 +324,11 @@
 			   		opcao.children(".descOpcao").text(menuDataRef);
 			   		
 			   		
-					if (opcaoDataRef == 'Semana') {
-						menu.siblings(".chosenPeriod").css("right", "-56px");
-			   		} else {
-			   			menu.siblings(".chosenPeriod").css("right", "-25px");
-			   		}
+// 					if (opcaoDataRef == 'Semana') {
+// 						menu.siblings(".chosenPeriod").css("right", "-56px");
+// 			   		} else {
+// 			   			menu.siblings(".chosenPeriod").css("right", "-25px");
+// 			   		}
 					
 			   		//Troca os valores das propriedades de dados para os aceitos pelo controller.
 			   		dadosAjax = prepareProperties(dadosAjax);
@@ -511,11 +512,11 @@
 				
 				$(".chosenPeriod").text(periodo['<%=(String) request.getAttribute("periodo")%>']);
 
-				if (periodo['<%=(String) request.getAttribute("periodo")%>'] == 'Semana') {
-					$(".chosenPeriod").css("right", "-56px");
-		   		} else {
-		   			$(".chosenPeriod").css("right", "-25px");
-		   		}
+<%-- 				if (periodo['<%=(String) request.getAttribute("periodo")%>'] == 'Semana') { --%>
+// 					$(".chosenPeriod").css("right", "-56px");
+// 		   		} else {
+// 		   			$(".chosenPeriod").css("right", "-25px");
+// 		   		}
 				
 				
 				$.map(periodo, function(value, index) { 

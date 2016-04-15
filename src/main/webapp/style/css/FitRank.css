@@ -207,6 +207,9 @@ a:hover {
 	background-color: rgb(195, 239, 180);
 }
 
+.calendario[data-ref = "Semana"] ~ .chosenPeriod, .calendario[data-ref = "Sempre"] ~ .chosenPeriod {
+	right: -56px;
+}
 
 .bgMedium {
     background-size: 54px;
