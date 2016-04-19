@@ -18,11 +18,6 @@
 		<script type="text/javascript">
 		
 			var periodo = {
-					//normalizar para ter somente 4 opcoes
-// 				"0":"Dia", 
-// 				"1":"Semana", 
-// 				"2":"Mês", 
-// 				"3":"Ano",
 				"D":"Dia", 
 				"S":"Semana",
 				"M":"Mês", 
@@ -69,7 +64,7 @@
 			};
 			
 			var configsDesc = {
-				"C": "Configuracoes",
+				"C": "Configurações",
 				"F": "Favorito",
 				"R": "Recarregar atividades"
 			};
@@ -289,65 +284,90 @@
 			   		dadosAjax[element.attr('data-ref')] = element.children().attr('data-ref');
 			   		dadosAjax[element.parent().siblings(".menu").first().children(":not(.opcao)").attr('data-ref')] = element.parent().siblings(".menu").first().children(":not(.opcao)").children(".bgSmall").attr('data-ref');
 			   		dadosAjax[element.parent().siblings(".menu").eq(1).children(":not(.opcao)").attr('data-ref')] = element.parent().siblings(".menu").eq(1).children(":not(.opcao)").children(".bgSmall").attr('data-ref');
-			   		
-			   		var menu = element.siblings(":not(.opcao)").children(".bgSmall");
-			   		
-			   		var opcao = element.children();
-			   		
-			   		var menuDataRef = menu.attr("data-ref");
-			   		
-			   		var menuText = menu.siblings(".capsula").text();
-			   		
-			   		var opcaoDataRef = opcao.attr("data-ref");
-			   		
-			   		var opcaoText= opcao.children(".capsula").text();
-
-			   		menu.removeClass(menuDataRef);
-			   		
-			   		opcao.removeClass(opcaoDataRef);
-			   		
-			   		menu.addClass(opcaoDataRef);
-			   		
-			   		menu.siblings(".capsula").text(opcaoText);
-			   		
-			   		menu.attr("data-ref", opcaoDataRef);
-			   		
-			   		opcao.addClass(menuDataRef);
-			   		
-			   		opcao.children(".capsula").text(menuText);
-			   		
-			   		opcao.attr("data-ref", menuDataRef);
-
-			   		//para o caso de mudança de periodo
-			   		menu.siblings(".chosenPeriod").text(opcaoDataRef);
-			   		
-			   		opcao.children(".descOpcao").text(menuDataRef);
-			   		
-			   		
-// 					if (opcaoDataRef == 'Semana') {
-// 						menu.siblings(".chosenPeriod").css("right", "-56px");
-// 			   		} else {
-// 			   			menu.siblings(".chosenPeriod").css("right", "-25px");
-// 			   		}
-					
-			   		//Troca os valores das propriedades de dados para os aceitos pelo controller.
+			   		dadosAjax[element.parent().siblings(".menu").eq(2).children(":not(.opcao)").attr('data-ref')] = element.parent().siblings(".menu").eq(2).children(":not(.opcao)").children(".bgSmall").attr('data-ref');
+				   	//Troca os valores das propriedades de dados para os aceitos pelo controller.
 			   		dadosAjax = prepareProperties(dadosAjax);
+			   	
+			   		if (dadosAjax['config'] == configs['F'] ) {
+			   			
+			   			$.ajax({
+				   			url: location.origin + location.pathname.substring(0, location.pathname.lastIndexOf("/") + 1) + "SalvaConfiguracao",
+				   			data: dadosAjax,
+				   			method: 'get',
+				   			success: function( data, textStatus, jqXHR){
+// 				   				$(".tableRank>tbody>.rankingLine").remove();
+				   				
+				   				json = JSON.parse(jqXHR.getResponseHeader('json'));
+				   				
+// 				   				competidores = json["@items"];
+				   				
+// 				   				geraRanking(competidores, dadosAjax.modo);
+				   			}
+				   				
+				   		});
+				   		
+			   		} else {
+			   			
+			   			
+						var menu = element.siblings(":not(.opcao)").children(".bgSmall");
+				   		
+				   		var opcao = element.children();
+				   		
+				   		var menuDataRef = menu.attr("data-ref");
+				   		
+				   		var menuText = menu.siblings(".capsula").text();
+				   		
+				   		var opcaoDataRef = opcao.attr("data-ref");
+				   		
+				   		var opcaoText= opcao.children(".capsula").text();
+	
+				   		menu.removeClass(menuDataRef);
+				   		
+				   		opcao.removeClass(opcaoDataRef);
+				   		
+				   		menu.addClass(opcaoDataRef);
+				   		
+				   		menu.siblings(".capsula").text(opcaoText);
+				   		
+				   		menu.attr("data-ref", opcaoDataRef);
+				   		
+				   		opcao.addClass(menuDataRef);
+				   		
+				   		opcao.children(".capsula").text(menuText);
+				   		
+				   		opcao.attr("data-ref", menuDataRef);
+	
+				   		//para o caso de mudança de periodo
+				   		menu.siblings(".chosenPeriod").text(opcaoDataRef);
+				   		
+				   		opcao.children(".descOpcao").text(menuDataRef);
+				   		
+				   		
+	// 					if (opcaoDataRef == 'Semana') {
+	// 						menu.siblings(".chosenPeriod").css("right", "-56px");
+	// 			   		} else {
+	// 			   			menu.siblings(".chosenPeriod").css("right", "-25px");
+	// 			   		}
+				   		
+				   		
+				   		$.ajax({
+				   			url: location.origin + location.pathname.substring(0, location.pathname.lastIndexOf("/") + 1) + "CarregaRanking",
+				   			data: dadosAjax,
+				   			method: 'get',
+				   			success: function( data, textStatus, jqXHR){
+				   				$(".tableRank>tbody>.rankingLine").remove();
+				   				
+				   				json = JSON.parse(jqXHR.getResponseHeader('json'));
+				   				
+				   				competidores = json["@items"];
+				   				
+				   				geraRanking(competidores, dadosAjax.modo);
+				   			}
+				   				
+				   		});
+			   		}
 			   		
-			   		$.ajax({
-			   			url: location.origin + location.pathname.substring(0, location.pathname.lastIndexOf("/") + 1) + "CarregaRanking",
-			   			data: dadosAjax,
-			   			method: 'get',
-			   			success: function( data, textStatus, jqXHR){
-			   				$(".tableRank>tbody>.rankingLine").remove();
-			   				
-			   				json = JSON.parse(jqXHR.getResponseHeader('json'));
-			   				
-			   				competidores = json["@items"];
-			   				
-			   				geraRanking(competidores, dadosAjax.modo);
-			   			}
-			   				
-			   		});
+			   		
 			   		
 			   	});
 			    

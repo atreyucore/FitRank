@@ -7,12 +7,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import br.com.fitrank.modelo.Configuracao;
+import br.com.fitrank.service.ConfiguracaoServico;
+import br.com.fitrank.util.ConstantesFitRank;
+
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
 import com.restfb.types.User;
-
-import br.com.fitrank.modelo.Configuracao;
-import br.com.fitrank.service.ConfiguracaoServico;
 
 /**
  * Servlet implementation class SalvaConfiguracao
@@ -44,11 +45,11 @@ public class SalvaConfiguracao extends HttpServlet {
     	modo = (String) request.getParameter("modo");  
     	turno = (String) request.getParameter("turno");
     	periodo = (String) request.getParameter("periodo");
-    	fav = (String) request.getParameter("fav");
-    	padrao = (String) request.getParameter("default");
+    	fav = (String) request.getParameter("config");
+    	
     	
     	String userID = (String) facebookUser.getId();
-    	Boolean isValido = isParametrosValidos(modalidade, modo, turno, periodo, fav, padrao);
+    	Boolean isValido = isParametrosValidos(modalidade, modo, turno, periodo, fav);
     	
     	if (isValido) {
         	
@@ -57,7 +58,6 @@ public class SalvaConfiguracao extends HttpServlet {
         	configuracao.setDiaNoite(turno);
         	configuracao.setIntervaloData(periodo);
         	configuracao.setFavorito(fav.equals("S") ? true : false);
-        	configuracao.setPadraoModalidade(padrao.equals("S") ? true : false);
         	configuracao.setIdPessoa(userID);
         	
         	if (fav.equals("S")) {
@@ -84,50 +84,40 @@ public class SalvaConfiguracao extends HttpServlet {
 
     }
     
-	private boolean isParametrosValidos(String modalidade, String modo, String turno,
-			String periodo, String fav, String padrao) {
+	private boolean isParametrosValidos(String modalidade, String modo, String turno, String periodo, String fav) {
 		
-		switch(modo) {
-			case "velocidade":
-				this.modo = "V";
-				break;
-			case "distancia":
-				this.modo = "D";
+		switch(modalidade) {
+			case ConstantesFitRank.MODALIDADE_BICICLETA:
+			case ConstantesFitRank.MODALIDADE_CAMINHADA:
+			case ConstantesFitRank.MODALIDADE_CORRIDA:
+			case ConstantesFitRank.MODALIDADE_TUDO:
 				break;
 			default:
 				return false;
 		}
 		
-//		switch(turno) {
-//			case "dia":
-//				this.turno = "D";
-//				break;
-//			case "noite":
-//				this.turno = "N";
-//				break;
-//			default:
-//				return false;
-//		}
+		switch(modo) {
+			case ConstantesFitRank.VELOCIDADE_MEDIA:
+			case ConstantesFitRank.DISTANCIA:
+			case ConstantesFitRank.QUANTIDADE:
+				break;
+			default:
+				return false;
+		}
 		
 		switch(periodo) {
-			case "0":
-				//Dia
-				this.periodo = "D";
-				break;
-			case "1":
-				//Semana
-				this.periodo = "S";
-				break;
-			case "2":
-				//Mes
-				this.periodo = "M";
+			case ConstantesFitRank.DIA:
+			case ConstantesFitRank.MES:
+			case ConstantesFitRank.SEMANA:
+			case ConstantesFitRank.ANO:
+			case ConstantesFitRank.SEMPRE:
 				break;
 			default:
 				return false;
 		}
 		
 		switch(fav) {
-			case "S":
+			case "Favorito":
 				this.fav = "S";
 				break;
 			case "N":
@@ -135,21 +125,6 @@ public class SalvaConfiguracao extends HttpServlet {
 				break;
 			default:
 				return false;
-		}
-		
-		switch(padrao) {
-			case "S":
-				this.padrao = "S";
-				break;
-			case "N":
-				this.padrao = "N";
-				break;
-			default:
-				return false;
-		}
-		
-		if (padrao.equals(fav)) {
-			return false;
 		}
 		
 		return true;
