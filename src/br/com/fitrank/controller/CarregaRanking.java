@@ -162,7 +162,7 @@ public class CarregaRanking extends HttpServlet {
     	List<RankingPessoaTela> listaRankingPessoaTela = new ArrayList<RankingPessoaTela>();
     	AplicativoServico aplicativoServico = new AplicativoServico();
 		for (RankingPessoa rankingPessoa : listaRankingPessoa) {
-			RankingPessoaTela rankingPessoaTela = (RankingPessoaTela)rankingPessoa;
+			RankingPessoaTela rankingPessoaTela = new RankingPessoaTela(rankingPessoa);
 			rankingPessoaTela.setListaAplicativosTela(aplicativoServico.listaAplicativosUsuarioNoRanking(configuracaoRanking, rankingPessoaTela));
 			listaRankingPessoaTela.add(rankingPessoaTela);
 		}
