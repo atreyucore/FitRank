@@ -148,7 +148,7 @@ public class CarregaRanking extends HttpServlet {
 		
 		request.setAttribute("token", (String) request.getParameter("token"));
 		
-		String json = com.cedarsoftware.util.io.JsonWriter.objectToJson(listRankingPessoas);
+		String json = com.cedarsoftware.util.io.JsonWriter.objectToJson(listaRankingPessoaTela);
 		
 		response.addHeader("json", json);
 		
