@@ -18,8 +18,8 @@ import br.com.fitrank.modelo.Pessoa;
 import br.com.fitrank.modelo.PostFitness;
 import br.com.fitrank.modelo.Ranking;
 import br.com.fitrank.modelo.RankingPessoa;
+import br.com.fitrank.modelo.apresentacao.RankingPessoaTela;
 import br.com.fitrank.modelo.fb.PostFitness.PostFitnessFB;
-import br.com.fitrank.persistencia.PessoaDAO;
 import br.com.fitrank.service.AmizadeServico;
 import br.com.fitrank.service.AplicativoServico;
 import br.com.fitrank.service.ConfiguracaoServico;
@@ -132,6 +132,8 @@ public class CarregaRanking extends HttpServlet {
     		
     		rankingPessoa.setPessoa( pessoaServico.lePessoaPorIdServico( rankingPessoa.getId_pessoa() ) );
 		}
+    	
+    	List<RankingPessoaTela> listaRankingPessoaTela = obtemListaAplicativosTela(listRankingPessoas, configuracaoRanking);
 
 		request.setAttribute("token", (String) request.getParameter("token"));
 		
@@ -142,7 +144,7 @@ public class CarregaRanking extends HttpServlet {
     	request.setAttribute("modalidade", modalidade);
 		request.setAttribute("modo", modo);
 		request.setAttribute("periodo", periodo);
-		request.setAttribute("listaRanking", listRankingPessoas);
+		request.setAttribute("listaRanking", listaRankingPessoaTela);
 		
 		request.setAttribute("token", (String) request.getParameter("token"));
 		
@@ -156,7 +158,18 @@ public class CarregaRanking extends HttpServlet {
     	
     }
     
-    private String defineModalidade(String modalidade) {
+    private List<RankingPessoaTela> obtemListaAplicativosTela(List<RankingPessoa> listaRankingPessoa, Configuracao configuracaoRanking) {
+    	List<RankingPessoaTela> listaRankingPessoaTela = new ArrayList<RankingPessoaTela>();
+    	AplicativoServico aplicativoServico = new AplicativoServico();
+		for (RankingPessoa rankingPessoa : listaRankingPessoa) {
+			RankingPessoaTela rankingPessoaTela = (RankingPessoaTela)rankingPessoa;
+			rankingPessoaTela.setListaAplicativosTela(aplicativoServico.listaAplicativosUsuarioNoRanking(configuracaoRanking, rankingPessoaTela));
+			listaRankingPessoaTela.add(rankingPessoaTela);
+		}
+		return listaRankingPessoaTela;
+	}
+
+	private String defineModalidade(String modalidade) {
 		switch (modalidade) {
 			case ConstantesFitRank.MODALIDADE_CAMINHADA:
 				return "walks";

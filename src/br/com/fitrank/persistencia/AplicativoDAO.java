@@ -5,8 +5,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import br.com.fitrank.modelo.Aplicativo;
+import br.com.fitrank.modelo.Configuracao;
+import br.com.fitrank.modelo.apresentacao.AplicativoTela;
+import br.com.fitrank.modelo.apresentacao.RankingPessoaTela;
+import br.com.fitrank.util.ConstantesFitRank;
+import br.com.fitrank.util.DateConversor;
 import br.com.fitrank.util.JDBCFactory;
 
 public class AplicativoDAO {
@@ -259,6 +266,81 @@ public class AplicativoDAO {
 
 		return aplicativosReturn;
 	}
+	
+	public List<AplicativoTela> listaAplicativosUsuarioNoRanking(Configuracao configuracao, RankingPessoaTela rankingPessoaTela) throws SQLException {
+		
+		Connection dbConnection = null;
+		PreparedStatement preparedStatement = null;
+		List<AplicativoTela> listaAplicativoTela = new ArrayList<AplicativoTela>();
+		
+		String dataInicial = "";
+		
+		if(ConstantesFitRank.DIA.equalsIgnoreCase(configuracao.getIntervaloData())){
+			dataInicial = DateConversor.DateToString(new Date());
+			
+		} else if(ConstantesFitRank.SEMANA.equalsIgnoreCase(configuracao.getIntervaloData())){
+			dataInicial =  DateConversor.getPreviousWeekString();
+			
+		} else if(ConstantesFitRank.MES.equalsIgnoreCase(configuracao.getIntervaloData())){
+			dataInicial = DateConversor.getPreviousMonthString();
+			
+		} else if(ConstantesFitRank.ANO.equalsIgnoreCase(configuracao.getIntervaloData())){
+			dataInicial = DateConversor.getPreviousYearString();
+		}
+	
+		//Nao foi possivel utilizar parametros do preparedStatement nesta consulta!!!
+		String selectTableSQL = "SELECT pf.id_app,												\n"
+							+	"       a.nome,													\n"
+							+	"       COUNT(pf.id_publicacao) atividades						\n"
+							+	"  FROM post_fitness pf,										\n"
+							+	"       pessoa p,												\n"
+							+	"       aplicativo a											\n"
+							+	" WHERE p.id_usuario = '"+rankingPessoaTela.getId_pessoa()+"'										\n"
+							+	"   AND p.id_usuario = pf.id_pessoa																	\n"
+							+	"   AND pf.id_app = a.id_aplicativo																	\n";
+		if(!ConstantesFitRank.MODALIDADE_TUDO.equals(configuracao.getModalidade())){
+			selectTableSQL  +=  "   AND pf.modalidade = '"+configuracao.getModalidade()+"'											\n";
+		}
+		if(!ConstantesFitRank.SEMPRE.equalsIgnoreCase(configuracao.getIntervaloData())){
+			selectTableSQL  +=	"   AND (str_to_date(pf.data_publicacao, '%d/%m/%Y')  												\n"
+							+	"                    BETWEEN str_to_date('"+dataInicial+"', '%d/%m/%Y') 							\n"
+			  				+	"                        AND str_to_date('"+DateConversor.DateToString(new Date())+"', '%d/%m/%Y'))	\n";
+		}
+			selectTableSQL  +=	"GROUP BY pf.id_app											\n";
+	
+		try {
+			dbConnection = conexao;
+			selectTableSQL = selectTableSQL.replace("\t", "");
+			preparedStatement = dbConnection.prepareStatement(selectTableSQL);
+			ResultSet rs = preparedStatement.executeQuery();
+			AplicativoTela aplicativoTela;
+
+			while (rs.next()) {
+				aplicativoTela = new AplicativoTela();
+				aplicativoTela.setId_aplicativo(rs.getString("id_app"));
+				aplicativoTela.setNome(rs.getString("nome"));
+				aplicativoTela.setQuantidadeAtividades(rs.getInt("atividades"));
+				listaAplicativoTela.add(aplicativoTela);
+			}
+	
+		} catch (SQLException e) {
+	
+			System.out.println(e.getMessage());
+	
+		} finally {
+	
+			if (preparedStatement != null) {
+				preparedStatement.close();
+			}
+	
+			if (dbConnection != null) {
+				dbConnection.close();
+			}
+	
+		}
+		return listaAplicativoTela;
+	}
+	
 	// public boolean removeAplicativoFromId(Aplicativo aplicativo)
 	// throws SQLException {
 	//

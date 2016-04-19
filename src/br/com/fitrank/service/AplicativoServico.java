@@ -2,8 +2,12 @@ package br.com.fitrank.service;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import br.com.fitrank.modelo.Aplicativo;
+import br.com.fitrank.modelo.Configuracao;
+import br.com.fitrank.modelo.apresentacao.AplicativoTela;
+import br.com.fitrank.modelo.apresentacao.RankingPessoaTela;
 import br.com.fitrank.persistencia.AplicativoDAO;
 
 
@@ -59,6 +63,18 @@ public class AplicativoServico {
 			return aplicativoDAO.leListaAplicativos(aplicativos);
 		} catch (SQLException e) {
 			
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public List<AplicativoTela> listaAplicativosUsuarioNoRanking(Configuracao configuracao, RankingPessoaTela rankingPessoaTela) {
+		this.aplicativoDAO = new AplicativoDAO();
+		
+	    try {
+			return aplicativoDAO.listaAplicativosUsuarioNoRanking(configuracao, rankingPessoaTela);
+			
+		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
 		}
