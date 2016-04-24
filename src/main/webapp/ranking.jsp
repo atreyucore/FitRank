@@ -266,7 +266,6 @@
 					
 					$(hiddened).each(function(index, el){
 						
-						
 						setTimeout(function() {
 							$(el).toggle('slide', {direction : 'down', duration: 120});
 							
@@ -392,19 +391,22 @@
    					$(".tableRank>tbody").append("<tr class='rankingLine'></tr>");
 
    					var rankingLine = $( $(".rankingLine")[index] );
-   					
+					
+   					//Posição no Ranking, imagem de perfil e nome de perfil
    					rankingLine.append("<td class='colocacao'></td>");
    					rankingLine.append("<td class='profileImg'><a><img align='middle' ></a></td>");
    					
    					rankingLine.append("<td class='profileName'><a><span></span></a></td>");
-//    					rankingLine.children(".profileName").append("");
    					
+   					//Coluna de medidas do Ranking, definidos em configuração
    					rankingLine.append("<td class='measure'></td>");
    					
-   					rankingLine.children(".measure").append("<span class='modoSpanEmphasized'></span><br>");
-   					rankingLine.children(".measure").append("<span class='not_emphasized modoSpan'><div class='circle bgTiny'></div></span><br>");
-   					rankingLine.children(".measure").append("<span class='not_emphasized qtdSpan'></span>");
+   					rankingLine.children(".measure").append("<span class='spanEmphasized'></span><br>");
+   					rankingLine.children(".measure").append("<span class='not_emphasized secondSpan'><div class='circle bgTiny'></div></span><br>");
+   					rankingLine.children(".measure").append("<span class='not_emphasized thirdSpan'><div class='circle bgTiny'></div></span>");
+//    					rankingLine.children(".measure").append("<span class='not_emphasized appSpan'><div class='fitApp bgTiny' data-ref='Runtastic Mountain Bike'></div></span>");
    					
+   					//Atribuição de valores aos elementos criados acima.
    					rankingLine.children(".colocacao").text(competidor.colocacao);
    					rankingLine.children(".profileImg").children("a").attr("href", "http://www.facebook.com/" + competidor.id_pessoa).attr("target", "_blank").children("img").attr("data-id_pessoa", competidor.id_pessoa).attr("src", competidor.pessoa.url_foto === null ? 'imagem/default_photo.png' : competidor.pessoa.url_foto );
    					rankingLine.children(".profileName").children("a").attr("href", "http://www.facebook.com/" + competidor.id_pessoa).attr("target", "_blank").children("span").attr("data-id_pessoa", competidor.id_pessoa).text(competidor.pessoa.nome);
@@ -416,23 +418,38 @@
    					
    					switch(modoParam){
    						case "V":
-   							$(".modoSpan>div").addClass(modo["D"]);
+   							$(".secondSpan>div").addClass(modo["D"]);
+   							$(".thirdSpan>div").addClass(modo["Q"]);
    							resultadoLine.first().text(competidor.resultado.toFixed(2) + " " + modoMedidas[modoParam] );
 		   					$( resultadoLine[1] ).children("div").first().after(modoDescricao["D"] + " : " + competidor.distancia_percorrida.toFixed(2) + " " + modoMedidas["D"] );
-		   					$( resultadoLine[2] ).text(modoDescricao["Q"] + " : " + competidor.quantidade_corridas + " " + modoMedidas["Q"] );
+		   					$( resultadoLine[2] ).children("div").first().after(modoDescricao["Q"] + " : " + competidor.quantidade_corridas + " " + modoMedidas["Q"] );
 		   					break;
    						case "D" :
-   							$(".modoSpan>div").addClass(modo["V"]);
+   							$(".secondSpan>div").addClass(modo["V"]);
+   							$(".thirdSpan>div").addClass(modo["Q"]);
    							resultadoLine.first().text(competidor.resultado.toFixed(2) + " " + modoMedidas[modoParam] );
    							$( resultadoLine[1] ).children("div").first().after(modoDescricao["V"] + " : " + competidor.velocidade_media.toFixed(2) + " " + modoMedidas["V"] );
-   							$( resultadoLine[2] ).text(modoDescricao["Q"] + " : " + competidor.quantidade_corridas + " " + modoMedidas["Q"] );
+   							$( resultadoLine[2] ).children("div").first().after(modoDescricao["Q"] + " : " + competidor.quantidade_corridas + " " + modoMedidas["Q"] );
 		   					break;
    						case "Q":
-   							$(".modoSpan>div").addClass(modo["V"]);
+   							$(".secondSpan>div").addClass(modo["V"]);
+   							$(".thirdSpan>div").addClass(modo["D"]);
    							resultadoLine.first().text(competidor.resultado + " " + modoMedidas[modoParam] );
    							$( resultadoLine[1] ).children("div").first().after(modoDescricao["V"] + " : " + competidor.velocidade_media.toFixed(2) + " " + modoMedidas["V"] );
-   							$( resultadoLine[2] ).text(modoDescricao["D"] + " : " + competidor.distancia_percorrida.toFixed(2) + " " + modoMedidas["D"] );
+   							$( resultadoLine[2] ).children("div").first().after(modoDescricao["D"] + " : " + competidor.distancia_percorrida.toFixed(2) + " " + modoMedidas["D"] );
    							break;
+   					}
+   					
+   					var leftPos = 5;
+   					
+   					for (appTelaIndex in competidor.listaAplicativosTela['@items'] ) {
+   						var appTela = competidor.listaAplicativosTela['@items'][appTelaIndex];
+   						var appTelaNomeEscaped = escape(appTela.nome);
+   						
+   						var teste = rankingLine.children(".measure").append("<span class='not_emphasized appSpan' style='left:" + leftPos + "px'>" +
+   							"<div class='fitApp bgTiny' style='background-image: url(imagem/" + appTelaNomeEscaped +".png)' title='"+ appTela.nome +"'></div>" + appTela.quantidadeAtividades + "</span>");
+   						
+   						leftPos += 65;  
    					}
    					
    				}	
