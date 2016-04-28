@@ -242,7 +242,7 @@ public class CarregaRanking extends HttpServlet {
 		
 		Connection<PostFitnessFB> listaFitConnection = facebookClient
 				.fetchConnection(facebookUser.getId()+"/fitness." + defineModalidade(modalidade),
-						PostFitnessFB.class, Parameter.with("limit", calculaLimiteDeBusca(dataUltimaAtualizacao)));
+						PostFitnessFB.class, Parameter.with("limit", calculaLimiteDeBusca(dataUltimaAtualizacao, modalidade)));
 		
 		postFitnessServico = new PostFitnessServico();
 		ArrayList<PostFitness> postsSalvosNoBanco = (ArrayList<PostFitness>) postFitnessServico.lePostFitnessPorIdPessoa(facebookUser.getId());
@@ -329,9 +329,10 @@ public class CarregaRanking extends HttpServlet {
 		return pessoaReturn;
 	}
     
-	private String calculaLimiteDeBusca(Date ultimaAtualizacao) {
+	private String calculaLimiteDeBusca(Date ultimaAtualizacao, String modalidade) {
 		Integer limit;
-		if(null != ultimaAtualizacao){
+		//Somente runs estao sendo recuperadas do Facebook em ordem cronologica
+		if(null != ultimaAtualizacao && ConstantesFitRank.MODALIDADE_CORRIDA.equals(modalidade)){
 			limit = DateConversor.getDaysDifference(new Date(), ultimaAtualizacao) * ConstantesFitRank.LIMITE_CORRIDAS_REALIZADAS_POR_DIA;
 			limit = limit == 0 ? 1 : limit;
 		} else {
