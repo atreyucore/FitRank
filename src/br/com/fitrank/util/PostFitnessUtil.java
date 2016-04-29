@@ -47,7 +47,7 @@ public class PostFitnessUtil {
 	
 	public static double getRuntasticDuration(String courseTitle)  throws NumberFormatException {
 		
-		courseTitle = courseTitle.split("in")[1].trim();
+		courseTitle = courseTitle.split(" in")[1].trim();
 		
 		String strHour = courseTitle.split("h")[0].trim();
 		
