@@ -1,6 +1,6 @@
 package br.com.fitrank.modelo;
 
-import com.mysql.jdbc.Blob;
+import java.sql.Blob;
 
 public class ImagemRanking {
 	

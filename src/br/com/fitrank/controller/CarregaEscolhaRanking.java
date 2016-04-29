@@ -34,7 +34,6 @@ import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
 import com.restfb.Parameter;
-import com.restfb.json.JsonObject;
 import com.restfb.types.User;
 
 public class CarregaEscolhaRanking extends HttpServlet {
