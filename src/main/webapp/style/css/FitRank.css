@@ -308,12 +308,12 @@ div.circle:hover {
 	cursor: pointer;
 }
 
-div.fav {
+div.share {
 	display: inline;
 }
 
 
-img.fav:hover {
+img.share:hover {
 	cursor: pointer;
 }
 

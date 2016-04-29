@@ -79,7 +79,7 @@ public class ImagemRankingDAO {
 			if (rs.next()) {
 				
 				imagemRanking.setId_ranking(rs.getInt("id_ranking"));
-				imagemRanking.setImagem(rs.getBlob("titulo"));
+				imagemRanking.setImagem(rs.getBlob("imagem"));
 				
 			}
 	

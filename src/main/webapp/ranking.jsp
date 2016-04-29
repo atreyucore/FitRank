@@ -58,7 +58,6 @@
 			};
 			
 			var configs = {
-				//"C": "Configuracoes",
 				"F": "Favorito",
 				"R": "Recarregar"
 			};
@@ -377,7 +376,7 @@
 			function preparaRanking() {		
 				
 				competidores = json["@items"];
-				
+
 				var modo = $(".modoWrapper").children(":not(.opcao)").children(".bgSmall").attr('data-ref').substring(0,1);
 				
 				geraRanking(competidores, modo);
@@ -598,7 +597,39 @@
 			} 
 			
 			
+			function getOwnId() {
+				FB.api('/me', 'GET',
+					{ 
+						"fields" : "id", 
+						"access_token" : token
+					},
+					function(response) {
+						if (response.id) {
+							return response.id;
+						}
+					}
+				);
+			}
 			
+// 			function renderLastUpdate(competidores) {
+// 				var myId = getOwnId();
+// 				switch($('.chosenModalidade~[data-ref]').attr('data-ref')) {
+// 					case 'all':
+// 						break;
+// 					case 'runs':
+// 						break;
+// 					case 'walks':
+// 						break;
+// 					case 'bikes':
+// 						break;
+// 					default:
+// 						return false;
+// 				}
+// 				var propModalidade =   
+					
+// 				for(index in competidores)
+				
+// 			}
 // 			function buscaInformacoesPerfil(element) {
 // 				var idUsuario = $(element).attr("data-id_pessoa");
 				
@@ -615,7 +646,7 @@
 // 				FB.api(
 // 					  '/' + idUsuario ,
 // 					  'GET',
-// 					  { "fieds" : "name", 
+// 					  { "fields" : "name", 
 <%-- 						"access_token" : '<%=(String) request.getParameter("token")%>'}, --%>
 // 					  function(response) {
 // 						  $($(element).next("span")[0]).text(response.name);
@@ -639,6 +670,7 @@
 // 			}
 			
 			function compartilhar() {
+// 				window.open("https://www.facebook.com/dialog/share?app_id=749336888463283&display=popup&href=http://eic.cefet-rj.br/app/FitRank/&redirect_uri=http://eic.cefet-rj.br/app/FitRank/","fb_share", "width=500, height=500");
 				window.open("https://www.facebook.com/dialog/share?app_id=749336888463283&display=popup&href=http://eic.cefet-rj.br/app/FitRank/&redirect_uri=http://eic.cefet-rj.br/app/FitRank/","fb_share", "width=500, height=500");
 			}
 		</script>
@@ -656,9 +688,9 @@
 							<span class="logo"> 
 								FitRank
 							</span>
-<!-- 							<div class="fav" onclick="compartilhar()">  -->
-<!-- 								<img class="fav" src="imagem/social24.png" style="border-radius: 50%;background-color: rgb(191, 230, 231);" /> -->
-<!-- 							</div> -->
+							<div class="share" onclick="compartilhar()"> 
+								<img class="share" src="imagem/social24.png" style="border-radius: 50%;background-color: rgb(191, 230, 231);" />
+							</div>
 						<div class="modalidadeWrapper menu">
 							<div class="circle modalidade ranking smallTile" data-ref="modalidade">
 								<span class="capsula chosenModalidade"></span>
