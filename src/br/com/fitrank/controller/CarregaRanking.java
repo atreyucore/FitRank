@@ -91,12 +91,13 @@ public class CarregaRanking extends HttpServlet {
 		String modalidade = request.getAttribute("modalidade") == null ? (String) request.getParameter("modalidade") : (String) request.getAttribute("modalidade");
 		String modo = request.getAttribute("modo") == null ? (String) request.getParameter("modo") : (String) request.getAttribute("modo");
     	String periodo = request.getAttribute("periodo") == null ? (String) request.getParameter("periodo") : (String) request.getAttribute("periodo");
+    	String atualizarTudo = request.getParameter("atualizarTudo") == null ? "" : (String) request.getParameter("atualizarTudo");
 		   
     	FacebookClient facebookClient = new DefaultFacebookClient(request.getParameter("token"));
     	User facebookUser = facebookClient.fetchObject("me", User.class);
     	
     	//Atualizações feitas em toda e qualquer chamada de ranking
-		Date ultimaAtualizacao = handleUltimaAtividade(modalidade, facebookClient, facebookUser);
+		Date ultimaAtualizacao = handleUltimaAtividade(modalidade, facebookClient, facebookUser, atualizarTudo);
 		if (ultimaAtualizacao != null) {
 			
 			atualizaCorridasAmigos(facebookUser.getId(), modalidade, facebookClient, request);
@@ -189,33 +190,34 @@ public class CarregaRanking extends HttpServlet {
 			}
 	}
     
-    private Date handleUltimaAtividade(String modalidade, FacebookClient facebookClient, User facebookUser) {
+    private Date handleUltimaAtividade(String modalidade, FacebookClient facebookClient, User facebookUser, String atualizarTudo) {
 		Pessoa pessoa = new Pessoa();
 
+		//Somente runs estao sendo recuperadas do Facebook em ordem cronologica, walks e bikes sempre buscam com limite maximo
 		switch (modalidade) {
 		case ConstantesFitRank.MODALIDADE_CAMINHADA:
 			Date ultimoWalk = pessoaServico.lePessoaServico(facebookUser).getData_ultima_atualizacao_walks();
-			pessoa = executaAtualizacao(ConstantesFitRank.MODALIDADE_CAMINHADA, facebookClient, facebookUser, ultimoWalk);
+			pessoa = executaAtualizacao(ConstantesFitRank.MODALIDADE_CAMINHADA, facebookClient, facebookUser, ultimoWalk, ConstantesFitRank.CHAR_SIM);
 			ultimoWalk = pessoa.getData_ultima_atualizacao_walks();
 			return ultimoWalk;
 			
 		case ConstantesFitRank.MODALIDADE_CORRIDA:
 			Date ultimoRuns = pessoaServico.lePessoaServico(facebookUser).getData_ultima_atualizacao_runs();
-			pessoa = executaAtualizacao(ConstantesFitRank.MODALIDADE_CORRIDA, facebookClient, facebookUser, ultimoRuns);
+			pessoa = executaAtualizacao(ConstantesFitRank.MODALIDADE_CORRIDA, facebookClient, facebookUser, ultimoRuns, atualizarTudo);
 			ultimoRuns = pessoa.getData_ultima_atualizacao_runs();
 			return ultimoRuns;
 			
 		case ConstantesFitRank.MODALIDADE_BICICLETA:
 			Date ultimoBikes = pessoaServico.lePessoaServico(facebookUser).getData_ultima_atualizacao_bikes();
-			pessoa = executaAtualizacao(ConstantesFitRank.MODALIDADE_BICICLETA, facebookClient, facebookUser, ultimoBikes);
+			pessoa = executaAtualizacao(ConstantesFitRank.MODALIDADE_BICICLETA, facebookClient, facebookUser, ultimoBikes, ConstantesFitRank.CHAR_SIM);
 			ultimoBikes = pessoa.getData_ultima_atualizacao_bikes();
 			return ultimoBikes;
 			
 		case ConstantesFitRank.MODALIDADE_TUDO:
 			pessoa = pessoaServico.lePessoaServico(facebookUser);
-			pessoa = executaAtualizacao(ConstantesFitRank.MODALIDADE_CAMINHADA, facebookClient, facebookUser, pessoa.getData_ultima_atualizacao_walks());
-			pessoa = executaAtualizacao(ConstantesFitRank.MODALIDADE_CORRIDA, facebookClient, facebookUser, pessoa.getData_ultima_atualizacao_runs());
-			pessoa = executaAtualizacao(ConstantesFitRank.MODALIDADE_BICICLETA, facebookClient, facebookUser, pessoa.getData_ultima_atualizacao_bikes());
+			pessoa = executaAtualizacao(ConstantesFitRank.MODALIDADE_CAMINHADA, facebookClient, facebookUser, pessoa.getData_ultima_atualizacao_walks(), ConstantesFitRank.CHAR_SIM);
+			pessoa = executaAtualizacao(ConstantesFitRank.MODALIDADE_CORRIDA, facebookClient, facebookUser, pessoa.getData_ultima_atualizacao_runs(), atualizarTudo);
+			pessoa = executaAtualizacao(ConstantesFitRank.MODALIDADE_BICICLETA, facebookClient, facebookUser, pessoa.getData_ultima_atualizacao_bikes(), ConstantesFitRank.CHAR_SIM);
 			return new Date();
 			
 		default:
@@ -230,7 +232,7 @@ public class CarregaRanking extends HttpServlet {
 		for(Amizade amizade : amigos){
 			try {
 				User facebookUser = facebookClient.fetchObject(amizade.getId_amigo(), User.class);
-				handleUltimaAtividade(modalidade, facebookClient, facebookUser);
+				handleUltimaAtividade(modalidade, facebookClient, facebookUser, ConstantesFitRank.CHAR_NAO);
 			} catch (FacebookGraphException e) {
 				pessoaServico.removePessoaFromIdServico(amizade.getId_amigo());
 			}
@@ -238,11 +240,11 @@ public class CarregaRanking extends HttpServlet {
 	}
     
 
-    private Pessoa executaAtualizacao(String modalidade, FacebookClient facebookClient, User facebookUser, Date dataUltimaAtualizacao) {
+    private Pessoa executaAtualizacao(String modalidade, FacebookClient facebookClient, User facebookUser, Date dataUltimaAtualizacao, String atualizarTudo) {
 		
 		Connection<PostFitnessFB> listaFitConnection = facebookClient
 				.fetchConnection(facebookUser.getId()+"/fitness." + defineModalidade(modalidade),
-						PostFitnessFB.class, Parameter.with("limit", calculaLimiteDeBusca(dataUltimaAtualizacao, modalidade)));
+						PostFitnessFB.class, Parameter.with("limit", calculaLimiteDeBusca(dataUltimaAtualizacao, atualizarTudo)));
 		
 		postFitnessServico = new PostFitnessServico();
 		ArrayList<PostFitness> postsSalvosNoBanco = (ArrayList<PostFitness>) postFitnessServico.lePostFitnessPorIdPessoa(facebookUser.getId());
@@ -326,10 +328,10 @@ public class CarregaRanking extends HttpServlet {
 		return pessoa;
 	}
     
-	private String calculaLimiteDeBusca(Date ultimaAtualizacao, String modalidade) {
+	private String calculaLimiteDeBusca(Date ultimaAtualizacao, String atualizarTudo) {
 		Integer limit;
-		//Somente runs estao sendo recuperadas do Facebook em ordem cronologica
-		if(null != ultimaAtualizacao && ConstantesFitRank.MODALIDADE_CORRIDA.equals(modalidade)){
+		
+		if(null != ultimaAtualizacao && !ConstantesFitRank.CHAR_SIM.equals(atualizarTudo)){
 			limit = DateConversor.getDaysDifference(new Date(), ultimaAtualizacao) * ConstantesFitRank.LIMITE_CORRIDAS_REALIZADAS_POR_DIA;
 			limit = limit == 0 ? 1 : limit;
 		} else {
