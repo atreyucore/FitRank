@@ -91,7 +91,7 @@ public class CarregaRanking extends HttpServlet {
 		String modalidade = request.getAttribute("modalidade") == null ? (String) request.getParameter("modalidade") : (String) request.getAttribute("modalidade");
 		String modo = request.getAttribute("modo") == null ? (String) request.getParameter("modo") : (String) request.getAttribute("modo");
     	String periodo = request.getAttribute("periodo") == null ? (String) request.getParameter("periodo") : (String) request.getAttribute("periodo");
-    	String atualizarTudo = request.getParameter("atualizarTudo") == null ? "" : (String) request.getParameter("atualizarTudo");
+    	String atualizarTudo = request.getParameter("config") == null ? "" : (String) request.getParameter("config");
 		   
     	FacebookClient facebookClient = new DefaultFacebookClient(request.getParameter("token"));
     	User facebookUser = facebookClient.fetchObject("me", User.class);
