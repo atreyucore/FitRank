@@ -304,8 +304,25 @@
 				   				
 				   		});
 				   		
-			   		} else {
+			   		} else if (dadosAjax['config'] == configs['R']) {
 			   			
+			   			$.ajax({
+				   			url: location.origin + location.pathname.substring(0, location.pathname.lastIndexOf("/") + 1) + "CarregaRanking",
+				   			data: dadosAjax,
+				   			method: 'get',
+				   			success: function( data, textStatus, jqXHR){
+// 				   				$(".tableRank>tbody>.rankingLine").remove();
+				   				
+				   				json = JSON.parse(jqXHR.getResponseHeader('json'));
+				   				
+// 				   				competidores = json["@items"];
+				   				
+// 				   				geraRanking(competidores, dadosAjax.modo);
+				   			}
+				   				
+				   		});
+			   			
+			   		} else {
 			   			
 						var menu = element.siblings(":not(.opcao)").children(".bgSmall");
 				   		
