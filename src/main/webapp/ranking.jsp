@@ -59,7 +59,7 @@
 			
 			var configs = {
 				"F": "Favorito",
-				"R": "Recarregar"
+				"R": "S"
 			};
 			
 			var configsDesc = {
@@ -497,6 +497,13 @@
 									obj[prop] = per;
 								}
 							}
+							break;
+							
+						case 'config' :
+							if( obj[prop] == 'Recarregar atividades') {
+								obj[prop] = 'S';
+							}
+							
 							break;
 							
 					}
