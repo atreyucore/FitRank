@@ -238,9 +238,6 @@ public class PostFitnessDAO {
 				
 				listaPostFitness.add(postFitness);
 			}
-			
-			// execute insert SQL stetement
-			preparedStatement.executeQuery();
 	
 		} catch (SQLException e) {
 	
@@ -303,9 +300,6 @@ public class PostFitnessDAO {
 				}
 				
 			}
-			
-			// execute insert SQL stetement
-			preparedStatement.executeQuery();
 	
 		} catch (SQLException e) {
 	
@@ -324,6 +318,48 @@ public class PostFitnessDAO {
 		}
 		
 		return retorno;
+	}
+	
+	public String obtemDataPostMaisRecente(String idPessoa) throws SQLException {
+		
+		Connection dbConnection = null;
+		PreparedStatement preparedStatement = null;
+		String dataPostMaisRecente = "";
+	
+		String selectTableSQL = "SELECT str_to_date(pf.data_publicacao, '%d/%m/%Y') dat, "
+							  + "		  pf.data_publicacao "
+							  + "  FROM post_fitness pf "
+							  + " WHERE pf.id_pessoa = ? "
+							  + " ORDER BY dat DESC "
+							  + " LIMIT 1 ";
+				
+		try {
+			dbConnection = conexao;
+			preparedStatement = dbConnection.prepareStatement(selectTableSQL);
+			preparedStatement.setString(1, idPessoa);
+			
+			ResultSet rs = preparedStatement.executeQuery();
+			
+			if (rs.next()) {
+				dataPostMaisRecente = rs.getString("data_publicacao");
+			}
+	
+		} catch (SQLException e) {
+	
+			System.out.println(e.getMessage());
+	
+		} finally {
+	
+			if (preparedStatement != null) {
+				preparedStatement.close();
+			}
+	
+			if (dbConnection != null) {
+				dbConnection.close();
+			}
+	
+		}
+		return dataPostMaisRecente;
 	}
 }
 

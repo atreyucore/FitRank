@@ -135,6 +135,8 @@ public class CarregaRanking extends HttpServlet {
 		}
     	
     	List<RankingPessoaTela> listaRankingPessoaTela = obtemListaAplicativosTela(listRankingPessoas, configuracaoRanking);
+    	postFitnessServico = new PostFitnessServico();
+    	String dataPostMaisRecente = postFitnessServico.obtemDataPostMaisRecente(facebookUser.getId());
 
 		request.setAttribute("token", (String) request.getParameter("token"));
 		
@@ -146,6 +148,7 @@ public class CarregaRanking extends HttpServlet {
 		request.setAttribute("modo", modo);
 		request.setAttribute("periodo", periodo);
 		request.setAttribute("listaRanking", listaRankingPessoaTela);
+		request.setAttribute("dataPostMaisRecente", dataPostMaisRecente);
 		
 		request.setAttribute("token", (String) request.getParameter("token"));
 		

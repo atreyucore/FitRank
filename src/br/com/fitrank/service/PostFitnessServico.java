@@ -80,4 +80,16 @@ public class PostFitnessServico {
 			return null;
 		}
 	}
+	
+	public String obtemDataPostMaisRecente(String idPessoa) {
+		this.postFitnessDAO = new PostFitnessDAO();
+		
+		try {
+	    	return postFitnessDAO.obtemDataPostMaisRecente(idPessoa);
+	    	
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 }
