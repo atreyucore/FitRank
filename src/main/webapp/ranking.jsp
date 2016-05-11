@@ -14,7 +14,8 @@
 		<script type="text/javascript" src="js/jquery-1.11.2.js"></script>
 		<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 		<script src="http://connect.facebook.net/pt_BR/all.js"></script>
-		<script src="js/introjs/intro.js" type="text/javascript"></script>		
+		<script src="js/introjs/intro.js" type="text/javascript"></script>	
+		<script src="js/hmtl2canvas/html2canvas.js" type="text/javascript"></script>	
 		<script type="text/javascript">
 		
 			var periodo = {
@@ -71,6 +72,7 @@
 			var dadosAjax = {};
 			
 			var token = '<%=(String) request.getParameter("token")%>';
+			var ultimaPublicacao = '<%=(String) request.getAttribute("dataPostMaisRecente")%>';
 			var json =  JSON.parse('<%=(String) response.getHeader("json")%>');
 			
 // 			function startTutorial() {
@@ -613,10 +615,16 @@
 						
 						alturaConfig += $(".opcao").height() * 2 + 15; 
 					
+					
 					} else {
 						$(".mainConfig").text(configsDesc['C']);
 					}
+					
+					if (value == configsDesc['R']) {
+						$("<span class='capsula descOpcaoConfig' style='font-size: 16px;' title='Última Atividade: " + ultimaPublicacao +"'></span>").text("Última Atividade: " + ultimaPublicacao).appendTo(".Recarregar.atividades");
+					}
 				});
+				
 				
 			} 
 			
