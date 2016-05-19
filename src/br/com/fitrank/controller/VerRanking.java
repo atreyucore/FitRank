@@ -13,8 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 import br.com.fitrank.modelo.Configuracao;
 import br.com.fitrank.modelo.Ranking;
 import br.com.fitrank.modelo.RankingPessoa;
+import br.com.fitrank.modelo.apresentacao.RankingPessoaTela;
+import br.com.fitrank.service.AplicativoServico;
 import br.com.fitrank.service.ConfiguracaoServico;
 import br.com.fitrank.service.PessoaServico;
+import br.com.fitrank.service.PostFitnessServico;
 import br.com.fitrank.service.RankingPessoaServico;
 import br.com.fitrank.service.RankingServico;
 import br.com.fitrank.util.ConstantesFitRank;
@@ -34,7 +37,7 @@ public class VerRanking extends HttpServlet {
 	String periodo = null;
 	String fav = null;
 	String padrao = null;
-	
+	PostFitnessServico postFitnessServico = new PostFitnessServico();
 	
     public VerRanking() {
     	
@@ -53,7 +56,7 @@ public class VerRanking extends HttpServlet {
     	Configuracao configuracao = configuracaoServico.leConfiguracaoPorId(ranking.getId_configuracao());
     	listRankingPessoas = rankingPessoaServico.listaRankingPessoaPorIdRanking(ranking.getId_ranking());
     	
-    	//Recupera as configurações de pessoa, inclusive foto.
+    	//Recupera as configuracoes de pessoa, inclusive foto.
     	for (RankingPessoa rankingPessoa : listRankingPessoas) {
     		
     		PessoaServico pessoaServico = new PessoaServico();
@@ -61,16 +64,20 @@ public class VerRanking extends HttpServlet {
     		rankingPessoa.setPessoa( pessoaServico.lePessoaPorIdServico( rankingPessoa.getId_pessoa() ) );
 		}
     	
+    	List<RankingPessoaTela> listaRankingPessoaTela = obtemListaAplicativosTela(listRankingPessoas, configuracao);
+    	postFitnessServico = new PostFitnessServico();
+    	
     	modalidade = configuracao.getModalidade();
     	modo = configuracao.getModo();
-		periodo = definePeriodo(configuracao.getIntervaloData());
+		periodo = configuracao.getIntervaloData();
     	
     	request.setAttribute("modalidade", modalidade);
 		request.setAttribute("modo", modo);
 		request.setAttribute("periodo", periodo);
-		request.setAttribute("listaRanking", listRankingPessoas);
+//		request.setAttribute("listaRanking", listRankingPessoas);
+		request.setAttribute("listaRanking", listaRankingPessoaTela);
 		
-		String json = com.cedarsoftware.util.io.JsonWriter.objectToJson(listRankingPessoas);
+		String json = com.cedarsoftware.util.io.JsonWriter.objectToJson(listaRankingPessoaTela);
 		
 		response.addHeader("json", json);
 		
@@ -108,5 +115,16 @@ public class VerRanking extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		inicia(request, response);
 	}
-
+	
+	private List<RankingPessoaTela> obtemListaAplicativosTela(List<RankingPessoa> listaRankingPessoa, Configuracao configuracaoRanking) {
+    	List<RankingPessoaTela> listaRankingPessoaTela = new ArrayList<RankingPessoaTela>();
+    	AplicativoServico aplicativoServico = new AplicativoServico();
+		for (RankingPessoa rankingPessoa : listaRankingPessoa) {
+			RankingPessoaTela rankingPessoaTela = new RankingPessoaTela(rankingPessoa);
+			rankingPessoaTela.setListaAplicativosTela(aplicativoServico.listaAplicativosUsuarioNoRanking(configuracaoRanking, rankingPessoaTela));
+			listaRankingPessoaTela.add(rankingPessoaTela);
+		}
+		return listaRankingPessoaTela;
+	}
+	
 }

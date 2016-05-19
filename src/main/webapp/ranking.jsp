@@ -10,7 +10,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-		<meta property="og:image" content="http://eic.cefet-rj.br/app/FitRank/ShareImg?id=1078"/> <!-- substituir por scriptlet java -->
+		<meta property="og:image" content="http://eic.cefet-rj.br/app/FitRank/ShareImg?id=<%= request.getParameter("idRanking") %>" /> <!-- substituir por scriptlet java -->
 		<title>Escolher a configuração do Ranking</title>
 		<script type="text/javascript" src="js/jquery-1.11.2.js"></script>
 		<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
@@ -794,7 +794,7 @@
 						async: false,
 					    type: 'POST',
 					    success: function(data){
- 					    	window.open("https://www.facebook.com/dialog/share?app_id=749336888463283&display=popup&href=http://eic.cefet-rj.br/app/FitRank/VerRanking?id=" + idRanking + "&redirect_uri=http://eic.cefet-rj.br/app/FitRank/VerRanking?id=" + idRanking,"fb_share", "width=500, height=500");
+ 					    	window.open("https://www.facebook.com/dialog/share?app_id=749336888463283&display=popup&href=http://eic.cefet-rj.br/app/FitRank/VerRanking?idRanking=" + idRanking + "&redirect_uri=http://eic.cefet-rj.br/app/FitRank/VerRanking?idRanking=" + idRanking,"fb_share", "width=500, height=500");
 // 					    	FB.ui({
 // 					    		  method: "share",
 // 					    		  app_id: "749336888463283",
