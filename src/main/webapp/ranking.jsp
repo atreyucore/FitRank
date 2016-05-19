@@ -10,6 +10,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+		<meta property="og:image" content="http://eic.cefet-rj.br/app/FitRank/ShareImg?id=1078"/> <!-- substituir por scriptlet java -->
 		<title>Escolher a configuração do Ranking</title>
 		<script type="text/javascript" src="js/jquery-1.11.2.js"></script>
 		<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
@@ -74,6 +75,9 @@
 			var token = '<%=(String) request.getParameter("token")%>';
 			var ultimaPublicacao = '<%=(String) request.getAttribute("dataPostMaisRecente")%>';
 			var json =  JSON.parse('<%=(String) response.getHeader("json")%>');
+			
+			//substituir por scriptlet java
+			var idRanking = json["@items"][0]["id_ranking"]; //pega o id do ranking a partir do primeiro usuário, pois este sempre existirá
 			
 // 			function startTutorial() {
 // 				var intro = introJs();
@@ -770,23 +774,42 @@
 // 			}
 			
 			function compartilhar() {
-// 				window.open("https://www.facebook.com/dialog/share?app_id=749336888463283&display=popup&href=http://eic.cefet-rj.br/app/FitRank/&redirect_uri=http://eic.cefet-rj.br/app/FitRank/","fb_share", "width=500, height=500");
+
 				
 				genRankShare();
 				
-				html2canvas($(".ranks"), {
+				html2canvas($(".rankShare"), {
 				  logging: true,
 				  onrendered: function(canvas) {
-				    document.body.appendChild(canvas);
-				    
-// 				    var image = new Image();
-// 					image.src = canvas.toDataURL("image/png");
+				    var data = {};
+				    var image = new Image();
+					image.src = canvas.toDataURL("image/png");
+					$(".rankShare").remove();
+				    data["img64"] = image.src;
+				    data["idRanking"] = idRanking;  
+					
+					jQuery.ajax({
+					    url: location.origin + location.pathname.substring(0, location.pathname.lastIndexOf("/") + 1) + "UploadImg",
+					    data: data,
+						async: false,
+					    type: 'POST',
+					    success: function(data){
+ 					    	window.open("https://www.facebook.com/dialog/share?app_id=749336888463283&display=popup&href=http://eic.cefet-rj.br/app/FitRank/VerRanking?id=" + idRanking + "&redirect_uri=http://eic.cefet-rj.br/app/FitRank/VerRanking?id=" + idRanking,"fb_share", "width=500, height=500");
+// 					    	FB.ui({
+// 					    		  method: "share",
+// 					    		  app_id: "749336888463283",
+// 					    		  display: "popup",
+// 					    		  href: "http://eic.cefet-rj.br/app/FitRank/VerRanking?id=" + idRanking,
+// 					    		  redirect_uri: "http://eic.cefet-rj.br/app/FitRank/VerRanking?id=" + idRanking	
+// 					    		}, function(response){});	
+					    }
+					});
 					
 				  }
 				
 				});
-				
-				window.open("https://www.facebook.com/dialog/share?app_id=749336888463283&display=popup&href=http://eic.cefet-rj.br/app/FitRank/&redirect_uri=http://eic.cefet-rj.br/app/FitRank/","fb_share", "width=500, height=500");
+								
+// 				window.open("https://www.facebook.com/dialog/share?app_id=749336888463283&display=popup&href=http://eic.cefet-rj.br/app/FitRank/VerRanking?id=" + idRanking + "&redirect_uri=http://eic.cefet-rj.br/app/FitRank/VerRanking?id=" + idRanking,"fb_share", "width=500, height=500");
 			}
 		</script>
 		<link rel="stylesheet" type="text/css" href="./style/css/FitRank.css">

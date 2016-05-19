@@ -2,15 +2,12 @@ package br.com.fitrank.controller;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
 
 import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageOutputStream;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,7 +28,7 @@ public class ShareImg extends HttpServlet {
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String imgId = request.getParameter("id");
 		
-		byte[] b = null;
+//		byte[] b = null;
 		Blob blob;
 		byte[] blobAsBytes = null;
 		
@@ -50,8 +47,8 @@ public class ShareImg extends HttpServlet {
 		
 		BufferedImage image = createImageFromBytes(blobAsBytes);
 		
-		response.setContentType("image/gif");
-		ImageIO.write(image, "gif", response.getOutputStream());
+		response.setContentType("image/png");
+		ImageIO.write(image, "png", response.getOutputStream());
 	    response.getOutputStream().close();
 		
 	}

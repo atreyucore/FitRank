@@ -73,4 +73,13 @@
     <servlet-name>ShareImg</servlet-name>
     <url-pattern>/ShareImg</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>UploadImg</servlet-name>
+    <servlet-class>br.com.fitrank.controller.UploadImg</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UploadImg</servlet-name>
+    <url-pattern>/UploadImg</url-pattern>
+  </servlet-mapping>
+  
 </web-app>
