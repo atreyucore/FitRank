@@ -367,11 +367,11 @@ img.share:hover {
 	height: 64px;
 }
 
-.ranks {
+.ranks, .rankShare {
 	background-color: rgb(194, 240, 178);
 }
 
-.tableRank {
+.tableRank, .tableRankShare {
 	margin: 0 auto;
 	font-family: Capsuula;
 	font-size: 35px;
