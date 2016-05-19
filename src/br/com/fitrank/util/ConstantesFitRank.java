@@ -27,6 +27,8 @@ public final class ConstantesFitRank {
 	public static final String ID_APP_NIKE = "84697719333";
 	public static final String ID_APP_RUNTASTIC = "162918433202";
 	public static final String ID_APP_RUNKEEPER = "62572192129";
+	public static final String ID_APP_ENDOMONDO = "202423869273";
+	public static final String ID_APP_STRAVA = "284597785309";
 	
 	public static final String ID_APP_RUNTASTIC_MOUNTAIN_BIKE = "402248583177025";
 	
@@ -42,4 +44,6 @@ public final class ConstantesFitRank {
 	public static final int INT_RESULTADO_INVALIDO = -1;
 	public static final int LIMITE_CORRIDAS_REALIZADAS_POR_DIA = 2;
 	public static final int LIMITE_MAX_RECUPERA_FB = 99999;
+	
+	public static final float MILHA_EM_KM = 1.60934F;
 }
