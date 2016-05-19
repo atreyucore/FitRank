@@ -8,6 +8,8 @@ public class Aplicativo implements Comparable<Object> {
 	private String id_aplicativo;
 //	Column(name="nome")
 	private String nome;
+//	Column(name="url_site")
+	private String url_site;
 	
 	public String getId_aplicativo() {
 		return id_aplicativo;
@@ -20,6 +22,12 @@ public class Aplicativo implements Comparable<Object> {
 	}
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+	public String getUrl_site() {
+		return url_site;
+	}
+	public void setUrl_site(String url_site) {
+		this.url_site = url_site;
 	}
 	@Override
 	public int compareTo(Object o) {

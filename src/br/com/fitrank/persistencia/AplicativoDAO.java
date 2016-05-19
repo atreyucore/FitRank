@@ -24,16 +24,16 @@ public class AplicativoDAO {
 		this.conexao = new JDBCFactory().getConnection();
 	}
 
-	public Aplicativo adicionaAplicativo(Aplicativo aplicativo)
-			throws SQLException {
+	public Aplicativo adicionaAplicativo(Aplicativo aplicativo) throws SQLException {
 
 		Connection dbConnection = null;
 		PreparedStatement preparedStatement = null;
 
 		String insertTableSQL = "INSERT INTO aplicativo (" 
 				+ "id_aplicativo, "
-				+ "nome" 
-				+ ") VALUES (?,?)";
+				+ "nome, "
+				+ "url_site "
+				+ ") VALUES (?,?,?)";
 
 		try {
 			dbConnection = conexao;
@@ -43,6 +43,7 @@ public class AplicativoDAO {
 
 			preparedStatement.setString(++i, aplicativo.getId_aplicativo());
 			preparedStatement.setString(++i, aplicativo.getNome());
+			preparedStatement.setString(++i, aplicativo.getUrl_site());
 
 			// execute insert SQL stetement
 			preparedStatement.executeUpdate();
@@ -65,19 +66,19 @@ public class AplicativoDAO {
 		return aplicativo;
 	}
 	
-	public ArrayList<Aplicativo> adicionaAplicativos(ArrayList<Aplicativo> aplicativos)
-			throws SQLException {
+	public ArrayList<Aplicativo> adicionaAplicativos(ArrayList<Aplicativo> aplicativos) throws SQLException {
 
 		Connection dbConnection = null;
 		PreparedStatement preparedStatement = null;
 
 		String insertTableSQL = "INSERT INTO aplicativo (" 
 				+ "id_aplicativo, "
-				+ "nome" 
-				+ ") VALUES (?,?)";
+				+ "nome, "
+				+ "url_site "
+				+ ") VALUES (?,?,?)";
 		
 		for (int i = 0; i < (aplicativos.size() - 1); i++) {
-			insertTableSQL += ", (?,?)";
+			insertTableSQL += ", (?,?,?)";
 		}
 
 		try {
@@ -89,6 +90,7 @@ public class AplicativoDAO {
 			for (Aplicativo aplicativo : aplicativos) {
 				preparedStatement.setString(++i, aplicativo.getId_aplicativo());
 				preparedStatement.setString(++i, aplicativo.getNome());
+				preparedStatement.setString(++i, aplicativo.getUrl_site());
 			}
 			// execute insert SQL stetement
 			preparedStatement.executeUpdate();
@@ -119,7 +121,8 @@ public class AplicativoDAO {
 
 		String updateTableSQL = "update aplicativo set " 
 				+ "nome = ? "
-				+ "where id_aplicativo = ?";
+				+ "url_site = ? "
+				+ "where id_aplicativo = ? ";
 
 		try {
 			dbConnection = conexao;
@@ -128,6 +131,7 @@ public class AplicativoDAO {
 			int i = 0;
 
 			preparedStatement.setString(++i, aplicativo.getNome());
+			preparedStatement.setString(++i, aplicativo.getUrl_site());
 			preparedStatement.setString(++i, aplicativo.getId_aplicativo());
 
 			// execute insert SQL stetement
@@ -160,7 +164,8 @@ public class AplicativoDAO {
 
 		String selectTableSQL = "SELECT "
 				+ "id_aplicativo, "
-				+ "nome "
+				+ "nome, "
+				+ "url_site "
 				+ "FROM aplicativo "
 				+ "where id_aplicativo = ?";
 
@@ -181,7 +186,7 @@ public class AplicativoDAO {
 				aplicativo = new Aplicativo();
 				aplicativo.setId_aplicativo(rs.getString("id_aplicativo"));
 				aplicativo.setNome(rs.getString("nome"));
-
+				aplicativo.setUrl_site(rs.getString("url_site"));
 			}
 
 		} catch (SQLException e) {
@@ -212,7 +217,8 @@ public class AplicativoDAO {
 
 		String selectTableSQL = "SELECT "
 				+ "id_aplicativo, "
-				+ "nome "
+				+ "nome, "
+				+ "url_site "
 				+ "FROM aplicativo "
 				+ "where id_aplicativo IN ( ?";
 		
@@ -243,6 +249,7 @@ public class AplicativoDAO {
 				
 				aplicativo.setId_aplicativo(rs.getString("id_aplicativo"));
 				aplicativo.setNome(rs.getString("nome"));
+				aplicativo.setUrl_site(rs.getString("url_site"));
 				
 				aplicativosReturn.add(aplicativo);
 
