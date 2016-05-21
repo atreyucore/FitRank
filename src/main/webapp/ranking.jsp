@@ -11,6 +11,14 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<meta property="og:image" content="http://eic.cefet-rj.br/app/FitRank/ShareImg?id=<%= request.getParameter("idRanking") %>" /> <!-- substituir por scriptlet java -->
+		<meta property="og:image" content="http://eic.cefet-rj.br/app/FitRank/ShareImg?id=<%= request.getParameter("idRanking") %>" />
+		<meta property="og:image:width" content="1000">
+		<meta property="og:image:height" content="1000">
+		<meta property="og:url" content="http://eic.cefet-rj.br/app/FitRank/VerRanking?idRanking=<%= request.getParameter("idRanking") %>" />
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content="Ranking de <%= (String) request.getAttribute("geradorRank") %>" />
+		<meta property="og:description" content="Veja o Ranking gerado por <%= (String) request.getAttribute("geradorRank") %>" />
+		<meta property="fb:app_id" content="749336888463283" />
 		<title>Escolher a configuração do Ranking</title>
 		<script type="text/javascript" src="js/jquery-1.11.2.js"></script>
 		<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
@@ -491,7 +499,7 @@
 				for(index in competidores){
    					var competidor = competidores[index];
    					
-   					$(".tableRankShare>tbody").append("<tr class='rankingLine'></tr>");
+   					$(".tableRankShare>tbody").append("<tr class='rankingLine share'></tr>");
 
    					var rankingLine = $( $(".rankingLine")[competidores.length + parseInt(index)] );
 					
@@ -502,7 +510,7 @@
    					rankingLine.append("<td class='profileName'><a><span></span></a></td>");
    					
    					//Coluna de medidas do Ranking, definidos em configuração
-   					rankingLine.append("<td class='measure'></td>");
+   					rankingLine.append("<td class='measure share'></td>");
    					
    					rankingLine.children(".measure").append("<span class='spanEmphasized'></span><br>");
 //    					rankingLine.children(".measure").append("<span class='not_emphasized secondSpan'><div class='circle bgTiny'></div></span><br>");
@@ -778,13 +786,13 @@
 				
 				genRankShare();
 				
-				html2canvas($(".rankShare"), {
+				html2canvas($(".tableRankShare"), {
 				  logging: true,
 				  onrendered: function(canvas) {
 				    var data = {};
 				    var image = new Image();
 					image.src = canvas.toDataURL("image/png");
-					$(".rankShare").remove();
+// 					$(".rankShare").remove();
 				    data["img64"] = image.src;
 				    data["idRanking"] = idRanking;  
 					
@@ -799,8 +807,8 @@
 // 					    		  method: "share",
 // 					    		  app_id: "749336888463283",
 // 					    		  display: "popup",
-// 					    		  href: "http://eic.cefet-rj.br/app/FitRank/VerRanking?id=" + idRanking,
-// 					    		  redirect_uri: "http://eic.cefet-rj.br/app/FitRank/VerRanking?id=" + idRanking	
+// 					    		  href: "http://eic.cefet-rj.br/app/FitRank/VerRanking?idRanking=" + idRanking,
+// 					    		  redirect_uri: "http://eic.cefet-rj.br/app/FitRank/VerRanking?idRanking=" + idRanking	
 // 					    		}, function(response){});	
 					    }
 					});
@@ -809,7 +817,6 @@
 				
 				});
 								
-// 				window.open("https://www.facebook.com/dialog/share?app_id=749336888463283&display=popup&href=http://eic.cefet-rj.br/app/FitRank/VerRanking?id=" + idRanking + "&redirect_uri=http://eic.cefet-rj.br/app/FitRank/VerRanking?id=" + idRanking,"fb_share", "width=500, height=500");
 			}
 		</script>
 		<link rel="stylesheet" type="text/css" href="./style/css/FitRank.css">

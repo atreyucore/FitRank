@@ -49,6 +49,7 @@ public class VerRanking extends HttpServlet {
     	ConfiguracaoServico configuracaoServico = new ConfiguracaoServico();
     	RankingServico rankingServico = new RankingServico();
     	RankingPessoaServico rankingPessoaServico = new RankingPessoaServico();
+    	String nomeGeradorRank = "";
     	
     	int idRanking = request.getAttribute("idRanking") == null ? Integer.valueOf(request.getParameter("idRanking")) : (Integer) request.getAttribute("idRanking");
     	
@@ -62,6 +63,10 @@ public class VerRanking extends HttpServlet {
     		PessoaServico pessoaServico = new PessoaServico();
     		
     		rankingPessoa.setPessoa( pessoaServico.lePessoaPorIdServico( rankingPessoa.getId_pessoa() ) );
+    		
+    		if (rankingPessoa.getPessoa().getId_usuario().equals(configuracao.getIdPessoa()) ) {
+    			nomeGeradorRank = rankingPessoa.getPessoa().getNome();
+    		}
 		}
     	
     	List<RankingPessoaTela> listaRankingPessoaTela = obtemListaAplicativosTela(listRankingPessoas, configuracao);
@@ -75,6 +80,7 @@ public class VerRanking extends HttpServlet {
 		request.setAttribute("modo", modo);
 		request.setAttribute("periodo", periodo);
 //		request.setAttribute("listaRanking", listRankingPessoas);
+		request.setAttribute("geradorRank", nomeGeradorRank);
 		request.setAttribute("listaRanking", listaRankingPessoaTela);
 		
 		String json = com.cedarsoftware.util.io.JsonWriter.objectToJson(listaRankingPessoaTela);

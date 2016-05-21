@@ -624,3 +624,19 @@ td.profileName {
 .fitApp[data-ref = "Runtastic Mountain Bike"] {
 	background-image: url('../../imagem/Runtastic Mountain Bike.png');	
 }
+
+
+/*Compartilhamento*/
+
+.rankingLine.share {
+	height: initial;
+    min-height: initial;
+    max-height: initial;
+}
+.measure.share {
+	bottom: 0;
+}
+
+.tableRankShare {
+    background-color: rgb(194, 240, 178);
+}
