@@ -10,16 +10,18 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-		<meta property="og:image" content="http://eic.cefet-rj.br/app/FitRank/ShareImg?id=<%= request.getParameter("idRanking") %>" /> <!-- substituir por scriptlet java -->
 		<meta property="og:image" content="http://eic.cefet-rj.br/app/FitRank/ShareImg?id=<%= request.getParameter("idRanking") %>" />
 		<meta property="og:image:width" content="1000">
 		<meta property="og:image:height" content="1000">
+		<meta property="og:image:type" content="image/png">
+		<meta property="og:locale" content="pt_BR">
 		<meta property="og:url" content="http://eic.cefet-rj.br/app/FitRank/VerRanking?idRanking=<%= request.getParameter("idRanking") %>" />
+		<meta property="og:site_name" content="FitRank">
 		<meta property="og:type" content="website" />
 		<meta property="og:title" content="Ranking de <%= (String) request.getAttribute("geradorRank") %>" />
 		<meta property="og:description" content="Veja o Ranking gerado por <%= (String) request.getAttribute("geradorRank") %>" />
 		<meta property="fb:app_id" content="749336888463283" />
-		<title>Escolher a configuração do Ranking</title>
+		<title>Ranking</title>
 		<script type="text/javascript" src="js/jquery-1.11.2.js"></script>
 		<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 		<script src="http://connect.facebook.net/pt_BR/all.js"></script>
