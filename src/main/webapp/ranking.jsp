@@ -21,7 +21,7 @@
 		<meta property="og:title" content="Ranking de <%= (String) request.getAttribute("geradorRank") %>" />
 		<meta property="og:description" content="Veja o Ranking gerado por <%= (String) request.getAttribute("geradorRank") %>" />
 		<meta property="fb:app_id" content="749336888463283" />
-		<title>Ranking</title>
+		<title>Ranking - <%= (String) request.getAttribute("geradorRank") %></title>
 		<script type="text/javascript" src="js/jquery-1.11.2.js"></script>
 		<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 		<script src="http://connect.facebook.net/pt_BR/all.js"></script>
@@ -135,7 +135,7 @@
 			    }).ajaxStop(function () {
 			        $("#loading").hide();
 			    });
-
+			    fixTitle();
 				preparaConfiguracao();
 			    preparaRanking();
 			    var clickDisabled = false;
@@ -711,15 +711,15 @@
 			} 
 			
 			
-			function getOwnId() {
+			function fixTitle() {
 				FB.api('/me', 'GET',
 					{ 
-						"fields" : "id", 
+						"fields" : "name", 
 						"access_token" : token
 					},
 					function(response) {
-						if (response.id) {
-							return response.id;
+						if (response.name && $("title").text().search("null") !== -1) {
+							$("title").text("Ranking - " + response.name);
 						}
 					}
 				);

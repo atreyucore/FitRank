@@ -4,7 +4,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-		<title>Escolha a modalidade</title>
+		<title>FitRank</title>
 		<link rel="stylesheet" type="text/css" href="./style/css/FitRank.css">
 		<script src="./js/jquery-1.11.2.js"></script>
 		<script src="http://connect.facebook.net/pt_BR/all.js"></script>
