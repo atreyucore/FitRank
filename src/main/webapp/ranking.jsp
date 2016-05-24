@@ -11,8 +11,8 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<meta property="og:image" content="http://eic.cefet-rj.br/app/FitRank/ShareImg?id=<%= request.getParameter("idRanking") %>" />
-		<meta property="og:image:width" content="1000">
-		<meta property="og:image:height" content="1000">
+		<meta property="og:image:width" content="1200">
+		<meta property="og:image:height" content="630">
 		<meta property="og:image:type" content="image/png">
 		<meta property="og:locale" content="pt_BR">
 		<meta property="og:url" content="http://eic.cefet-rj.br/app/FitRank/VerRanking?idRanking=<%= request.getParameter("idRanking") %>" />
@@ -527,7 +527,7 @@
    					//Resultado			   					
    					var resultadoLine = rankingLine.children(".measure").children("span");
    					
-   					$(".modoTableHeader").text(modoDescricao[modoParam]);
+   					//$(".modoTableHeader").text(modoDescricao[modoParam]);
    					
    					switch(modoParam){
    						case "V":
@@ -794,7 +794,7 @@
 				    var data = {};
 				    var image = new Image();
 					image.src = canvas.toDataURL("image/png");
-// 					$(".rankShare").remove();
+					$(".rankShare").remove();
 				    data["img64"] = image.src;
 				    data["idRanking"] = idRanking;  
 					
