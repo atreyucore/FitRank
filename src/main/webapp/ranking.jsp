@@ -21,7 +21,7 @@
 		<meta property="og:title" content="Ranking de <%= (String) request.getAttribute("geradorRank") %>" />
 		<meta property="og:description" content="Veja o Ranking gerado por <%= (String) request.getAttribute("geradorRank") %>" />
 		<meta property="fb:app_id" content="749336888463283" />
-		<title>Ranking - <%= (String) request.getAttribute("geradorRank") %></title>
+		<title>Ranking - <%= (String) request.getAttribute("geradorRank") == null ?  "" : (String) request.getAttribute("geradorRank")%></title>
 		<script type="text/javascript" src="js/jquery-1.11.2.js"></script>
 		<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 		<script src="http://connect.facebook.net/pt_BR/all.js"></script>
@@ -84,6 +84,7 @@
 			
 			var token = '<%=(String) request.getParameter("token")%>';
 			var ultimaPublicacao = '<%=(String) request.getAttribute("dataPostMaisRecente")%>';
+			var teste = '<%=(String) request.getAttribute("teste")%>';
 			var json =  JSON.parse('<%=(String) response.getHeader("json")%>');
 			
 			//substituir por scriptlet java
@@ -222,9 +223,7 @@
 								},120);
 		   					}
 		   					
-		   					if(isPeriod) {
-		   						
-		   					}
+		   					
 		   				}
 						
 		   			});
@@ -718,7 +717,7 @@
 						"access_token" : token
 					},
 					function(response) {
-						if (response.name && $("title").text().search("null") !== -1) {
+						if (response.name && $("title").text().split(" - ")[1] == "") {
 							$("title").text("Ranking - " + response.name);
 						}
 					}
@@ -784,7 +783,7 @@
 // 			}
 			
 			function compartilhar() {
-
+				var authWindow = window.open('about:blank', "fb_share", "width=500, height=500");
 				
 				genRankShare();
 				
@@ -804,7 +803,8 @@
 						async: false,
 					    type: 'POST',
 					    success: function(data){
- 					    	window.open("https://www.facebook.com/dialog/share?app_id=749336888463283&display=popup&href=http://eic.cefet-rj.br/app/FitRank/VerRanking?idRanking=" + idRanking + "&redirect_uri=http://eic.cefet-rj.br/app/FitRank/VerRanking?idRanking=" + idRanking,"fb_share", "width=500, height=500");
+					    	authWindow.location.replace("https://www.facebook.com/dialog/share?app_id=749336888463283&display=popup&href=http://eic.cefet-rj.br/app/FitRank/VerRanking?idRanking=" + idRanking + "&redirect_uri=http://eic.cefet-rj.br/app/FitRank/self_close.jsp","fb_share", "width=500, height=500");
+// 					    	window.open("https://www.facebook.com/dialog/share?app_id=749336888463283&display=popup&href=http://eic.cefet-rj.br/app/FitRank/VerRanking?idRanking=" + idRanking + "&redirect_uri=http://eic.cefet-rj.br/app/FitRank/self_close.jsp","fb_share", "width=500, height=500");
 // 					    	FB.ui({
 // 					    		  method: "share",
 // 					    		  app_id: "749336888463283",
@@ -818,7 +818,7 @@
 				  }
 				
 				});
-								
+// 				window.open("https://www.facebook.com/dialog/share?app_id=749336888463283&display=popup&href=http://eic.cefet-rj.br/app/FitRank/VerRanking?idRanking=" + idRanking + "&redirect_uri=http://eic.cefet-rj.br/app/FitRank/VerRanking?idRanking=" + idRanking,"fb_share", "width=500, height=500");		
 			}
 		</script>
 		<link rel="stylesheet" type="text/css" href="./style/css/FitRank.css">
