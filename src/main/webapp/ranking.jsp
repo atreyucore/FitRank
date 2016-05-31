@@ -89,7 +89,7 @@
 			
 			//substituir por scriptlet java
 			var idRanking = json["@items"][0]["id_ranking"]; //pega o id do ranking a partir do primeiro usuário, pois este sempre existirá
-			
+			var verRanking = location.pathname.indexOf("VerRanking") !== -1 ? true : false; 
 // 			function startTutorial() {
 // 				var intro = introJs();
 // 	 	          intro.setOptions({
@@ -136,271 +136,285 @@
 			    }).ajaxStop(function () {
 			        $("#loading").hide();
 			    });
-			    fixTitle();
+			    if (verRanking) {
+			    	$(".share").css("display","none");
+			    	$(".config").css("display","none");
+			    	$(".chosenModalidade,.chosenModo,.chosenPeriod").not(".descOpcao").css("display","block");
+			    }
+			    
 				preparaConfiguracao();
 			    preparaRanking();
-			    var clickDisabled = false;
-			   			    	
-			   	$(".menu").click(function(e) {
-			   		if (clickDisabled)
-			            return;
-			   		
-			   		clickDisabled = true;
-			   		
-			   		var itemClicado = $(this);
-			   		
-			   		var toHide = 0; 
-			   		
-			   		$(".menu").not($(this)).children(".opcao").each(function(index, el) {
-			    		
-			    		if($(el).css("display") !== 'none') {
-			    			toHide++;
-			    		}
-					});
-			   		
-			   		var espera = toHide * (125 + 120) + ($(this).children(".opcao").length) * (125 + 120);
-			   		
-			   		setTimeout(function() {
-			   			clickDisabled = false;
-			   		}, espera);
-			   		
-			   		var time = 125;
-			   		
-			   		//Esconde as opcoes que estão aparecendo
-		   			$(".menu").not($(this)).children(".opcao").each(function(index, el){
-			    		
-			    		if($(el).css("display") !== 'none') {
+			    
+			    if (!verRanking){
+			    	fixTitle();
+			    	var clickDisabled = false;
+			     
+				   	$(".menu").click(function(e) {
+				   		if (clickDisabled)
+				            return;
+				   		
+				   		clickDisabled = true;
+				   		
+				   		var itemClicado = $(this);
+				   		
+				   		var toHide = 0; 
+				   		
+				   		$(".menu").not($(this)).children(".opcao").each(function(index, el) {
+				    		
+				    		if($(el).css("display") !== 'none') {
+				    			toHide++;
+				    		}
+						});
+				   		
+				   		var espera = toHide * (125 + 120) + ($(this).children(".opcao").length) * (125 + 120);
+				   		
+				   		setTimeout(function() {
+				   			clickDisabled = false;
+				   		}, espera);
+				   		
+				   		var time = 125;
+				   		
+				   		//Esconde as opcoes que estão aparecendo
+			   			$(".menu").not($(this)).children(".opcao").each(function(index, el){
+				    		
+				    		if($(el).css("display") !== 'none') {
+								setTimeout(function() {
+									$(el).toggle('slide', {direction : 'down', duration: 120});
+								}, time);
+								
+								time += 125;
+				    		}
+						});
+				   		
+			   			var mainDescriptionButtons = $(".menu").children(":not(.opcao)").children("[class*='chosen']");
+				    	
+			   			var spanDescChosen = $(this).children(":not(.opcao)").children("[class*='chosen']");
+	
+			   			//Esconde as descricoes que estão aparecendo
+			   			$(mainDescriptionButtons).each(function(index, el){
+			   				var isElEqualChosen =  $(spanDescChosen).attr('class') === $(el).attr('class'); 
+			   				var isPeriod = $(el).hasClass("chosenPeriod");
+			   				
+			   				if ( !isElEqualChosen && $(el).css("display") !== "none" && !isPeriod) {
+			   					
+			   					$(this).toggle('slide', {direction : 'down', duration: 120});
+	
+			   				} else if( isElEqualChosen && $(spanDescChosen).css("display") !== "none" && !isPeriod) {
+			   				
+			   					$(spanDescChosen).toggle('slide', {direction : 'down', duration: 120});
+			   					
+			   					$(".headerContent").animate({
+									marginBottom : "0"
+								},120);
+			   				} else if(isElEqualChosen && $(spanDescChosen).css("display") === "none") {
+			   					$(spanDescChosen).toggle('slide', {direction : 'down', duration: 120});
+			   					
+			   					if(!$(spanDescChosen).hasClass("mainConfig")) {
+				   					$(".headerContent").animate({
+										marginBottom : "20px"
+									},120);
+			   					}
+			   					
+			   					
+			   				}
+			   				
+			   				if (isElEqualChosen) {
+	
+								var marginTop =  $(".headerContent").css("margin-top");
+								
+								if ($(".periodo.opcao").first().css("display") == "none"  && isPeriod){
+				   					$(".headerContent, .configWrapper").animate({
+										marginTop : "50px"
+									},120);
+				   					
+				   					if(!$(spanDescChosen).hasClass("mainConfig")) {
+					   					$(".headerContent").animate({
+											marginBottom : "0"
+										},120);
+				   					}
+								} else {
+									$(".headerContent, .configWrapper").animate({
+										marginTop : "0"
+									},120);
+								}
+			   				}
+			   				
+			   				
+			   			});
+			   			
+	// 		   			$(spanClassesChosen).toggle('slide', {direction : 'down', duration: 120});
+			   			
+	// 		   			setTimeout(function() {
+							
+	// //							if( !$(spanTextChosen).hasClass("chosenPeriod")) {
+								
+	// //							}
+							
+	// 						if($(".headerContent").css("margin-bottom") == 0 || $(".headerContent").css("margin-bottom") == '0px') { 
+							
+	// 							$(".headerContent").animate({
+	// 								marginBottom : "20px"
+	// 							},120);
+								
+								
+	// 						} else {
+	// 							$(".headerContent").animate({
+	// 								marginBottom : "0"
+	// 							},120);
+	// 						}
+							
+	// 					}, time);
+						
+	// 					time += 125;
+				   		
+	// 					if(!$(this).hasClass("periodoWrapper")){
+							
+	// 						var spanTextChosen = $(this).children(":not(.opcao)").children("[class*='chosen']");
+							
+	// 						if (spanTextChosen.css("display") === 'none' ) {
+	// 							spanTextChosen
+	// 							hiddened = $(this).children(".opcao");
+								
+	// 						} else {
+								
+	// 							hiddened = $(this).children(".opcao").get().reverse();
+								
+	// 						}
+	// 					}
+						
+						//circulos de opcoes
+				   		var hiddened;
+						
+						if ($(this).children(".opcao").css("display") === 'none' ) {
+							hiddened = $(this).children(".opcao");
+						} else {
+							hiddened = $(this).children(".opcao").get().reverse();
+						}
+						
+						
+						$(hiddened).each(function(index, el){
+							
 							setTimeout(function() {
 								$(el).toggle('slide', {direction : 'down', duration: 120});
+								
 							}, time);
 							
 							time += 125;
-			    		}
+						});
+						
 					});
-			   		
-		   			var mainDescriptionButtons = $(".menu").children(":not(.opcao)").children("[class*='chosen']");//.not(".chosenPeriod");
-			    	
-		   			var spanDescChosen = $(this).children(":not(.opcao)").children("[class*='chosen']");//.not(".chosenPeriod");
-// 		   			var esconder = false;
-		   			
-		   			//Esconde as descricoes que estão aparecendo
-		   			$(mainDescriptionButtons).each(function(index, el){
-		   				var isElEqualChosen =  $(spanDescChosen).attr('class') === $(el).attr('class'); 
-		   				var isPeriod = $(el).hasClass("chosenPeriod");
-		   				
-		   				if ( !isElEqualChosen && $(el).css("display") !== "none" && !isPeriod) {
-		   					
-		   					$(this).toggle('slide', {direction : 'down', duration: 120});
-// 		   					esconder = true;
-		   				} else if (isElEqualChosen && isPeriod) {
-// 		   					$(".headerContent").animate({
-// 								marginBottom : "0"
-// 							},120); 
-							var marginTop =  $(".headerContent").css("margin-top");
-							
-							if(marginTop == "0px" || marginTop == "0"){
-			   					$(".headerContent, .configWrapper").animate({
-									marginTop : "50px"
-								},120);
-							} else {
-								$(".headerContent, .configWrapper").animate({
-									marginTop : "0"
-								},120);
-							}
-		   				} else if( isElEqualChosen && $(spanDescChosen).css("display") !== "none") {
-		   				
-		   					$(spanDescChosen).toggle('slide', {direction : 'down', duration: 120});
-		   					
-		   					$(".headerContent").animate({
-								marginBottom : "0"
-							},120);
-		   				} else if(isElEqualChosen && $(spanDescChosen).css("display") === "none") {
-		   					$(spanDescChosen).toggle('slide', {direction : 'down', duration: 120});
-		   					
-		   					if(!$(spanDescChosen).hasClass("mainConfig")) {
-			   					$(".headerContent").animate({
-									marginBottom : "20px"
-								},120);
-		   					}
-		   					
-		   					
-		   				}
-						
-		   			});
-		   			
-// 		   			$(spanClassesChosen).toggle('slide', {direction : 'down', duration: 120});
-		   			
-// 		   			setTimeout(function() {
-						
-// //							if( !$(spanTextChosen).hasClass("chosenPeriod")) {
-							
-// //							}
-						
-// 						if($(".headerContent").css("margin-bottom") == 0 || $(".headerContent").css("margin-bottom") == '0px') { 
-						
-// 							$(".headerContent").animate({
-// 								marginBottom : "20px"
-// 							},120);
-							
-							
-// 						} else {
-// 							$(".headerContent").animate({
-// 								marginBottom : "0"
-// 							},120);
-// 						}
-						
-// 					}, time);
-					
-// 					time += 125;
-			   		
-// 					if(!$(this).hasClass("periodoWrapper")){
-						
-// 						var spanTextChosen = $(this).children(":not(.opcao)").children("[class*='chosen']");
-						
-// 						if (spanTextChosen.css("display") === 'none' ) {
-// 							spanTextChosen
-// 							hiddened = $(this).children(".opcao");
-							
-// 						} else {
-							
-// 							hiddened = $(this).children(".opcao").get().reverse();
-							
-// 						}
-// 					}
-					
-					//circulos de opcoes
-			   		var hiddened;
-					
-					if ($(this).children(".opcao").css("display") === 'none' ) {
-						hiddened = $(this).children(".opcao");
-					} else {
-						hiddened = $(this).children(".opcao").get().reverse();
-					}
-					
-					
-					$(hiddened).each(function(index, el){
-						
-						setTimeout(function() {
-							$(el).toggle('slide', {direction : 'down', duration: 120});
-							
-						}, time);
-						
-						time += 125;
-					});
-					
-				});
-			    
-			   	$(".opcao").click(function() {
-			   		var element = $(this);
-			   		
-			   		dadosAjax['token'] = token;
-			   		dadosAjax[element.attr('data-ref')] = element.children().attr('data-ref');
-			   		dadosAjax[element.parent().siblings(".menu").first().children(":not(.opcao)").attr('data-ref')] = element.parent().siblings(".menu").first().children(":not(.opcao)").children(".bgSmall").attr('data-ref');
-			   		dadosAjax[element.parent().siblings(".menu").eq(1).children(":not(.opcao)").attr('data-ref')] = element.parent().siblings(".menu").eq(1).children(":not(.opcao)").children(".bgSmall").attr('data-ref');
-			   		dadosAjax[element.parent().siblings(".menu").eq(2).children(":not(.opcao)").attr('data-ref')] = element.parent().siblings(".menu").eq(2).children(":not(.opcao)").children(".bgSmall").attr('data-ref');
-				   	//Troca os valores das propriedades de dados para os aceitos pelo controller.
-			   		dadosAjax = prepareProperties(dadosAjax);
-			   	
-			   		if (dadosAjax['config'] == configs['F'] ) {
-			   			
-			   			$.ajax({
-				   			url: location.origin + location.pathname.substring(0, location.pathname.lastIndexOf("/") + 1) + "SalvaConfiguracao",
-				   			data: dadosAjax,
-				   			method: 'get',
-				   			success: function( data, textStatus, jqXHR){
-// 				   				$(".tableRank>tbody>.rankingLine").remove();
-				   				
-				   				json = JSON.parse(jqXHR.getResponseHeader('json'));
-				   				
-// 				   				competidores = json["@items"];
-				   				
-// 				   				geraRanking(competidores, dadosAjax.modo);
-				   			}
-				   				
-				   		});
+				    
+				   	$(".opcao").click(function() {
+				   		var element = $(this);
 				   		
-			   		} else if (dadosAjax['config'] == configs['R']) {
-			   			
-			   			$.ajax({
-				   			url: location.origin + location.pathname.substring(0, location.pathname.lastIndexOf("/") + 1) + "CarregaRanking",
-				   			data: dadosAjax,
-				   			method: 'get',
-				   			success: function( data, textStatus, jqXHR){
-// 				   				$(".tableRank>tbody>.rankingLine").remove();
-				   				
-				   				json = JSON.parse(jqXHR.getResponseHeader('json'));
-				   				
-// 				   				competidores = json["@items"];
-				   				
-// 				   				geraRanking(competidores, dadosAjax.modo);
-				   			}
-				   				
-				   		});
-			   			
-			   		} else {
-			   			
-						var menu = element.siblings(":not(.opcao)").children(".bgSmall");
-				   		
-				   		var opcao = element.children();
-				   		
-				   		var menuDataRef = menu.attr("data-ref");
-				   		
-				   		var menuText = menu.siblings(".capsula").text();
-				   		
-				   		var opcaoDataRef = opcao.attr("data-ref");
-				   		
-				   		var opcaoText= opcao.children(".capsula").text();
-	
-				   		menu.removeClass(menuDataRef);
-				   		
-				   		opcao.removeClass(opcaoDataRef);
-				   		
-				   		menu.addClass(opcaoDataRef);
-				   		
-				   		menu.siblings(".capsula").text(opcaoText);
-				   		
-				   		menu.attr("data-ref", opcaoDataRef);
-				   		
-				   		opcao.addClass(menuDataRef);
-				   		
-				   		opcao.children(".capsula").text(menuText);
-				   		
-				   		opcao.attr("data-ref", menuDataRef);
-	
-				   		//para o caso de mudança de periodo
-				   		menu.siblings(".chosenPeriod").text(opcaoDataRef);
-				   		
-				   		opcao.children(".descOpcao").text(menuDataRef);
+				   		dadosAjax['token'] = token;
+				   		dadosAjax[element.attr('data-ref')] = element.children().attr('data-ref');
+				   		dadosAjax[element.parent().siblings(".menu").first().children(":not(.opcao)").attr('data-ref')] = element.parent().siblings(".menu").first().children(":not(.opcao)").children(".bgSmall").attr('data-ref');
+				   		dadosAjax[element.parent().siblings(".menu").eq(1).children(":not(.opcao)").attr('data-ref')] = element.parent().siblings(".menu").eq(1).children(":not(.opcao)").children(".bgSmall").attr('data-ref');
+				   		dadosAjax[element.parent().siblings(".menu").eq(2).children(":not(.opcao)").attr('data-ref')] = element.parent().siblings(".menu").eq(2).children(":not(.opcao)").children(".bgSmall").attr('data-ref');
+					   	//Troca os valores das propriedades de dados para os aceitos pelo controller.
+				   		dadosAjax = prepareProperties(dadosAjax);
+				   	
+				   		if (dadosAjax['config'] == configs['F'] ) {
+				   			
+				   			$.ajax({
+					   			url: location.origin + location.pathname.substring(0, location.pathname.lastIndexOf("/") + 1) + "SalvaConfiguracao",
+					   			data: dadosAjax,
+					   			method: 'get',
+					   			success: function( data, textStatus, jqXHR){
+	// 				   				$(".tableRank>tbody>.rankingLine").remove();
+					   				
+					   				json = JSON.parse(jqXHR.getResponseHeader('json'));
+					   				
+	// 				   				competidores = json["@items"];
+					   				
+	// 				   				geraRanking(competidores, dadosAjax.modo);
+					   			}
+					   				
+					   		});
+					   		
+				   		} else if (dadosAjax['config'] == configs['R']) {
+				   			
+				   			$.ajax({
+					   			url: location.origin + location.pathname.substring(0, location.pathname.lastIndexOf("/") + 1) + "CarregaRanking",
+					   			data: dadosAjax,
+					   			method: 'get',
+					   			success: function( data, textStatus, jqXHR){
+	// 				   				$(".tableRank>tbody>.rankingLine").remove();
+					   				
+					   				json = JSON.parse(jqXHR.getResponseHeader('json'));
+					   				
+	// 				   				competidores = json["@items"];
+					   				
+	// 				   				geraRanking(competidores, dadosAjax.modo);
+					   			}
+					   				
+					   		});
+				   			
+				   		} else {
+				   			
+							var menu = element.siblings(":not(.opcao)").children(".bgSmall");
+					   		
+					   		var opcao = element.children();
+					   		
+					   		var menuDataRef = menu.attr("data-ref");
+					   		
+					   		var menuText = menu.siblings(".capsula").text();
+					   		
+					   		var opcaoDataRef = opcao.attr("data-ref");
+					   		
+					   		var opcaoText= opcao.children(".capsula").text();
+		
+					   		menu.removeClass(menuDataRef);
+					   		
+					   		opcao.removeClass(opcaoDataRef);
+					   		
+					   		menu.addClass(opcaoDataRef);
+					   		
+					   		menu.siblings(".capsula").text(opcaoText);
+					   		
+					   		menu.attr("data-ref", opcaoDataRef);
+					   		
+					   		opcao.addClass(menuDataRef);
+					   		
+					   		opcao.children(".capsula").text(menuText);
+					   		
+					   		opcao.attr("data-ref", menuDataRef);
+		
+					   		//para o caso de mudança de periodo
+					   		menu.siblings(".chosenPeriod").text(opcaoDataRef);
+					   		
+					   		opcao.children(".descOpcao").text(menuDataRef);
+					   		
+					   		
+		// 					if (opcaoDataRef == 'Semana') {
+		// 						menu.siblings(".chosenPeriod").css("right", "-56px");
+		// 			   		} else {
+		// 			   			menu.siblings(".chosenPeriod").css("right", "-25px");
+		// 			   		}
+					   		
+					   		
+					   		$.ajax({
+					   			url: location.origin + location.pathname.substring(0, location.pathname.lastIndexOf("/") + 1) + "CarregaRanking",
+					   			data: dadosAjax,
+					   			method: 'get',
+					   			success: function( data, textStatus, jqXHR){
+					   				$(".tableRank>tbody>.rankingLine").remove();
+					   				
+					   				json = JSON.parse(jqXHR.getResponseHeader('json'));
+					   				
+					   				competidores = json["@items"];
+					   				
+					   				geraRanking(competidores, dadosAjax.modo);
+					   			}
+					   				
+					   		});
+				   		}
 				   		
 				   		
-	// 					if (opcaoDataRef == 'Semana') {
-	// 						menu.siblings(".chosenPeriod").css("right", "-56px");
-	// 			   		} else {
-	// 			   			menu.siblings(".chosenPeriod").css("right", "-25px");
-	// 			   		}
 				   		
-				   		
-				   		$.ajax({
-				   			url: location.origin + location.pathname.substring(0, location.pathname.lastIndexOf("/") + 1) + "CarregaRanking",
-				   			data: dadosAjax,
-				   			method: 'get',
-				   			success: function( data, textStatus, jqXHR){
-				   				$(".tableRank>tbody>.rankingLine").remove();
-				   				
-				   				json = JSON.parse(jqXHR.getResponseHeader('json'));
-				   				
-				   				competidores = json["@items"];
-				   				
-				   				geraRanking(competidores, dadosAjax.modo);
-				   			}
-				   				
-				   		});
-			   		}
-			   		
-			   		
-			   		
-			   	});
-			    
+				   	});
+			    }
 			   	
 			});
 			
@@ -831,7 +845,7 @@
 			<div class="content">
 				<div class="headerContent rankingHeader">
 					<div class="siteHeader" data-step="1" data-intro="ola">
-						<div>
+						<div onClick="window.location = './'">
 							<span class="logo"> 
 								FitRank
 							</span>

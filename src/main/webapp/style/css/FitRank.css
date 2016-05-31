@@ -2,7 +2,8 @@
 
 @font-face {
 	font-family: 'Capsuula';
-	src: url('../fonts/Capsuula.ttf') format("truetype");
+	src: url('../fonts/Capsuula.woff') format("woff"),
+		 url('../fonts/Capsuula.ttf') format("truetype");
 }
 
 html, body {
