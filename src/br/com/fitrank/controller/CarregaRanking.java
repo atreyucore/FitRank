@@ -19,6 +19,7 @@ import br.com.fitrank.modelo.PostFitness;
 import br.com.fitrank.modelo.Ranking;
 import br.com.fitrank.modelo.RankingPessoa;
 import br.com.fitrank.modelo.apresentacao.RankingPessoaTela;
+import br.com.fitrank.modelo.fb.Course.Course;
 import br.com.fitrank.modelo.fb.PostFitness.PostFitnessFB;
 import br.com.fitrank.service.AmizadeServico;
 import br.com.fitrank.service.AplicativoServico;
@@ -252,6 +253,7 @@ public class CarregaRanking extends HttpServlet {
 		postFitnessServico = new PostFitnessServico();
 		ArrayList<PostFitness> postsSalvosNoBanco = (ArrayList<PostFitness>) postFitnessServico.lePostFitnessPorIdPessoa(facebookUser.getId());
 		ArrayList<PostFitness> postsNaoInserir = new ArrayList<PostFitness>();
+		StringBuilder ids = new StringBuilder();
 		
 		verificaAplicativos(listaFitConnection);
 		
@@ -291,11 +293,16 @@ public class CarregaRanking extends HttpServlet {
 					postFitness.setDuracao(PostFitnessUtil.getDuration(postFit.getStartTime(), postFit.getEndTime()));
 					postsFit.add(postFitness);
 					break;
-//				case ConstantesFitRank.ID_APP_STRAVA:
+				case ConstantesFitRank.ID_APP_STRAVA:
+					//fitness.course/?ids=938079182977622
+					if(ids.length() > 0){
+						ids.append(",");
+					}
+					ids.append(postFit.getId());
 //					postFitness.setDistancia_percorrida(PostFitnessUtil.getRunKeeperDistance(postFit.getDataCourse().getCourse().getTitle()));
 //					postFitness.setDuracao(PostFitnessUtil.getRunKeeperDuration(postFit.getDataCourse().getCourse().getTitle()));
 //					postsFit.add(postFitness);
-//					break;
+					break;
 				default:
 					break;
 				}
@@ -305,6 +312,19 @@ public class CarregaRanking extends HttpServlet {
 			}
 
 		}
+		/*
+		Connection<Course> listaCourseStrava = facebookClient.fetchConnection("fitness.course/?ids=" + ids.toString(), Course.class);
+		
+		for(Course courseStrava : listaCourseStrava.getData()){
+			// Adiciona aplicativo à Lista
+			PostFitness postFitness = new PostFitness();
+			postFitness.setId_publicacao(courseStrava.getId());
+			postFitness.setId_pessoa(facebookUser.getId());
+			postFitness.setId_app(ConstantesFitRank.ID_APP_STRAVA);
+//			postFitness.setData_publicacao(DateConversor.DateToString(courseStrava.getCreated_time())); "2016-05-17T21:13:10+0000"
+//			postFitness.setUrl(postFit.getDataCourse().getCourse().getUrl());
+			postFitness.setModalidade(modalidade);
+		} */
 		
 		for (PostFitness postFitness : postsFit) {
 			for (PostFitness postSalvoNoBanco : postsSalvosNoBanco) {
