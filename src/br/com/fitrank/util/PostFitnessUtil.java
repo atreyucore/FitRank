@@ -15,16 +15,12 @@ public class PostFitnessUtil {
 			miles = "0".concat(miles);
 		}
 		
-		double kms = Double.parseDouble(miles) * 1.60934;
+		double kms = Double.parseDouble(miles) * ConstantesFitRank.MILHA_EM_KM;
 		
 		return kms;
 	}
 	
-	public static double getNikeDuration(Date startTime, Date endTime) {
-		
-//		Date startTime =  DateConversor.StringToDate(strStartTime);
-		
-//		Date endTime =  DateConversor.StringToDate(strEndTime);
+	public static double getDuration(Date startTime, Date endTime) {
 		
 		GregorianCalendar gcStartTime = DateConversor.convertDateToGregorian(startTime);
 		
@@ -34,6 +30,19 @@ public class PostFitnessUtil {
 		
 		return (double) diffMillis/3600000;
 		
+	}
+	
+	public static double getEndomondoDistance(String courseTitle) throws NumberFormatException {
+		
+		String km = courseTitle.split("km")[0].trim();
+		
+		if ( km.charAt(0) == '.' ) {
+			km = "0".concat(km);
+		}
+		
+		double kms = Double.parseDouble(km);
+		
+		return kms;
 	}
 	
 	public static double getRuntasticDistance(String courseTitle)  throws NumberFormatException {
