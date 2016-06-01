@@ -289,7 +289,7 @@ public class CarregaEscolhaRanking extends HttpServlet {
 					switch (postFit.getApplication().getId()) {
 					case ConstantesFitRank.ID_APP_NIKE:
 						postFitness.setDistancia_percorrida(PostFitnessUtil.getNikeDistance(postFit.getDataCourse().getCourse().getTitle()));
-						postFitness.setDuracao(PostFitnessUtil.getNikeDuration(postFit.getStartTime(), postFit.getEndTime()));
+						postFitness.setDuracao(PostFitnessUtil.getDuration(postFit.getStartTime(), postFit.getEndTime()));
 						break;
 					case ConstantesFitRank.ID_APP_RUNTASTIC:
 					case ConstantesFitRank.ID_APP_RUNTASTIC_MOUNTAIN_BIKE:
