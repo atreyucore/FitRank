@@ -2,7 +2,8 @@
 
 @font-face {
 	font-family: 'Capsuula';
-	src: url('../fonts/Capsuula.ttf') format("truetype");
+	src: url('../fonts/Capsuula.woff') format("woff"),
+		 url('../fonts/Capsuula.ttf') format("truetype");
 }
 
 html, body {
@@ -639,4 +640,5 @@ td.profileName {
 
 .tableRankShare {
     background-color: rgb(194, 240, 178);
+    font-size: 25px;
 }
