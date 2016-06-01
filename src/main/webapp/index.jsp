@@ -106,7 +106,7 @@
 					</div>
 					<div>
 						<p class="text" style="text-align: center;">Para usar o
-							FitRank faça login com sua conta do Facebook.</p>
+							FitRank, faça login com sua conta do Facebook.</p>
 						<p class="text" style="text-align: center;">Nós só iremos
 							publicar no Facebook com a sua prévia autorização.</p>
 						<input type="button" id="entra"

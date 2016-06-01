@@ -641,4 +641,5 @@ td.profileName {
 .tableRankShare {
     background-color: rgb(194, 240, 178);
     font-size: 25px;
+    min-height: 315px; 
 }

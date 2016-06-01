@@ -11,8 +11,8 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<meta property="og:image" content="http://eic.cefet-rj.br/app/FitRank/ShareImg?id=<%= request.getParameter("idRanking") %>" />
-		<meta property="og:image:width" content="1200">
-		<meta property="og:image:height" content="630">
+		<meta property="og:image:width" content="711">
+		<meta property="og:image:height" content="400">
 		<meta property="og:image:type" content="image/png">
 		<meta property="og:locale" content="pt_BR">
 		<meta property="og:url" content="http://eic.cefet-rj.br/app/FitRank/VerRanking?idRanking=<%= request.getParameter("idRanking") %>" />
@@ -807,7 +807,7 @@
 				    var data = {};
 				    var image = new Image();
 					image.src = canvas.toDataURL("image/png");
-					$(".rankShare").remove();
+// 					$(".rankShare").remove();
 				    data["img64"] = image.src;
 				    data["idRanking"] = idRanking;  
 					
@@ -845,8 +845,8 @@
 			<div class="content">
 				<div class="headerContent rankingHeader">
 					<div class="siteHeader" data-step="1" data-intro="ola">
-						<div onClick="window.location = './'">
-							<span class="logo"> 
+						<div>
+							<span class="logo" onClick="window.location = './'" style="cursor: pointer;"> 
 								FitRank
 							</span>
 							<div class="share" onclick="compartilhar()"> 
