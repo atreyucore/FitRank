@@ -5,6 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="theme-color" content="#6f3d94" />
 <title>FitRank</title>
 <link rel="stylesheet" type="text/css" href="./style/css/FitRank.css">
 <script src="./js/jquery-1.11.2.js"></script>

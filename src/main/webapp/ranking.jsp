@@ -11,8 +11,10 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<meta property="og:image" content="http://eic.cefet-rj.br/app/FitRank/ShareImg?id=<%= request.getParameter("idRanking") %>" />
-		<meta property="og:image:width" content="711">
-		<meta property="og:image:height" content="315">
+<!-- 		<meta property="og:image:width" content="711"> -->
+<!-- 		<meta property="og:image:height" content="315"> -->
+		<meta property="og:image:width" content="671">
+		<meta property="og:image:height" content="250">
 		<meta property="og:image:type" content="image/png">
 		<meta property="fb:app_id" content="749336888463283">
 		<meta property="og:locale" content="pt_BR">
@@ -21,6 +23,7 @@
 		<meta property="og:type" content="website" />
 		<meta property="og:title" content="Ranking de Atividades Físicas de <%= (String) request.getAttribute("geradorRank") %> e amigos" />
 		<meta property="og:description" content="Junte-se a <%= (String) request.getAttribute("geradorRank") %> neste jogo junto com seus amigos em busca de uma melhor qualidade de vida." />
+		<meta name="theme-color" content="#6f3d94" />
 		<title>Ranking - <%= (String) request.getAttribute("geradorRank") == null ?  "" : (String) request.getAttribute("geradorRank")%></title>
 		<script type="text/javascript" src="js/jquery-1.11.2.js"></script>
 		<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
@@ -511,7 +514,7 @@
 				$("body").append("<div class='rankShare'>");
 				$(".rankShare").append("<table class='tableRankShare'>");
 				$(".tableRankShare").append("<tbody>");
-				$(".tableRankShare>tbody").append("<tr><th></th><th></th><th class='modoTableHeader'></th></tr>");
+// 				$(".tableRankShare>tbody").append("<tr><th></th><th></th><th class='modoTableHeader'></th></tr>");
 				
 				for(index in competidores){
    					var competidor = competidores[index];
@@ -809,7 +812,8 @@
 				    var data = {};
 				    var image = new Image();
 					image.src = canvas.toDataURL("image/png");
-					$(".rankShare").remove();
+// 					$(".rankShare").remove();
+// 					$(".tableRankShare>tbody>tr").first().remove();
 				    data["img64"] = image.src;
 				    data["idRanking"] = idRanking;  
 					
