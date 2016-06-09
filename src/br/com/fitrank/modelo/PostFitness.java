@@ -24,6 +24,8 @@ public class PostFitness implements Comparable<Object> {
 	private String  url;
 	
 	private String 	modalidade;
+	
+	private Course	course;
 
 	public String getId_publicacao() {
 		return id_publicacao;
@@ -104,6 +106,14 @@ public class PostFitness implements Comparable<Object> {
 	public void setModalidade(String modalidade) {
 		this.modalidade = modalidade;
 	}
+
+	public Course getCourse() {
+		return course;
+	}
+
+	public void setCourse(Course course) {
+		this.course = course;
+	}
 	
 	@Override
 	public int compareTo(Object o) {
@@ -130,5 +140,4 @@ public class PostFitness implements Comparable<Object> {
 		
 		return false;
 	}
-	
 }

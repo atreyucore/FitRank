@@ -36,6 +36,7 @@ import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
 import com.restfb.Parameter;
+import com.restfb.FacebookClient.AccessToken;
 import com.restfb.exception.FacebookGraphException;
 import com.restfb.types.User;
 
@@ -253,7 +254,6 @@ public class CarregaRanking extends HttpServlet {
 		postFitnessServico = new PostFitnessServico();
 		ArrayList<PostFitness> postsSalvosNoBanco = (ArrayList<PostFitness>) postFitnessServico.lePostFitnessPorIdPessoa(facebookUser.getId());
 		ArrayList<PostFitness> postsNaoInserir = new ArrayList<PostFitness>();
-		StringBuilder ids = new StringBuilder();
 		
 		verificaAplicativos(listaFitConnection);
 		
@@ -294,14 +294,14 @@ public class CarregaRanking extends HttpServlet {
 					postsFit.add(postFitness);
 					break;
 				case ConstantesFitRank.ID_APP_STRAVA:
-					//fitness.course/?ids=938079182977622
-					if(ids.length() > 0){
-						ids.append(",");
-					}
-					ids.append(postFit.getId());
+					br.com.fitrank.modelo.Course postCourse = new br.com.fitrank.modelo.Course();
+					postFitness.setCourse(postCourse);
+//					id_post = 1205140629498083 			NAO FUNCIONA --> 1203506176328195 RUNS
+//					id_course = 536405739817852
+					postCourse.setId_course(postFit.getDataCourse().getCourse().getId());
 //					postFitness.setDistancia_percorrida(PostFitnessUtil.getRunKeeperDistance(postFit.getDataCourse().getCourse().getTitle()));
 //					postFitness.setDuracao(PostFitnessUtil.getRunKeeperDuration(postFit.getDataCourse().getCourse().getTitle()));
-//					postsFit.add(postFitness);
+					postsFit.add(postFitness);
 					break;
 				default:
 					break;
@@ -312,19 +312,21 @@ public class CarregaRanking extends HttpServlet {
 			}
 
 		}
-		/*
-		Connection<Course> listaCourseStrava = facebookClient.fetchConnection("fitness.course/?ids=" + ids.toString(), Course.class);
 		
-		for(Course courseStrava : listaCourseStrava.getData()){
-			// Adiciona aplicativo à Lista
-			PostFitness postFitness = new PostFitness();
-			postFitness.setId_publicacao(courseStrava.getId());
-			postFitness.setId_pessoa(facebookUser.getId());
-			postFitness.setId_app(ConstantesFitRank.ID_APP_STRAVA);
+//		Connection<Course> listaCourseStrava = facebookClient.fetchConnection("fitness.course/?ids=" + ids.toString(), Course.class);
+//		AccessToken appAccessToken = new DefaultFacebookClient().obtainAppAccessToken(ConstantesFitRank.ID_APP_FITRANK, "6597ab02634e5f72ca8def8b6ce4654b");
+		
+		
+//		for(Course courseStrava : listaCourseStrava){
+//			// Adiciona aplicativo à Lista
+//			PostFitness postFitness = new PostFitness();
+//			postFitness.setId_publicacao(courseStrava.getId());
+//			postFitness.setId_pessoa(facebookUser.getId());
+//			postFitness.setId_app(ConstantesFitRank.ID_APP_STRAVA);
 //			postFitness.setData_publicacao(DateConversor.DateToString(courseStrava.getCreated_time())); "2016-05-17T21:13:10+0000"
 //			postFitness.setUrl(postFit.getDataCourse().getCourse().getUrl());
-			postFitness.setModalidade(modalidade);
-		} */
+//			postFitness.setModalidade(modalidade);
+//		}
 		
 		for (PostFitness postFitness : postsFit) {
 			for (PostFitness postSalvoNoBanco : postsSalvosNoBanco) {
@@ -336,6 +338,14 @@ public class CarregaRanking extends HttpServlet {
 		
 		for(PostFitness postNaoInserir : postsNaoInserir) {
 			postsFit.remove(postNaoInserir);
+		}
+		
+		for(int i=0; i< postsFit.size(); i++){
+			if(ConstantesFitRank.ID_APP_STRAVA.equals(postsFit.get(i).getId_app())){
+				Course courseStrava = facebookClient.fetchObject(postsFit.get(i).getCourse().getId_course(),Course.class,Parameter.with("fields", "data{distance{value},duration{value}}"));
+				postsFit.get(i).setDistancia_percorrida(PostFitnessUtil.getStravaCourseDistance(courseStrava.getData().getDistance().getValue()));
+				postsFit.get(i).setDuracao(PostFitnessUtil.getStravaCourseDuration(courseStrava.getData().getDuration().getValue()));
+			}
 		}
 		
 		Pessoa pessoa = pessoaServico.lePessoaServico(facebookUser);

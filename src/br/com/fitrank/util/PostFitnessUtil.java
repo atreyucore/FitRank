@@ -123,5 +123,15 @@ public class PostFitnessUtil {
 		
 		return doubleHour + doubleMinutesInHour + doubleSecondsInHour;
 		
-	}	
+	}
+	
+	public static double getStravaCourseDistance(String distanceInKm) throws NumberFormatException {
+		
+		return Double.parseDouble(distanceInKm);
+	}
+	
+	public static double getStravaCourseDuration(String durationInSeconds)  throws NumberFormatException {
+		
+		return Double.parseDouble(durationInSeconds) / 3600;
+	}
 }
