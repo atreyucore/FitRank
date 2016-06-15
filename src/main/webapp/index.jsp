@@ -28,7 +28,6 @@
 					alert(response.status);
 					}, {scope: 'email,user_likes,user_actions.fitness'} );*/
 					var token = "";
-					var appToken = "";
 					FB.getLoginStatus(function(response) {
 								
 						if (response.status === 'connected') {
@@ -37,9 +36,7 @@
 							window.location = location.origin
 									+ location.pathname
 									+ "InitUser?token="
-									+ token 
-									+ "&appToken="
-									+ appToken;
+									+ token;
 
 							// 					        }else if(response.status === 'not_authorized'){
 
@@ -56,13 +53,11 @@
 												.submit();
 										if (response.authResponse) {
 											token = response.authResponse.accessToken;
-											appToken = response.authResponse.appToken; 
+											 
 											window.location = location.origin
 													+ location.pathname
 													+ "InitUser?token="
-													+ token
-													+ "&appToken="
-													+ appToken;
+													+ token;
 
 										} else {
 											console
@@ -76,9 +71,7 @@
 										window.location = location.origin
 												+ location.pathname
 												+ "InitUser?token="
-												+ token
-												+ "&appToken="
-												+ appToken;
+												+ token;
 									}
 
 								},
@@ -106,12 +99,11 @@
 						<div class="logo">FitRank</div>
 					</div>
 					<div>
-						<p class="text" style="text-align: center;">Para usar o
-							FitRank, faça login com sua conta do Facebook.</p>
-						<p class="text" style="text-align: center;">Nós só iremos
-							publicar no Facebook com a sua prévia autorização.</p>
+					
+						<p class="text" style="text-align: center;">Para socializar as suas atividades físicas usando o FitRank </p>
+						<p class="text" style="text-align: center;">é necessário se logar com a conta do Facebook.</p>
 						<input type="button" id="entra"
-							style="cursor: pointer; margin: 0 auto; display: block; border: none; width: 288px; height: 62px; background-image: url('https://fbcdn-dragon-a.akamaihd.net/hphotos-ak-xaf1/t39.2178-6/851579_209602122530903_1060396115_n.png')"
+							style="cursor: pointer; margin: 0 auto; margin-top: 35px; display: block; border: none; width: 288px; height: 62px; background-image: url('https://fbcdn-dragon-a.akamaihd.net/hphotos-ak-xaf1/t39.2178-6/851579_209602122530903_1060396115_n.png')"
 						/>
 					</div>
 				</div>

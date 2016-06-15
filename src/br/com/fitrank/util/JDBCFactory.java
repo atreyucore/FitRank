@@ -1,8 +1,11 @@
 package br.com.fitrank.util;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class JDBCFactory {
 
@@ -16,24 +19,33 @@ public class JDBCFactory {
 	// }
 
 	public Connection getConnection() {
-
+		
+		Properties prop = new Properties();
+		InputStream input = null;
+		
 		try {
 			Class.forName("com.mysql.jdbc.Driver"); 
 			
+			input = getClass().getClassLoader().getResourceAsStream("config.properties");
+			
+			// load a properties file
+			prop.load(input);
+			
+			
+//			return DriverManager.getConnection(
+//					prop.getProperty("dbconnection"), prop.getProperty("dbuser"), prop.getProperty("dbpassword") );
+			
 			return DriverManager.getConnection(
-					"jdbc:mysql://eic.cefet-rj.br:8101/fitrank", "fitrank", "fitrank2015!");
+					"jdbc:mysql://localhost:3306/fitrank", prop.getProperty("dbuser"), prop.getProperty("dbpassword") );
 			
 //			return DriverManager.getConnection(
-//					"jdbc:mysql://localhost:3306/fitrank", "fitrank", "fitrank2015!");
-			
-//			return DriverManager.getConnection(
-//					"jdbc:mysql://10.1.1.186:8101/fitrank", "fitrank", "fitrank2015!");
+//					"jdbc:mysql://10.1.1.186:8101/fitrank", prop.getProperty("dbuser"), prop.getProperty("dbpassword") );
 
 			//Banco local, localhost
 //			return DriverManager.getConnection(
 //					"jdbc:mysql://localhost:3306/fitrank", "root", "");
 			
-		} catch (SQLException | ClassNotFoundException e) {
+		} catch (SQLException | ClassNotFoundException | IOException e) {
 
 			throw new RuntimeException(e);
 		}

@@ -14,7 +14,7 @@ html, body {
 }
 
 a {
-	text-decoration: initial;
+	text-decoration: none;
     color: black;
 }
 
@@ -560,11 +560,48 @@ td.profileName {
     font-weight: bold;
     position: absolute;
     width: 110px;
-   	top: 18px;
+    _width: 125px;
     left: -115px;
+    _left: -128px;
     word-wrap: break-word;
     text-align: center;
     display: none;
+    
+}
+
+@-moz-document url-prefix() {
+	
+	.mainConfig {
+	    width: 125px;
+	    left: -128px;
+	}
+	
+	.Recarregar>.descOpcaoConfig {
+		width: 195px !important;	
+	}
+	
+	.Favorito>.descOpcaoConfig {	
+	    width: 75px !important;
+	}
+	
+	.tableRankShare {
+		height: 450px !important; /*Firefox interpreta min-height como height*/
+	}
+}
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .mainConfig {
+	    width: 125px;
+	    left: -128px;
+	}
+	
+	.Recarregar>.descOpcaoConfig {
+		width: 195px !important;	
+	}
+	
+	.Favorito>.descOpcaoConfig {	
+	    width: 75px !important;
+	}
 }
 
 .Recarregar {
@@ -576,7 +613,7 @@ td.profileName {
 }
 
 .Favorito>.descOpcaoConfig {
-    width: 63px;
+	width: 63px;
 }
 
 .Favorito {
