@@ -1,6 +1,8 @@
 package br.com.fitrank.controller;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,7 +20,9 @@ import br.com.fitrank.util.ConstantesFitRank;
 import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
+import com.restfb.FacebookClient.AccessToken;
 import com.restfb.Parameter;
+import com.restfb.exception.FacebookOAuthException;
 import com.restfb.json.JsonObject;
 import com.restfb.types.User;
 
@@ -36,15 +40,26 @@ public class InitUser extends HttpServlet {
 
 	protected void inicia(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
+	   InputStream input = null;
+	   Properties prop = new Properties();
 	   
-	   FacebookClient facebookClient = new DefaultFacebookClient(request.getParameter("token"));
-
-	   User facebookUser = facebookClient.fetchObject("me", User.class);
+	   input = getClass().getClassLoader().getResourceAsStream("config.properties");
+	   
+	   prop.load(input);
+	   
+	   AccessToken accessToken = new DefaultFacebookClient().obtainExtendedAccessToken(ConstantesFitRank.ID_APP_FITRANK,
+			   prop.getProperty("app_secret"), request.getParameter("token"));
+	   
+	   String token = accessToken.getAccessToken();
+	   
+	   FacebookClient facebookClient = new DefaultFacebookClient(token);
+	   
+	   User facebookUser = facebookClient.fetchObject("me", User.class);;
 	   
 	   Connection<User> friendsFB = facebookClient.fetchConnection("me/friends", User.class, Parameter.with("fields", "name, id"));
 	   
 	   JsonObject picture = facebookClient.fetchObject("me/picture", JsonObject.class, Parameter.with("type", "normal"), Parameter.with("redirect", "false"));
-	   
+    
 	   Pessoa pessoa = new Pessoa();
 	   
 	   if(facebookUser.getId()!=null && !facebookUser.getId().equals("")){
@@ -107,18 +122,21 @@ public class InitUser extends HttpServlet {
 			request.setAttribute("periodo", ConstantesFitRank.PERIODO_PADRAO);
 		}
 	   
-	   request.setAttribute("token", request.getParameter("token"));
+	   request.setAttribute("token", token);
 	   
 	   RequestDispatcher rd = request.getRequestDispatcher("/CarregaRanking");  
 	   rd.forward(request,response);  
+	   
+	
    }
 
 	private void atualizaAmizadeUsuario(User facebookUser, User friendFB) {
-		
+
 		String idAmigo = friendFB.getId();
-		
+
 		if (amizadeServico.leAmizadeServico(facebookUser.getId(), idAmigo) == null) {
-			amizadeServico.adicionaAmizadeServico(facebookUser.getId(), idAmigo);
+			amizadeServico
+					.adicionaAmizadeServico(facebookUser.getId(), idAmigo);
 		}
 	}
 

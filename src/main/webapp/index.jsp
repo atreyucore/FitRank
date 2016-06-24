@@ -8,6 +8,7 @@
 <meta name="theme-color" content="#6f3d94" />
 <title>FitRank</title>
 <link rel="stylesheet" type="text/css" href="./style/css/FitRank.css">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <script src="./js/jquery-1.11.2.js"></script>
 <script src="http://connect.facebook.net/pt_BR/all.js"></script>
 <script>
@@ -33,10 +34,14 @@
 						if (response.status === 'connected') {
 	
 							token = response.authResponse.accessToken;
-							window.location = location.origin
-									+ location.pathname
-									+ "InitUser?token="
-									+ token;
+// 							window.location = location.origin
+// 									+ location.pathname
+// 									+ "InitUser?token="
+// 									+ token;
+							
+							$("#token").val(token);
+							
+							$("#formSubmit").submit();
 
 							// 					        }else if(response.status === 'not_authorized'){
 
@@ -45,34 +50,47 @@
 						} else {
 
 							FB.login(function(response) {
-									if (response.session) {
-										alert(response.session);
-										alert("entrou");
-										$(
-												'#fb_login_form')
-												.submit();
-										if (response.authResponse) {
+									if (response.authResponse) {
+										token = response.authResponse.accessToken;
+										$("#token").val(token);
+										
+										$("#formSubmit").submit();
+									
+// 										alert(response.session);
+// 										alert("entrou");
+// 										$(
+// 												'#fb_login_form')
+// 												.submit();
+										
 											token = response.authResponse.accessToken;
 											 
-											window.location = location.origin
-													+ location.pathname
-													+ "InitUser?token="
-													+ token;
+// 											window.location = location.origin
+// 													+ location.pathname
+// 													+ "InitUser?token="
+// 													+ token;
+											
+											$("#token").val(token);
+											
+											$("#formSubmit").submit();
 
-										} else {
-											console
-													.log("O usuário não permitiu acesso aos dados!");
-										}
+										
+									} else {
+										console
+												.log("O usuário não permitiu acesso aos dados!");
 									}
 
-									if (response.status == "connected"
-											&& response.authResponse) {
-										token = response.authResponse.accessToken;
-										window.location = location.origin
-												+ location.pathname
-												+ "InitUser?token="
-												+ token;
-									}
+// 									if (response.status == "connected"
+// 											&& response.authResponse) {
+// 										token = response.authResponse.accessToken;
+// 										window.location = location.origin
+// 												+ location.pathname
+// 												+ "InitUser?token="
+// 												+ token;
+
+// 										$("#token").val(token);
+										
+// 										$("#formSubmit").submit();
+// 									}
 
 								},
 								{
@@ -112,5 +130,8 @@
 		<div class="footer"></div>
 	</div>
 	<div id="fb-root"></div>
+	<form action="Main" id="formSubmit" style="display: none;" method="post">
+    	<input type="hidden" id="token" name="token" />
+	</form>
 </body>
 </html>

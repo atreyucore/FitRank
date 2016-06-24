@@ -25,6 +25,7 @@
 		<meta property="og:description" content="Junte-se a <%= (String) request.getAttribute("geradorRank") %> neste jogo junto com seus amigos em busca de uma melhor qualidade de vida." />
 		<meta name="theme-color" content="#6f3d94" />
 		<title>Ranking - <%= (String) request.getAttribute("geradorRank") == null ?  "" : (String) request.getAttribute("geradorRank")%></title>
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 		<script type="text/javascript" src="js/jquery-1.11.2.js"></script>
 		<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 		<script src="http://connect.facebook.net/pt_BR/all.js"></script>
@@ -85,7 +86,8 @@
 			
 			var dadosAjax = {};
 			
-			var token = '<%=(String) request.getParameter("token")%>';
+<%-- 			var token = '<%=(String) request.getParameter("token")%>'; --%>
+			var token = '<%=(String) request.getAttribute("token")%>';
 			var ultimaPublicacao = '<%=(String) request.getAttribute("dataPostMaisRecente")%>';
 			var teste = '<%=(String) request.getAttribute("teste")%>';
 			var json =  JSON.parse('<%=(String) response.getHeader("json")%>');
@@ -311,6 +313,7 @@
 				   		var element = $(this);
 				   		
 				   		dadosAjax['token'] = token;
+				   		dadosAjax['ajax'] = 'S';
 				   		dadosAjax[element.attr('data-ref')] = element.children().attr('data-ref');
 				   		dadosAjax[element.parent().siblings(".menu").first().children(":not(.opcao)").attr('data-ref')] = element.parent().siblings(".menu").first().children(":not(.opcao)").children(".bgSmall").attr('data-ref');
 				   		dadosAjax[element.parent().siblings(".menu").eq(1).children(":not(.opcao)").attr('data-ref')] = element.parent().siblings(".menu").eq(1).children(":not(.opcao)").children(".bgSmall").attr('data-ref');
@@ -326,8 +329,9 @@
 					   			method: 'get',
 					   			success: function( data, textStatus, jqXHR){
 	// 				   				$(".tableRank>tbody>.rankingLine").remove();
-					   				
-					   				json = JSON.parse(jqXHR.getResponseHeader('json'));
+	
+					   				json = JSON.parse(data.responseText);
+// 					   				json = JSON.parse(jqXHR.getResponseHeader('json'));
 					   				
 	// 				   				competidores = json["@items"];
 					   				
@@ -344,8 +348,8 @@
 					   			method: 'get',
 					   			success: function( data, textStatus, jqXHR){
 	// 				   				$(".tableRank>tbody>.rankingLine").remove();
-					   				
-					   				json = JSON.parse(jqXHR.getResponseHeader('json'));
+					   				json = JSON.parse(data.responseText);
+// 					   				json = JSON.parse(jqXHR.getResponseHeader('json'));
 					   				
 	// 				   				competidores = json["@items"];
 					   				
@@ -402,10 +406,12 @@
 					   			data: dadosAjax,
 					   			method: 'get',
 // 					   			success: function( data, textStatus, jqXHR){
-								complete: function(jqXHR, textStatus) {
+								complete: function(data, jqXHR, textStatus) {
 					   				$(".tableRank>tbody>.rankingLine").remove();
 					   				
-					   				json = JSON.parse(jqXHR.getResponseHeader('json'));
+					   				json = JSON.parse(data.responseText);
+					   				
+// 					   				json = JSON.parse(jqXHR.getResponseHeader('json'));
 					   				
 					   				competidores = json["@items"];
 					   				

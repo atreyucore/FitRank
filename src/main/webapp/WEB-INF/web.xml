@@ -26,12 +26,12 @@
     <url-pattern>/RecuperaUsuarioFacebook</url-pattern>
   </servlet-mapping>
   <servlet>
-    <servlet-name>InitUser</servlet-name>
+    <servlet-name>Main</servlet-name>
     <servlet-class>br.com.fitrank.controller.InitUser</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>InitUser</servlet-name>
-    <url-pattern>/InitUser</url-pattern>
+    <servlet-name>Main</servlet-name>
+    <url-pattern>/Main</url-pattern>
   </servlet-mapping>
   <servlet>
     <servlet-name>CarregaEscolhaRanking</servlet-name>

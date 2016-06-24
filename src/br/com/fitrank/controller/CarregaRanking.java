@@ -1,6 +1,7 @@
 package br.com.fitrank.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,7 +37,6 @@ import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
 import com.restfb.Parameter;
-import com.restfb.FacebookClient.AccessToken;
 import com.restfb.exception.FacebookGraphException;
 import com.restfb.types.User;
 
@@ -94,8 +94,10 @@ public class CarregaRanking extends HttpServlet {
 		String modo = request.getAttribute("modo") == null ? (String) request.getParameter("modo") : (String) request.getAttribute("modo");
     	String periodo = request.getAttribute("periodo") == null ? (String) request.getParameter("periodo") : (String) request.getAttribute("periodo");
     	String atualizarTudo = request.getParameter("config") == null ? "" : (String) request.getParameter("config");
-		   
-    	FacebookClient facebookClient = new DefaultFacebookClient(request.getParameter("token"));
+    	String isAjax = request.getParameter("ajax") == null ? "" : (String) request.getParameter("ajax");
+    	String token = request.getAttribute("token") == null ? (String) request.getParameter("token") : (String) request.getAttribute("token");
+    	
+    	FacebookClient facebookClient = new DefaultFacebookClient(token);
     	User facebookUser = facebookClient.fetchObject("me", User.class);
     	
     	//Atualizações feitas em toda e qualquer chamada de ranking
@@ -140,7 +142,7 @@ public class CarregaRanking extends HttpServlet {
     	postFitnessServico = new PostFitnessServico();
     	String dataPostMaisRecente = postFitnessServico.obtemDataPostMaisRecente(facebookUser.getId());
 
-		request.setAttribute("token", (String) request.getParameter("token"));
+		request.setAttribute("token", token);
 		
 		Date horaFim = new Date();
 		System.out.println("\n\nTempo de processamento CarregaRanking: " + (horainicio.getTime() - horaFim.getTime())/1000 + " segundos.\n");
@@ -152,15 +154,25 @@ public class CarregaRanking extends HttpServlet {
 		request.setAttribute("listaRanking", listaRankingPessoaTela);
 		request.setAttribute("dataPostMaisRecente", dataPostMaisRecente);
 		
-		request.setAttribute("token", (String) request.getParameter("token"));
+//		request.setAttribute("token", (String) request.getParameter("token"));
 		
 		String json = com.cedarsoftware.util.io.JsonWriter.objectToJson(listaRankingPessoaTela);
 		
-		response.addHeader("json", json);
+		if(isAjax.equals("S")){
+			response.setContentType("text/html;charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			out.println(json);
+			out.close();
+		} else {
+			response.addHeader("json", json);
+			
+			rd = request.getRequestDispatcher("ranking.jsp");
+			
+			rd.forward(request, response);
+		}
 		
-		rd = request.getRequestDispatcher("ranking.jsp");
 		
-		rd.forward(request, response);
+		
     	
     }
     
