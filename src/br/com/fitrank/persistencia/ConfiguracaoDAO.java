@@ -5,11 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.mysql.jdbc.Statement;
-
 import br.com.fitrank.modelo.Configuracao;
 import br.com.fitrank.util.ConstantesFitRank;
 import br.com.fitrank.util.JDBCFactory;
+import br.com.fitrank.util.Logger;
+
+import com.mysql.jdbc.Statement;
 
 
 public class ConfiguracaoDAO {
@@ -71,7 +72,7 @@ public class ConfiguracaoDAO {
 
 		} catch (SQLException e) {
 
-			System.out.println(e.getMessage());
+			Logger.insertLog(e.getMessage());
 
 		} finally {
 
@@ -134,7 +135,7 @@ public Configuracao atualizaConfiguracao(Configuracao configuracao) throws SQLEx
 
 		} catch (SQLException e) {
 
-			System.out.println(e.getMessage());
+			Logger.insertLog(e.getMessage());
 
 		} finally {
 
@@ -193,7 +194,7 @@ public Configuracao atualizaConfiguracao(Configuracao configuracao) throws SQLEx
 			}
 		} catch (SQLException e) {
 			 
-			System.out.println(e.getMessage());
+			Logger.insertLog(e.getMessage());
 	
 		} finally {
 	
@@ -266,7 +267,7 @@ public Configuracao atualizaConfiguracao(Configuracao configuracao) throws SQLEx
 			}
 		} catch (SQLException e) {
 			 
-			System.out.println(e.getMessage());
+			Logger.insertLog(e.getMessage());
 	
 		} finally {
 	
@@ -300,7 +301,7 @@ public Configuracao atualizaConfiguracao(Configuracao configuracao) throws SQLEx
 //			return true;
 //		} catch (SQLException e) {
 // 
-//			System.out.println(e.getMessage());
+//			Logger.insertLog(e.getMessage());
 //			return false;
 //		} finally {
 // 

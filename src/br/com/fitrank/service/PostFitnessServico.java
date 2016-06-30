@@ -43,9 +43,9 @@ public class PostFitnessServico {
 //				errosInsercao++;
 //			}
 //		}
-//		System.out.println("\n\nPosts inseridos:    " + postInserido);
-//		System.out.println("Erros de insercao:  " + errosInsercao);
-//		System.out.println("Total de insercoes: " + totalInserts);
+//		Logger.insertLog("\n\nPosts inseridos:    " + postInserido);
+//		Logger.insertLog("Erros de insercao:  " + errosInsercao);
+//		Logger.insertLog("Total de insercoes: " + totalInserts);
 //		
 //		return postInserido > 0;
 		

@@ -5,11 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.mysql.jdbc.Statement;
-
 import br.com.fitrank.modelo.Ranking;
 import br.com.fitrank.util.ConstantesFitRank;
 import br.com.fitrank.util.JDBCFactory;
+import br.com.fitrank.util.Logger;
+
+import com.mysql.jdbc.Statement;
 
 
 public class RankingDAO {
@@ -53,7 +54,7 @@ public class RankingDAO {
 
 		} catch (SQLException e) {
 
-			System.out.println(e.getMessage());
+			Logger.insertLog(e.getMessage());
 
 		} finally {
 
@@ -97,7 +98,7 @@ public class RankingDAO {
 	
 		} catch (SQLException e) {
 	
-			System.out.println(e.getMessage());
+			Logger.insertLog(e.getMessage());
 	
 		} finally {
 	
@@ -145,7 +146,7 @@ public class RankingDAO {
 	
 		} catch (SQLException e) {
 	
-			System.out.println(e.getMessage());
+			Logger.insertLog(e.getMessage());
 	
 		} finally {
 	

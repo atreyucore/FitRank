@@ -4,6 +4,7 @@ import java.sql.SQLException;
 
 import br.com.fitrank.modelo.ImagemRanking;
 import br.com.fitrank.persistencia.ImagemRankingDAO;
+import br.com.fitrank.util.Logger;
 
 public class ImagemRankingServico {
 	
@@ -15,7 +16,7 @@ public class ImagemRankingServico {
 		try {
 			imagemRanking = imagemRankingDAO.adicionaImagemRanking(imagemRanking);
 		} catch (SQLException e) {
-			System.out.println("Erro ao salvar Ranking.");
+			Logger.insertLog("Erro ao salvar Ranking.");
 			e.printStackTrace();
 		}
 		
@@ -29,8 +30,8 @@ public class ImagemRankingServico {
 		try {
 			imagemRanking = imagemRankingDAO.leImagemRanking(idRanking);
 		} catch (SQLException e) {
-			System.out.println("Erro ao ler Ranking.");
-			System.out.println("id_ranking = " + idRanking);
+			Logger.insertLog("Erro ao ler Ranking.");
+			Logger.insertLog("id_ranking = " + idRanking);
 			e.printStackTrace();
 			imagemRanking = new ImagemRanking();
 		}

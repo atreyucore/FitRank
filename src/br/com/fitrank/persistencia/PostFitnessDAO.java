@@ -9,6 +9,7 @@ import java.util.List;
 
 import br.com.fitrank.modelo.PostFitness;
 import br.com.fitrank.util.JDBCFactory;
+import br.com.fitrank.util.Logger;
 
 
 public class PostFitnessDAO {
@@ -59,7 +60,7 @@ public class PostFitnessDAO {
 
 		} catch (SQLException e) {
 
-			System.out.println(e.getMessage());
+			Logger.insertLog(e.getMessage());
 
 		} finally {
 
@@ -123,7 +124,7 @@ public class PostFitnessDAO {
 
 		} catch (SQLException e) {
 
-			System.out.println(e.getMessage());
+			Logger.insertLog(e.getMessage());
 			isSucess = false;
 			
 		} finally {
@@ -180,7 +181,7 @@ public class PostFitnessDAO {
 	
 		} catch (SQLException e) {
 	
-			System.out.println(e.getMessage());
+			Logger.insertLog(e.getMessage());
 	
 		} finally {
 	
@@ -241,7 +242,7 @@ public class PostFitnessDAO {
 	
 		} catch (SQLException e) {
 	
-			System.out.println(e.getMessage());
+			Logger.insertLog(e.getMessage());
 	
 		} finally {
 	
@@ -303,7 +304,7 @@ public class PostFitnessDAO {
 	
 		} catch (SQLException e) {
 	
-			System.out.println(e.getMessage());
+			Logger.insertLog(e.getMessage());
 	
 		} finally {
 	
@@ -346,7 +347,7 @@ public class PostFitnessDAO {
 	
 		} catch (SQLException e) {
 	
-			System.out.println(e.getMessage());
+			Logger.insertLog(e.getMessage());
 	
 		} finally {
 	

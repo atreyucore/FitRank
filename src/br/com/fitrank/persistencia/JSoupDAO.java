@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 import br.com.fitrank.modelo.JSoup;
 import br.com.fitrank.util.JDBCFactory;
+import br.com.fitrank.util.Logger;
 
 public class JSoupDAO {
 
@@ -90,7 +91,7 @@ public class JSoupDAO {
 
 		} catch (SQLException e) {
 
-			System.out.println(e.getMessage());
+			Logger.insertLog(e.getMessage());
 
 		} finally {
 
@@ -181,7 +182,7 @@ public class JSoupDAO {
 
 		} catch (SQLException e) {
 
-			System.out.println(e.getMessage());
+			Logger.insertLog(e.getMessage());
 
 		} finally {
 
@@ -283,7 +284,7 @@ public class JSoupDAO {
 
 		} catch (SQLException e) {
 
-			System.out.println(e.getMessage());
+			Logger.insertLog(e.getMessage());
 
 		} finally {
 

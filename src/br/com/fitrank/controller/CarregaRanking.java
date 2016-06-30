@@ -31,6 +31,7 @@ import br.com.fitrank.service.RankingPessoaServico;
 import br.com.fitrank.service.RankingServico;
 import br.com.fitrank.util.ConstantesFitRank;
 import br.com.fitrank.util.DateConversor;
+import br.com.fitrank.util.Logger;
 import br.com.fitrank.util.PostFitnessUtil;
 
 import com.restfb.Connection;
@@ -145,7 +146,7 @@ public class CarregaRanking extends HttpServlet {
 		request.setAttribute("token", token);
 		
 		Date horaFim = new Date();
-		System.out.println("\n\nTempo de processamento CarregaRanking: " + (horainicio.getTime() - horaFim.getTime())/1000 + " segundos.\n");
+		Logger.insertLog("\n\nTempo de processamento CarregaRanking: " + (horainicio.getTime() - horaFim.getTime())/1000 + " segundos.\n");
 
 		
     	request.setAttribute("modalidade", modalidade);

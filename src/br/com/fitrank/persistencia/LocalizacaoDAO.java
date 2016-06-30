@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 import br.com.fitrank.modelo.Localizacao;
 import br.com.fitrank.util.JDBCFactory;
+import br.com.fitrank.util.Logger;
 
 public class LocalizacaoDAO {
 
@@ -45,7 +46,7 @@ public class LocalizacaoDAO {
 
 		} catch (SQLException e) {
 
-			System.out.println(e.getMessage());
+			Logger.insertLog(e.getMessage());
 
 		} finally {
 
@@ -90,7 +91,7 @@ public class LocalizacaoDAO {
 
 		} catch (SQLException e) {
 
-			System.out.println(e.getMessage());
+			Logger.insertLog(e.getMessage());
 
 		} finally {
 
@@ -142,7 +143,7 @@ public class LocalizacaoDAO {
 
 		} catch (SQLException e) {
 
-			System.out.println(e.getMessage());
+			Logger.insertLog(e.getMessage());
 
 		} finally {
 

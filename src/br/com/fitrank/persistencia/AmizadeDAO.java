@@ -10,6 +10,7 @@ import java.util.List;
 import br.com.fitrank.modelo.Amizade;
 import br.com.fitrank.util.DateConversor;
 import br.com.fitrank.util.JDBCFactory;
+import br.com.fitrank.util.Logger;
 
 public class AmizadeDAO {
 
@@ -45,7 +46,7 @@ public class AmizadeDAO {
 
 		} catch (SQLException e) {
 
-			System.out.println(e.getMessage());
+			Logger.insertLog(e.getMessage());
 
 		} finally {
 
@@ -86,7 +87,7 @@ public class AmizadeDAO {
 
 		} catch (SQLException e) {
 
-			System.out.println(e.getMessage());
+			Logger.insertLog(e.getMessage());
 
 		} finally {
 
@@ -137,7 +138,7 @@ public class AmizadeDAO {
 
 		} catch (SQLException e) {
 
-			System.out.println(e.getMessage());
+			Logger.insertLog(e.getMessage());
 
 		} finally {
 
@@ -190,7 +191,7 @@ public class AmizadeDAO {
 
 		} catch (SQLException e) {
 
-			System.out.println(e.getMessage());
+			Logger.insertLog(e.getMessage());
 			
 		} finally {
 
@@ -227,7 +228,7 @@ public class AmizadeDAO {
 	// return true;
 	// } catch (SQLException e) {
 	//
-	// System.out.println(e.getMessage());
+	// Logger.insertLog(e.getMessage());
 	// return false;
 	// } finally {
 	//

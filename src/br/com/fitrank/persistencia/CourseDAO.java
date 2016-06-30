@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 import br.com.fitrank.modelo.Course;
 import br.com.fitrank.util.JDBCFactory;
+import br.com.fitrank.util.Logger;
 
 
 public class CourseDAO {
@@ -47,7 +48,7 @@ public class CourseDAO {
 
 		} catch (SQLException e) {
 
-			System.out.println(e.getMessage());
+			Logger.insertLog(e.getMessage());
 
 		} finally {
 
@@ -93,7 +94,7 @@ public class CourseDAO {
 
 		} catch (SQLException e) {
 
-			System.out.println(e.getMessage());
+			Logger.insertLog(e.getMessage());
 
 		} finally {
 
@@ -146,7 +147,7 @@ public class CourseDAO {
 			}
 		} catch (SQLException e) {
 			 
-			System.out.println(e.getMessage());
+			Logger.insertLog(e.getMessage());
 	
 		} finally {
 	

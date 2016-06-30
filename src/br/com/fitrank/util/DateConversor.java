@@ -11,11 +11,21 @@ public class DateConversor {
 	
 	private static final String FORMATO_DATA = "dd/MM/yyyy";
 	private static final SimpleDateFormat FORMATTER = new SimpleDateFormat(FORMATO_DATA);
+	private static final String FORMATTER_DATA_HORA = "dd/MM/yyyy HH:mm:ss";
+	private static final SimpleDateFormat FORMATTER_DATE_HOUR = new SimpleDateFormat(FORMATTER_DATA_HORA);
 	private static GregorianCalendar gc;
 	
 	public static String DateToString(Date data) {
 		try {
 			return FORMATTER.format(data);
+		} catch(NullPointerException e) {
+			return null;
+		}
+	}
+	
+	public static String DateHourToString(Date data) {
+		try {
+			return FORMATTER_DATE_HOUR.format(data);
 		} catch(NullPointerException e) {
 			return null;
 		}

@@ -6,6 +6,7 @@ import java.util.Date;
 import br.com.fitrank.modelo.Ranking;
 import br.com.fitrank.persistencia.RankingDAO;
 import br.com.fitrank.util.DateConversor;
+import br.com.fitrank.util.Logger;
 
 public class RankingServico {
 	
@@ -18,7 +19,7 @@ public class RankingServico {
 		try {
 			ranking = rankingDAO.adicionaRanking(ranking);
 		} catch (SQLException e) {
-			System.out.println("Erro ao salvar Ranking.");
+			Logger.insertLog("Erro ao salvar Ranking.");
 			e.printStackTrace();
 		}
 		
@@ -32,8 +33,8 @@ public class RankingServico {
 		try {
 			ranking = rankingDAO.leRanking(idRanking);
 		} catch (SQLException e) {
-			System.out.println("Erro ao ler Ranking.");
-			System.out.println("id_ranking = " + idRanking);
+			Logger.insertLog("Erro ao ler Ranking.");
+			Logger.insertLog("id_ranking = " + idRanking);
 			e.printStackTrace();
 			ranking = new Ranking();
 		}

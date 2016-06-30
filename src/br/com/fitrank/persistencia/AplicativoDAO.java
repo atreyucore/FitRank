@@ -15,6 +15,7 @@ import br.com.fitrank.modelo.apresentacao.RankingPessoaTela;
 import br.com.fitrank.util.ConstantesFitRank;
 import br.com.fitrank.util.DateConversor;
 import br.com.fitrank.util.JDBCFactory;
+import br.com.fitrank.util.Logger;
 
 public class AplicativoDAO {
 
@@ -50,7 +51,7 @@ public class AplicativoDAO {
 
 		} catch (SQLException e) {
 
-			System.out.println(e.getMessage());
+			Logger.insertLog(e.getMessage());
 
 		} finally {
 
@@ -97,7 +98,7 @@ public class AplicativoDAO {
 
 		} catch (SQLException e) {
 
-			System.out.println(e.getMessage());
+			Logger.insertLog(e.getMessage());
 
 		} finally {
 
@@ -139,7 +140,7 @@ public class AplicativoDAO {
 
 		} catch (SQLException e) {
 
-			System.out.println(e.getMessage());
+			Logger.insertLog(e.getMessage());
 
 		} finally {
 
@@ -191,7 +192,7 @@ public class AplicativoDAO {
 
 		} catch (SQLException e) {
 
-			System.out.println(e.getMessage());
+			Logger.insertLog(e.getMessage());
 
 		} finally {
 
@@ -257,7 +258,7 @@ public class AplicativoDAO {
 
 		} catch (SQLException e) {
 
-			System.out.println(e.getMessage());
+			Logger.insertLog(e.getMessage());
 
 		} finally {
 
@@ -332,7 +333,7 @@ public class AplicativoDAO {
 	
 		} catch (SQLException e) {
 	
-			System.out.println(e.getMessage());
+			Logger.insertLog(e.getMessage());
 	
 		} finally {
 	
@@ -366,7 +367,7 @@ public class AplicativoDAO {
 	// return true;
 	// } catch (SQLException e) {
 	//
-	// System.out.println(e.getMessage());
+	// Logger.insertLog(e.getMessage());
 	// return false;
 	// } finally {
 	//

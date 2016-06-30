@@ -8,6 +8,7 @@ import br.com.fitrank.modelo.Configuracao;
 import br.com.fitrank.modelo.RankingPessoa;
 import br.com.fitrank.persistencia.RankingPessoaDAO;
 import br.com.fitrank.util.ConstantesFitRank;
+import br.com.fitrank.util.Logger;
 
 public class RankingPessoaServico {
 	
@@ -81,9 +82,9 @@ public class RankingPessoaServico {
 				rankingPessoa.setId_ranking(idRanking);
 				rankingPessoaDAO.adicionaRankingPessoa(rankingPessoa);
 			} catch (SQLException e) {
-				System.out.println("Erro ao salvar rankingPessoa.");
-				System.out.println("id_ranking = " + idRanking);
-				System.out.println("id_pessoa = " + rankingPessoa.getId_pessoa());
+				Logger.insertLog("Erro ao salvar rankingPessoa.");
+				Logger.insertLog("id_ranking = " + idRanking);
+				Logger.insertLog("id_pessoa = " + rankingPessoa.getId_pessoa());
 				e.printStackTrace();
 			}
 		}
@@ -95,8 +96,8 @@ public class RankingPessoaServico {
 			return rankingPessoaDAO.listaRankingPessoaPorIdRanking(idRanking);
 			
 		} catch (SQLException e) {
-			System.out.println("Erro ao consukltar rankingPessoa.");
-			System.out.println("id_ranking = " + idRanking);
+			Logger.insertLog("Erro ao consukltar rankingPessoa.");
+			Logger.insertLog("id_ranking = " + idRanking);
 			e.printStackTrace();
 			return new ArrayList<RankingPessoa>();
 		}

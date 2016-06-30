@@ -13,6 +13,7 @@ import br.com.fitrank.modelo.RankingPessoa;
 import br.com.fitrank.util.ConstantesFitRank;
 import br.com.fitrank.util.DateConversor;
 import br.com.fitrank.util.JDBCFactory;
+import br.com.fitrank.util.Logger;
 
 public class RankingPessoaDAO {
 	private Connection conexao;
@@ -56,7 +57,7 @@ public class RankingPessoaDAO {
 
 		} catch (SQLException e) {
 
-			System.out.println(e.getMessage());
+			Logger.insertLog(e.getMessage());
 
 		} finally {
 
@@ -100,7 +101,7 @@ public class RankingPessoaDAO {
 	
 		} catch (SQLException e) {
 	
-			System.out.println(e.getMessage());
+			Logger.insertLog(e.getMessage());
 	
 		} finally {
 	
@@ -162,7 +163,7 @@ public class RankingPessoaDAO {
 	
 		} catch (SQLException e) {
 	
-			System.out.println(e.getMessage());
+			Logger.insertLog(e.getMessage());
 	
 		} finally {
 	
@@ -267,7 +268,7 @@ public class RankingPessoaDAO {
 	
 		} catch (SQLException e) {
 	
-			System.out.println(e.getMessage());
+			Logger.insertLog(e.getMessage());
 	
 		} finally {
 	

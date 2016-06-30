@@ -12,13 +12,15 @@ import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
 
+import br.com.fitrank.util.Logger;
+
 public class InitJobExtracao extends HttpServlet {
 
 	private static final long serialVersionUID = -2541492224112127600L;
 
 	public void init() throws ServletException {
 		try {
-			System.out.println("Iniciando Job Extracao");
+			Logger.insertLog("Iniciando Job Extracao");
 			
 			Trigger trigger = TriggerBuilder.newTrigger().withIdentity("JobExtracaoTrigger", "grupo1")
 					.withSchedule(
