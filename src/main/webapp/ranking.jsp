@@ -524,6 +524,11 @@
 // 				$(".tableRankShare>tbody").append("<tr><th></th><th></th><th class='modoTableHeader'></th></tr>");
 				
 				for(index in competidores){
+					
+					if(index === 5) {
+						break;
+					}
+					
    					var competidor = competidores[index];
    					
    					$(".tableRankShare>tbody").append("<tr class='rankingLine share'></tr>");

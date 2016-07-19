@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import br.com.fitrank.modelo.Pessoa;
 import br.com.fitrank.util.DateConversor;
@@ -138,7 +140,6 @@ public class PessoaDAO {
 		
 		return pessoa;
 	}
-	
 
 	public Pessoa lePessoa(String idPessoa) throws SQLException {
 		
@@ -234,6 +235,67 @@ public class PessoaDAO {
 			}
  
 		}
+	}
+	
+	public List<Pessoa> leTodasPessoas() throws SQLException {
+		
+		conexao = new JDBCFactory().getConnection();
+		PreparedStatement preparedStatement = null;
+		List<Pessoa> pessoas = new ArrayList<Pessoa>();
+
+		String selectTableSQL = "SELECT "
+				+ "id_usuario, "
+				+ "data_cadastro, "
+				+ "nome,"
+				+ "data_ultimo_login, "
+				+ "data_ultima_atualizacao_runs, "
+				+ "data_ultima_atualizacao_walks, "
+				+ "data_ultima_atualizacao_bikes, "
+				+ "rank_anual, "
+				+ "genero, "
+				+ "data_nascimento, "
+				+ "url_foto "
+				+ "from pessoa";
+		
+		try {
+			preparedStatement = conexao.prepareStatement(selectTableSQL);
+			
+			ResultSet rs = preparedStatement.executeQuery();
+			
+			while ( rs.next() ) {
+				Pessoa pessoa = new Pessoa();
+				pessoa.setId_usuario(rs.getString("id_usuario"));
+				pessoa.setData_cadastro(DateConversor.StringToDate(rs.getString("data_cadastro")));
+				pessoa.setNome(rs.getString("nome"));
+				pessoa.setData_ultimo_login(DateConversor.StringToDate(rs.getString("data_ultimo_login")));
+				pessoa.setData_ultima_atualizacao_runs(DateConversor.StringToDate( rs.getString("data_ultima_atualizacao_runs") ) );
+				pessoa.setData_ultima_atualizacao_walks(DateConversor.StringToDate( rs.getString("data_ultima_atualizacao_walks") ) );
+				pessoa.setData_ultima_atualizacao_bikes(DateConversor.StringToDate( rs.getString("data_ultima_atualizacao_bikes") ) );
+				pessoa.setRank_anual(rs.getString("rank_anual"));
+				pessoa.setGenero(rs.getString("genero"));
+				pessoa.setData_nascimento(DateConversor.StringToDate( rs.getString("data_nascimento") ) );
+				pessoa.setUrl_foto(rs.getString("url_foto"));
+				
+				pessoas.add(pessoa);
+			}
+			
+		} catch (SQLException e) {
+			 
+			Logger.insertLog(e.getMessage());
+ 
+		} finally {
+ 
+			if (preparedStatement != null) {
+				preparedStatement.close();
+			}
+ 
+			if (conexao != null) {
+				conexao.close();
+			}
+			
+		}
+		
+		return pessoas;
 	}
 
 }

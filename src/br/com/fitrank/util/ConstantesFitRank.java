@@ -16,13 +16,13 @@ public final class ConstantesFitRank {
 	public static final String MODALIDADE_TUDO = "A";
 	
 	public static final String MODALIDADE_PADRAO = "R";
-	public static final String MODO_PADRAO = "D";
+	public static final String MODO_PADRAO = "D";                                           
 	public static final String PERIODO_PADRAO = "M";
 	
 	public static final String CHAR_SIM = "S";
 	public static final String CHAR_NAO = "N";
 	
-	public static final int TAMANHO_PADRAO_RANKING = 10;
+	public static final int TAMANHO_PADRAO_RANKING = 100;
 	
 	public static final String ID_APP_NIKE = "84697719333";
 	public static final String ID_APP_RUNTASTIC = "162918433202";

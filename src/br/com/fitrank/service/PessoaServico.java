@@ -36,6 +36,7 @@ public class PessoaServico {
 	    
 	}
 	
+	
 	public Pessoa atualizaPessoaServico(Pessoa pessoa, boolean proprioUsuario){
 		
 		this.pessoaDAO = new PessoaDAO();
@@ -53,7 +54,25 @@ public class PessoaServico {
 		}
 	    
 	}
-
+	
+	public Pessoa atualizaPessoaJob(Pessoa pessoa, boolean proprioUsuario){
+		
+		this.pessoaDAO = new PessoaDAO();
+				
+		pessoa.setData_ultimo_login(new Date());
+		
+	    try {
+			pessoa = pessoaDAO.atualizaPessoa(pessoa, proprioUsuario);
+			preenchePessoa(pessoa);
+			
+			return pessoa;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	    
+	}
+	
 	public Pessoa lePessoaServico(User usuarioFacebook){
 		
 		pessoa = new Pessoa();
@@ -120,12 +139,24 @@ public class PessoaServico {
 	}
 	
 	public boolean removePessoaFromIdServico(String userId){
+		this.pessoaDAO = new PessoaDAO();
 		
 	    try {
 			return pessoaDAO.removePessoaFromId(userId);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
+		}
+	}
+	
+	public List<Pessoa> leTodasPessoasServico() {
+		this.pessoaDAO = new PessoaDAO();
+		
+		try{
+			return pessoaDAO.leTodasPessoas();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 
