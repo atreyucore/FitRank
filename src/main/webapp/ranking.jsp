@@ -525,7 +525,7 @@
 				
 				for(index in competidores){
 					
-					if(index === 5) {
+					if(index == 5) {
 						break;
 					}
 					
