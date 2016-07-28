@@ -154,7 +154,7 @@ public class CarregaRanking extends HttpServlet {
 		request.setAttribute("periodo", periodo);
 		request.setAttribute("listaRanking", listaRankingPessoaTela);
 		request.setAttribute("dataPostMaisRecente", dataPostMaisRecente);
-		
+		response.addHeader("dataPostMaisRecente", dataPostMaisRecente);
 //		request.setAttribute("token", (String) request.getParameter("token"));
 		
 		String json = com.cedarsoftware.util.io.JsonWriter.objectToJson(listaRankingPessoaTela);

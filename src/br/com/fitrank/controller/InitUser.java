@@ -124,7 +124,7 @@ public class InitUser extends HttpServlet {
 	   
 	   request.setAttribute("token", token);
 	   
-	   RequestDispatcher rd = request.getRequestDispatcher("/CarregaRanking");  
+	   RequestDispatcher rd = request.getRequestDispatcher("/ranking.jsp");  
 	   rd.forward(request,response);  
 	   
 	

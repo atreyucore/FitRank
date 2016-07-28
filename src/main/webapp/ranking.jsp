@@ -88,12 +88,18 @@
 			
 <%-- 			var token = '<%=(String) request.getParameter("token")%>'; --%>
 			var token = '<%=(String) request.getAttribute("token")%>';
-			var ultimaPublicacao = '<%=(String) request.getAttribute("dataPostMaisRecente")%>';
+<%-- 			var ultimaPublicacao = '<%=(String) request.getAttribute("dataPostMaisRecente")%>'; --%>
+			var ultimaPublicacao;
 			var teste = '<%=(String) request.getAttribute("teste")%>';
-			var json =  JSON.parse('<%=(String) response.getHeader("json")%>');
+<%-- 			var json =  JSON.parse('<%=(String) response.getHeader("json")%>'); --%>
+			var json;
+			var modalidadeRequest = '<%=(String) request.getAttribute("modalidade")%>';
+			var modoRequest = '<%=(String) request.getAttribute("modo")%>';
+			var periodoRequest = '<%=(String) request.getAttribute("modo")%>';
 			
 			//substituir por scriptlet java
-			var idRanking = json["@items"][0]["id_ranking"]; //pega o id do ranking a partir do primeiro usuário, pois este sempre existirá
+// 			var idRanking = json["@items"][0]["id_ranking"]; //pega o id do ranking a partir do primeiro usuário, pois este sempre existirá
+			var idRanking = <%=(String) request.getParameter("idRanking")%>;
 			var verRanking = location.pathname.indexOf("VerRanking") !== -1 ? true : false; 
 // 			function startTutorial() {
 // 				var intro = introJs();
@@ -134,6 +140,41 @@
 // // 				introJs().start();
 // 			}
 			
+			function ajaxRanking() {
+					   		
+		   		dadosAjax['token'] = token;
+		   		dadosAjax['ajax'] = 'S';
+		   		dadosAjax['modo'] = modoRequest;
+		   		dadosAjax['modalidade'] = modalidadeRequest;
+		   		dadosAjax['periodo'] = periodoRequest;
+	// 				   		dadosAjax[element.parent().siblings(".menu").eq(2).children(":not(.opcao)").attr('data-ref')] = element.parent().siblings(".menu").eq(2).children(":not(.opcao)").children(".bgSmall").attr('data-ref');
+					   		
+			   	$.ajax({
+		   			url: location.origin + location.pathname.substring(0, location.pathname.lastIndexOf("/") + 1) + "CarregaRanking",
+		   			data: dadosAjax,
+		   			method: 'get',
+	//				   			success: function( data, textStatus, jqXHR){
+					complete: function(data, jqXHR, textStatus) {
+		   				$(".tableRank>tbody>.rankingLine").remove();
+		   				
+		   				json = JSON.parse(data.responseText);
+		   				
+		//				   				json = JSON.parse(jqXHR.getResponseHeader('json'));
+					   	ultimaPublicacao = data.getResponseHeader('dataPostMaisRecente');
+					   	
+						$("<span class='capsula descOpcaoConfig' style='font-size: 16px;' title='Última Atividade: " + ultimaPublicacao +"'></span>").text("Última Atividade: " + ultimaPublicacao).appendTo(".Recarregar.atividades");
+						
+		   				competidores = json["@items"];
+		   				
+		   				idRanking = competidores[0]["id_ranking"]; 
+		   				
+		   				geraRanking(competidores, dadosAjax.modo);
+		   			}
+		   				
+		   		});
+		   	}
+
+			
 			$(document).ready(function(){
 // 				startTutorial();
 			    $(document).ajaxStart(function () {
@@ -141,6 +182,7 @@
 			    }).ajaxStop(function () {
 			        $("#loading").hide();
 			    });
+			    
 			    if (verRanking) {
 			    	$(".share").css("display","none");
 			    	$(".config").css("display","none");
@@ -148,9 +190,11 @@
 			    }
 			    
 				preparaConfiguracao();
-			    preparaRanking();
+// 			    preparaRanking();
 			    
-			    if (!verRanking){
+			    if (!verRanking) {
+				    ajaxRanking();
+				    
 			    	fixTitle();
 			    	var clickDisabled = false;
 			     
@@ -308,7 +352,7 @@
 						});
 						
 					});
-				    
+				   	
 				   	$(".opcao").click(function() {
 				   		var element = $(this);
 				   		
@@ -426,6 +470,28 @@
 				   		
 				   		
 				   	});
+			    
+				} else {
+					dadosAjax['ajax'] = 'S';
+					dadosAjax['idRanking'] = idRanking;
+					dadosAjax['modo'] = modoRequest; 
+
+					$.ajax({
+			   			url: location.origin + location.pathname.substring(0, location.pathname.lastIndexOf("/") + 1) + "VerRanking",
+			   			data: dadosAjax,
+			   			method: 'get',
+//				   			success: function( data, textStatus, jqXHR){
+						complete: function(data, jqXHR, textStatus) {
+							$(".tableRank>tbody>.rankingLine").remove();
+			   				
+			   				json = JSON.parse(data.responseText);
+							
+			   				competidores = json["@items"];
+			   				
+			   				geraRanking(competidores, dadosAjax.modo);
+			   			}
+			   				
+			   		});
 			    }
 			   	
 			});
@@ -732,9 +798,9 @@
 						$(".mainConfig").text(configsDesc['C']);
 					}
 					
-					if (value == configsDesc['R']) {
-						$("<span class='capsula descOpcaoConfig' style='font-size: 16px;' title='Última Atividade: " + ultimaPublicacao +"'></span>").text("Última Atividade: " + ultimaPublicacao).appendTo(".Recarregar.atividades");
-					}
+// 					if (value == configsDesc['R']) {
+// 						$("<span class='capsula descOpcaoConfig' style='font-size: 16px;' title='Última Atividade: " + ultimaPublicacao +"'></span>").text("Última Atividade: " + ultimaPublicacao).appendTo(".Recarregar.atividades");
+// 					}
 				});
 				
 				
