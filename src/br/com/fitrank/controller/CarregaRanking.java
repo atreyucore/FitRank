@@ -165,7 +165,7 @@ public class CarregaRanking extends HttpServlet {
 			out.println(json);
 			out.close();
 		} else {
-			response.addHeader("json", json);
+//			response.addHeader("json", json);
 			
 			rd = request.getRequestDispatcher("ranking.jsp");
 			

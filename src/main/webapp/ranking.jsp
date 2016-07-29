@@ -95,7 +95,7 @@
 			var json;
 			var modalidadeRequest = '<%=(String) request.getAttribute("modalidade")%>';
 			var modoRequest = '<%=(String) request.getAttribute("modo")%>';
-			var periodoRequest = '<%=(String) request.getAttribute("modo")%>';
+			var periodoRequest = '<%=(String) request.getAttribute("periodo")%>';
 			
 			//substituir por scriptlet java
 // 			var idRanking = json["@items"][0]["id_ranking"]; //pega o id do ranking a partir do primeiro usuário, pois este sempre existirá
