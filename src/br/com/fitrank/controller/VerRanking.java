@@ -61,42 +61,36 @@ public class VerRanking extends HttpServlet {
     	modo = configuracao.getModo();
 		periodo = configuracao.getIntervaloData();
     	
-    	request.setAttribute("modalidade", modalidade);
+    	listRankingPessoas = rankingPessoaServico.listaRankingPessoaPorIdRanking(ranking.getId_ranking());
+    	
+    	//Recupera as configuracoes de pessoa, inclusive foto.
+    	for (RankingPessoa rankingPessoa : listRankingPessoas) {
+    		
+    		PessoaServico pessoaServico = new PessoaServico();
+    		
+    		rankingPessoa.setPessoa( pessoaServico.lePessoaPorIdServico( rankingPessoa.getId_pessoa() ) );
+    		
+    		if (rankingPessoa.getPessoa().getId_usuario().equals(configuracao.getIdPessoa()) ) {
+    			nomeGeradorRank = rankingPessoa.getPessoa().getNome();
+    		}
+		}
+	    
+    	request.setAttribute("geradorRank", nomeGeradorRank);
+		request.setAttribute("modalidade", modalidade);
 		request.setAttribute("modo", modo);
 		request.setAttribute("periodo", periodo);
-		request.setAttribute("geradorRank", nomeGeradorRank);
-    	if(isAjax.equals("S")) {
-	    	listRankingPessoas = rankingPessoaServico.listaRankingPessoaPorIdRanking(ranking.getId_ranking());
-	    	
-	    	//Recupera as configuracoes de pessoa, inclusive foto.
-	    	for (RankingPessoa rankingPessoa : listRankingPessoas) {
-	    		
-	    		PessoaServico pessoaServico = new PessoaServico();
-	    		
-	    		rankingPessoa.setPessoa( pessoaServico.lePessoaPorIdServico( rankingPessoa.getId_pessoa() ) );
-	    		
-	    		if (rankingPessoa.getPessoa().getId_usuario().equals(configuracao.getIdPessoa()) ) {
-	    			nomeGeradorRank = rankingPessoa.getPessoa().getNome();
-	    		}
-			}
-	    	
-	    	List<RankingPessoaTela> listaRankingPessoaTela = obtemListaAplicativosTela(listRankingPessoas, configuracao);
+		
+		if(isAjax.equals("S")) {	
+			List<RankingPessoaTela> listaRankingPessoaTela = obtemListaAplicativosTela(listRankingPessoas, configuracao);
 	    	postFitnessServico = new PostFitnessServico();
 	    	
-	//		request.setAttribute("listaRanking", listRankingPessoas);
-			
-			request.setAttribute("listaRanking", listaRankingPessoaTela);
-			
 			String json = com.cedarsoftware.util.io.JsonWriter.objectToJson(listaRankingPessoaTela);
-			
 			response.setContentType("text/html;charset=UTF-8");
 			PrintWriter out = response.getWriter();
 			out.println(json);
 			out.close();
 			
-	//		response.addHeader("json", json);
     	} else {
-    		
     		
     		RequestDispatcher rd = request.getRequestDispatcher("ranking.jsp");
     		rd.forward(request, response);

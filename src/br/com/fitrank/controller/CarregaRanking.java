@@ -153,7 +153,7 @@ public class CarregaRanking extends HttpServlet {
 		request.setAttribute("modo", modo);
 		request.setAttribute("periodo", periodo);
 		request.setAttribute("listaRanking", listaRankingPessoaTela);
-		request.setAttribute("dataPostMaisRecente", dataPostMaisRecente);
+//		request.setAttribute("dataPostMaisRecente", dataPostMaisRecente);
 		response.addHeader("dataPostMaisRecente", dataPostMaisRecente);
 //		request.setAttribute("token", (String) request.getParameter("token"));
 		
