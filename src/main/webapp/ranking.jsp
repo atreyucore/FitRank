@@ -374,7 +374,8 @@
 					   			success: function( data, textStatus, jqXHR){
 	// 				   				$(".tableRank>tbody>.rankingLine").remove();
 	
-					   				json = JSON.parse(data.responseText);
+// 					   				json = JSON.parse(data.responseText);
+									alert(data);
 // 					   				json = JSON.parse(jqXHR.getResponseHeader('json'));
 					   				
 	// 				   				competidores = json["@items"];
@@ -392,7 +393,7 @@
 					   			method: 'get',
 					   			success: function( data, textStatus, jqXHR){
 	// 				   				$(".tableRank>tbody>.rankingLine").remove();
-					   				json = JSON.parse(data.responseText);
+					   				alert(jqXHR.getResponseHeader('msg'));
 // 					   				json = JSON.parse(jqXHR.getResponseHeader('json'));
 					   				
 	// 				   				competidores = json["@items"];

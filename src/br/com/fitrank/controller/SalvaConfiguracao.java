@@ -1,6 +1,7 @@
 package br.com.fitrank.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -37,6 +38,8 @@ public class SalvaConfiguracao extends HttpServlet {
     
     private void inicia(HttpServletRequest request, HttpServletResponse response) {
     	
+    	PrintWriter out;
+    	
     	FacebookClient facebookClient = new DefaultFacebookClient(request.getParameter("token"));
     	
     	User facebookUser = facebookClient.fetchObject("me", User.class);
@@ -47,9 +50,9 @@ public class SalvaConfiguracao extends HttpServlet {
     	periodo = (String) request.getParameter("periodo");
     	fav = (String) request.getParameter("config");
     	
-    	
     	String userID = (String) facebookUser.getId();
     	Boolean isValido = isParametrosValidos(modalidade, modo, turno, periodo, fav);
+    	String mensagem = "";
     	
     	if (isValido) {
         	
@@ -77,10 +80,22 @@ public class SalvaConfiguracao extends HttpServlet {
     	    		configuracaoServico.atualizaConfiguracao(configuracao);
     	    	}
         	}
+        	mensagem = "Ranking favorito salvo com sucesso";
         	
     	} else {
     		//ocorreu algum erro
+    		mensagem = "Ocorreu algum erro ao gerar o ranking favorito";
     	}
+    	
+		response.setContentType("text/html;charset=UTF-8");
+
+		try {
+			out = response.getWriter();
+			out.println(mensagem);
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
     }
     

@@ -160,6 +160,11 @@ public class CarregaRanking extends HttpServlet {
 		String json = com.cedarsoftware.util.io.JsonWriter.objectToJson(listaRankingPessoaTela);
 		
 		if(isAjax.equals("S")){
+			
+			if (ConstantesFitRank.CHAR_SIM.equals(atualizarTudo)) {
+				response.addHeader("msg", "Atividades recarregadas com sucesso.");
+			}
+			
 			response.setContentType("text/html;charset=UTF-8");
 			PrintWriter out = response.getWriter();
 			out.println(json);
