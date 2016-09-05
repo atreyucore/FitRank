@@ -30,6 +30,17 @@ a:hover {
 	overflow-x: hidden;
 }
 
+.facebookLogin {
+		cursor: pointer;
+		margin: 0 auto;
+		margin-top: 35px;
+		display: block;
+		border: none;
+		width: 288px;
+		height: 62px;
+		background-image: url('https://fbcdn-dragon-a.akamaihd.net/hphotos-ak-xaf1/t39.2178-6/851579_209602122530903_1060396115_n.png');
+}
+
 .preheader {
 	background-color: rgb(111, 61, 148);
 	height: 70px;

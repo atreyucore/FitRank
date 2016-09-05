@@ -32,11 +32,11 @@ public class JDBCFactory {
 			prop.load(input);
 			
 			
-//			return DriverManager.getConnection(
-//					prop.getProperty("dbconnection"), prop.getProperty("dbuser"), prop.getProperty("dbpassword") );
-			
 			return DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/fitrank", prop.getProperty("dbuser"), prop.getProperty("dbpassword") );
+					prop.getProperty("dbconnection"), prop.getProperty("dbuser"), prop.getProperty("dbpassword") );
+			
+//			return DriverManager.getConnection(
+//					"jdbc:mysql://localhost:3306/fitrank", prop.getProperty("dbuser"), prop.getProperty("dbpassword") );
 			
 //			return DriverManager.getConnection(
 //					"jdbc:mysql://10.1.1.186:8101/fitrank", prop.getProperty("dbuser"), prop.getProperty("dbpassword") );
@@ -48,7 +48,6 @@ public class JDBCFactory {
 		} catch (SQLException | ClassNotFoundException | IOException e) {
 
 			throw new RuntimeException(e);
-		}
-	}
+		}	}
 
 }

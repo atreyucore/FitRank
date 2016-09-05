@@ -1,10 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
+<!DOCTYPE html>
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-		<title>Escolher a configuração do Ranking</title>
+		<title>Escolher a configuraÃ§Ã£o do Ranking</title>
 		<link rel="stylesheet" type="text/css" href="./style/css/FitRank.css">
 		<script type="text/javascript" src="js/jquery-1.11.2.js"></script>
 		<script src="js/jquery-ui-1.11.4/jquery-ui.js"></script>
@@ -26,7 +25,7 @@
 			function validaPreenchimento() {
 				
 				if ( $(".selectedMode")[0] == undefined ) {
-					alert('Preencha o modo do Ranking (Velocidade Média ou Distância).')
+					alert('Preencha o modo do Ranking (Velocidade MÃ©dia ou DistÃ¢ncia).')
 					return false;
 				}
 				
@@ -247,7 +246,7 @@
 					</div>	
 	<!-- 					<div class="periodos"> -->
 	<!-- 						<input type="radio" name="periodo" /> Semana  -->
-	<!-- 						<input type="radio" name="periodo" /> Mês  -->
+	<!-- 						<input type="radio" name="periodo" /> MÃªs  -->
 	<!-- 						<input type="radio" name="periodo" /> Ano -->
 	<!-- 						<input type="radio" name="periodo" /> Sempre -->
 				</div>
